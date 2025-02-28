@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User; // Import the User model
 use App\Models\Inventory; // Import the Inventory model
 use App\Models\ReportSTO;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Part; // Assuming you have a Part model
 
 class STOController extends Controller
@@ -16,17 +14,15 @@ class STOController extends Controller
   {
     $user = Auth::user();
     $inventoryC = new InventoryController();
-    $categories = $inventoryC->category_list;
-    return view('STO.index', compact('user', 'categories'));
+    return view('STO.index', compact('user'));
   }
 
   public function show($id)
   {
     $user = Auth::user();
     $inventoryC = new InventoryController();
-    $categories = $inventoryC->category_list;
     $report = ReportSTO::with('inventory')->findOrFail($id);
-    return view('STO.index', compact('user', 'categories', 'report'));
+    return view('STO.index', compact('user', 'report'));
   }
 
   public function scan(Request $request)
@@ -49,8 +45,7 @@ class STOController extends Controller
     $inventory = Inventory::where('inventory_id', $inventory_id)->first();
     if ($inventory) {
       $inventoryC = new InventoryController();
-      $categories = $inventoryC->category_list;
-      return view('sto.form', compact('inventory', 'categories'));
+      return view('sto.form', compact('inventory'));
     }
     return back()->with('error', 'Inventory not found. Please try again.');
   }
@@ -62,7 +57,6 @@ class STOController extends Controller
       'inventory_id' => 'required|exists:inventory,inventory_id',
       'issued_date' => 'required|date',
       'prepared_by' => 'required|exists:users,id',
-      'checked_by' => 'nullable|string',
       'status' => 'required|string',
       'qty_per_box' => 'required|integer',
       'qty_box' => 'required|integer',
@@ -75,7 +69,20 @@ class STOController extends Controller
     ]);
 
     // Create and save the report
-    $reportSTO = ReportSTO::create($validatedData);
+    $reportSTO = ReportSTO::create([
+      'inventory_id' => $validatedData['inventory_id'],
+      'issued_date' => $validatedData['issued_date'],
+      'prepared_by' => $validatedData['prepared_by'],
+      'status' => $validatedData['status'],
+      'qty_per_box' => $validatedData['qty_per_box'],
+      'qty_box' => $validatedData['qty_box'],
+      'total' => $validatedData['total'],
+      'qty_per_box_2' => $validatedData['qty_per_box_2'],
+      'qty_box_2' => $validatedData['qty_box_2'],
+      'total_2' => $validatedData['total_2'],
+      'grand_total' => $validatedData['grand_total'],
+      'detail_lokasi' => $validatedData['detail_lokasi'],
+    ]);
 
     // Redirect back with success message
     return redirect()->route('sto.index')->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} created successfully.");
@@ -90,7 +97,6 @@ class STOController extends Controller
       'part_name' => 'required|string',
       'part_number' => 'required|string',
       'checked_by' => 'nullable|string',
-      'category' => 'required|string',
       'status' => 'required|string',
       'qty_per_box' => 'required|integer',
       'qty_box' => 'required|integer',
@@ -100,7 +106,6 @@ class STOController extends Controller
       'total_2' => 'nullable|integer',
       'grand_total' => 'required|integer',
     ]);
-
 
     $inventory = new Inventory();
     $inventory->inventory_id = $validatedData["inventory_code"];
@@ -115,7 +120,22 @@ class STOController extends Controller
     $validatedData["id_inventory"] = $inventory->id;
 
     // Create and save the report
-    $reportSTO = ReportSTO::create($validatedData);
+    $reportSTO = ReportSTO::create([
+      'inventory_id' => $validatedData['inventory_code'],
+      'issued_date' => $validatedData['issued_date'],
+      'prepared_by' => $validatedData['prepared_by'],
+      'checked_by' => $validatedData['checked_by'],
+      'status' => $validatedData['status'],
+      'qty_per_box' => $validatedData['qty_per_box'],
+      'qty_box' => $validatedData['qty_box'],
+      'total' => $validatedData['total'],
+      'qty_per_box_2' => $validatedData['qty_per_box_2'],
+      'qty_box_2' => $validatedData['qty_box_2'],
+      'total_2' => $validatedData['total_2'],
+      'grand_total' => $validatedData['grand_total'],
+      'detail_lokasi' => $validatedData['detail_lokasi'],
+    ]);
+
     $reportSTO->inventory = $inventory;
 
     // Redirect back with success message

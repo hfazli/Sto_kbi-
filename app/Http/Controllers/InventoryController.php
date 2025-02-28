@@ -6,31 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Customer;
 use App\Imports\InventoryImport;
-use Barryvdh\DomPDF\Facade\Pdf as Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
 {
-    public $category_list = [
-        'Finished Good',
-        'Package',
-        'Chill Part',
-        'Raw Material',
-    ];
-
-    public function getStatus($category)
-    {
-        $statusOptions = match ($category) {
-            'Finished Good' => ['WIP', 'FG'],
-            'Package' => ['NG', 'GOOD'],
-            'Chill Part' => ['GOOD'],
-            'Raw Material' => ['NG', 'VIRGIN', 'FUNGSAI'],
-            default => [],
-        };
-
-        return response()->json($statusOptions);
-    }
-
     public function index(Request $request)
     {
         $entries = $request->get('entries', 'all'); // Default to 'all' entries per page
@@ -51,24 +30,10 @@ class InventoryController extends Controller
         return view('inventory.index', compact('inventory', 'search'));
     }
 
-    public function data(Request $request)
-    {
-        $inventory = Inventory::query();
-
-        if ($request->category) {
-            $inventory->where('category', $request->category);
-        }
-
-        $inventory = $inventory->paginate(10); // Use pagination with 10 items per page
-
-        return response()->json($inventory);
-    }
-
     public function create()
     {
-        $categories = $this->category_list;
-        $customers = Customer::all(); // Ambil semua data customer
-        return view('inventory.create', compact('customers', 'categories'));
+        $customers = Customer::all(); // Get all customers
+        return view('inventory.create', compact('customers'));
     }
 
     public function store(Request $request)
@@ -84,7 +49,6 @@ class InventoryController extends Controller
             'detail_lokasi' => 'nullable|string|max:255',
             'satuan' => 'required|string|max:255',
             'plant' => 'nullable|string|max:255',
-            'category' => 'required|string|max:255',
             'status_product' => 'required|string|max:255', // Add validation for status_product
         ]);
 
@@ -99,26 +63,24 @@ class InventoryController extends Controller
         $inventory->detail_lokasi = $request->detail_lokasi;
         $inventory->satuan = $request->satuan;
         $inventory->plant = $request->plant;
-        $inventory->category = $request->category;
         $inventory->status_product = $request->status_product; // Save status_product
 
-    $inventory->save();
+        $inventory->save();
 
-    return redirect()->route('inventory.index')->with('success', 'Inventory created successfully.');
-  }
+        return redirect()->route('inventory.index')->with('success', 'Inventory created successfully.');
+    }
 
-  public function show($id)
-  {
-    $inventory = Inventory::findOrFail($id);
-    return view('inventory.show', compact('inventory'));
-  }
+    public function show($id)
+    {
+        $inventory = Inventory::findOrFail($id);
+        return view('inventory.show', compact('inventory'));
+    }
 
     public function edit($id)
     {
         $inventory = Inventory::findOrFail($id);
         $customers = Customer::all();
-        $categories = $this->category_list;
-        return view('inventory.edit', compact('inventory', 'customers', 'categories'));
+        return view('inventory.edit', compact('inventory', 'customers'));
     }
 
     public function update(Request $request, $id)
@@ -133,74 +95,89 @@ class InventoryController extends Controller
             'customer' => 'required|string|max:255',
             'detail_lokasi' => 'nullable|string|max:255',
             'satuan' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'status_product' => 'required|string|max:255', // Add validation for status_product
+            'status_product' => 'required|string|max:255',
         ]);
 
-    $inventory = Inventory::findOrFail($id);
-    $inventory->update($request->all());
+        $inventory = Inventory::findOrFail($id);
+        $inventory->update($request->all());
 
-    return redirect()->route('inventory.index')->with('success', 'Inventory updated successfully.');
-  }
-
-  public function destroy($id)
-  {
-    $inventory = Inventory::findOrFail($id);
-    $inventory->delete();
-
-    return redirect()->route('inventory.index')->with('success', 'Inventory deleted successfully.');
-  }
-
-  public function import(Request $request)
-  {
-    $request->validate([
-      'file' => 'required|mimes:xls,xlsx',
-    ]);
-
-    $import = new InventoryImport;
-    Excel::import($import, $request->file('file'));
-
-    if (count($import->getErrorRows()) > 0) {
-      return redirect()->route('inventory.index')->with('error', 'Some rows failed to import.');
+        return redirect()->route('inventory.index')->with('success', 'Inventory updated successfully.');
     }
 
-    return redirect()->route('inventory.index')->with('success', 'Inventory imported successfully.');
-  }
-
-  public function showUploadForm()
-  {
-    return view('inventory.upload');
-  }
-
-    public function downloadPdf()
+    public function destroy($id)
     {
-        $inventories = Inventory::all();
-        $pdf = Pdf::loadView('inventory.pdf', compact('inventories'));
-        return $pdf->download('inventory.pdf');
+        $inventory = Inventory::findOrFail($id);
+        $inventory->delete();
+
+        return redirect()->route('inventory.index')->with('success', 'Inventory deleted successfully.');
     }
 
-  public function upload(Request $request)
-  {
-    $request->validate([
-      'file' => 'required|mimes:xlsx,xls,csv',
-    ]);
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx',
+        ]);
 
-    $file = $request->file('file');
-    Excel::import(new InventoryImport, $file);
+        $import = new InventoryImport;
+        Excel::import($import, $request->file('file'));
 
-    return redirect()->route('inventory.index')->with('success', 'Inventory uploaded successfully.');
-  }
+        if (count($import->getErrorRows()) > 0) {
+            return redirect()->route('inventory.index')->with('error', 'Some rows failed to import.');
+        }
 
-  public function changeStatus($id, Request $request)
-  {
-    $inventory = Inventory::find($id);
-    if ($inventory) {
-      $inventory->status_product = $request->status_product; // Update status_product
-      $inventory->save();
-
-      return response()->json(['success' => true, 'message' => 'Status berhasil diubah.']);
-    } else {
-      return response()->json(['success' => false, 'message' => 'Inventory tidak ditemukan.']);
+        return redirect()->route('inventory.index')->with('success', 'Inventory imported successfully.');
     }
-  }
+
+    public function showUploadForm()
+    {
+        return view('inventory.upload');
+    }
+
+    public function upload(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        $file = $request->file('file');
+        Excel::import(new InventoryImport, $file);
+
+        return redirect()->route('inventory.index')->with('success', 'Inventory uploaded successfully.');
+    }
+
+    public function changeStatus($id, Request $request)
+    {
+        $inventory = Inventory::find($id);
+        if ($inventory) {
+            $inventory->status_product = $request->status_product; // Update status_product
+            $inventory->save();
+
+            return redirect()->route('inventory.index')->with('success', 'Status berhasil diubah.');
+        } else {
+            return redirect()->route('inventory.index')->with('error', 'Inventory tidak ditemukan.');
+        }
+    }
+
+    public function scanInventory(Request $request)
+    {
+        $inventoryId = $request->input('inventory_id');
+        $inventory = Inventory::where('inventory_id', $inventoryId)->first();
+
+        if ($inventory) {
+            return view('inventory.scan', compact('inventory'));
+        } else {
+            return redirect()->route('inventory.index')->with('error', 'Inventory not found');
+        }
+    }
+
+    public function showForm($inventory_id)
+    {
+        $inventory = Inventory::where('inventory_id', $inventory_id)->first();
+
+        if ($inventory) {
+            return view('STO.from', compact('inventory'));
+        } else {
+            return redirect()->route('sto.index')->with('notfound', 'Inventory not found');
+        }
+    }
 }

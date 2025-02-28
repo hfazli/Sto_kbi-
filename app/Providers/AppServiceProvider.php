@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL; // Import the URL facade
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,8 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // if(config('app.env') === 'local') {
-        //     \URL::forceScheme('https');
+        // if (config('app.env') === 'local') {
+        //     URL::forceScheme('https');
         // }
     }
 }

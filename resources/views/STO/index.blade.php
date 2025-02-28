@@ -72,15 +72,14 @@
     }
 
     function onScanSuccess(decodedText) {
-      let match = decodedText.match(/^(\d+)[A-Za-z]/);
-      let extractedNumber = match ? match[1] : decodedText;
-      // Set the scanned text to the input field
-      document.getElementById('inventory_id').value = extractedNumber;
-      // Send the scanned ID card number to the server for validation
-      document.getElementById('stoForm').submit();
-      showLoading();
-    }
-
+    decodedText = decodedText.slice(0, 6);
+    console.log(`Code matched: ${decodedText}`);
+    // Set the scanned text to the input field
+    document.getElementById('inventory_id').value = decodedText;
+    // Send the scanned ID card number to the server for validation
+    document.getElementById('stoForm').submit();
+    showLoading();
+  }
     // Keep session alive setiap 10 menit
     let sessionAlive = true; // Kendalikan secara global
     setInterval(() => {
@@ -88,37 +87,5 @@
       fetch('/keep-session-alive').catch(() => sessionAlive = false);
     }, 10 * 60 * 1000);
 
-    $(document).ready(function() {
-      $('#category').on('change', function() {
-        var category = $(this).val();
-        var initialStatus = "{{ isset($report) ? $report->status : old('status ') }}";
-        $.ajax({
-          url: "{{ url('/get-status') }}/" + encodeURIComponent(category),
-          type: 'GET',
-          success: function(response) {
-            var statusContainer = $('.status-container');
-            statusContainer.empty(); // Clear previous options
-
-            if (response.length > 0) {
-              response.forEach(function(status) {
-                var checked = (status === initialStatus) ? 'checked' : '';
-                var radioInput = `
-                                <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="status" id="${status}" value="${status}" ${checked}>
-                                    <label class="form-check-label" for="${status}">${status}</label>
-                                </div>
-                            `;
-                statusContainer.append(radioInput);
-              });
-            } else {
-              statusContainer.append('<p>No status options available</p>');
-            }
-          }
-        });
-      });
-
-      // Trigger change event to load initial status when the page loads
-      $('#category').trigger('change');
-    });
   </script>
 @endsection

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
+use Barryvdh\DomPDF\ServiceProvider as DomPDFServiceProvider;
+use SimpleSoftwareIO\QrCode\QrCodeServiceProvider;
 
 return [
 
@@ -169,7 +171,8 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
 
-    Barryvdh\DomPDF\ServiceProvider::class,
+    DomPDFServiceProvider::class,
+    QrCodeServiceProvider::class,
   ])->toArray(),
 
   /*
@@ -185,6 +188,8 @@ return [
 
   'aliases' => Facade::defaultAliases()->merge([
     // 'Example' => App\Facades\Example::class,
+    'PDF' => Barryvdh\DomPDF\Facade::class,
+    'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
   ])->toArray(),
 
 ];

@@ -30,7 +30,7 @@
         @endif
         <!-- Custom Styled Validation -->
         <form class="row g-3 needs-validation" novalidate enctype="multipart/form-data" method="POST"
-          action="{{ route('reports.update', $report->id) }}">
+          action="{{ route('reports.edit', $report->id) }}">
           @csrf
           @method('PUT')
 
@@ -67,27 +67,29 @@
             @enderror
           </div>
 
-          <!-- Status (Dropdown) -->
+          <!-- Status (Radio Buttons) -->
           <div class="col-md-6">
-            <label for="status" class="form-label">Status</label>
-            <select class="form-select @error('status') is-invalid @enderror" id="status" name="status" required>
-              <option value="" disabled selected>Select status</option>
-              <optgroup label="Finished Good">
-                <option value="NG" {{ old('status', $report->inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
-                <option value="WIP" {{ old('status', $report->inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
-                <option value="FG" {{ old('status', $report->inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
-              </optgroup>
-              <optgroup label="Chillpart">
-                <option value="GOOD" {{ old('status', $report->inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-              </optgroup>
-              <optgroup label="Rawmaterial">
-                <option value="VIRGIN" {{ old('status', $report->inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                <option value="FUNGSAI" {{ old('status', $report->inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
-              </optgroup>
-            </select>
-            @error('status')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <label class="form-label">Status</label>
+            <div class="d-flex">
+              @php
+                $status = old('status', $report->inventory->status_product ?? '');
+              @endphp
+              <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="status" id="ng" value="NG"
+                  {{ $status == 'NG' ? 'checked' : '' }}>
+                <label class="form-check-label" for="ng">NG</label>
+              </div>
+              <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="status" id="wip" value="WIP"
+                  {{ $status == 'WIP' ? 'checked' : '' }}>
+                <label class="form-check-label" for="wip">WIP</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="fg" value="FG"
+                  {{ $status == 'FG' ? 'checked' : '' }}>
+                <label class="form-check-label" for="fg">FG</label>
+              </div>
+            </div>
           </div>
 
           <!-- Quantity Details -->
@@ -117,12 +119,12 @@
             </div>
             <div class="row mt-3">
               <div class="col-md-3">
-                <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control"
+                <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control" required
                   placeholder="Enter quantity per box"
                   value="{{ old('qty_per_box_2', $report->qty_per_box_2 ?? '') }}">
               </div>
               <div class="col-md-3">
-                <input type="number" id="qty_box_2" name="qty_box_2" class="form-control"
+                <input type="number" id="qty_box_2" name="qty_box_2" class="form-control" required
                   value="{{ old('qty_box_2', $report->qty_box_2 ?? '') }}">
               </div>
               <div class="col-md-3">
@@ -147,14 +149,7 @@
             <input readonly type="text" id="prepared_by_name" name="prepared_by_name" class="form-control"
               value="{{ $report->preparer->username }}">
           </div>
-
-          <!-- Detail Lokasi -->
-          <div class="col-md-4">
-            <label for="detail_lokasi" class="form-label">Detail Lokasi</label>
-            <input type="text" id="detail_lokasi" name="detail_lokasi" class="form-control" placeholder="Enter detail lokasi"
-              value="{{ old('detail_lokasi', $report->detail_lokasi ?? '') }}">
-          </div>
-
+          
           <!-- Submit Button -->
           <div class="col-12">
             <button class="btn btn-primary w-100" type="submit">Submit</button>

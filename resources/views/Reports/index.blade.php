@@ -4,11 +4,11 @@
 
 @section('content')
   <div class="pagetitle">
-    <h1>FG Reports</h1>
+    <h1>Reports All</h1>
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-        <li class="breadcrumb-item active">FG Reports</li>
+        <li class="breadcrumb-item active">Reports</li>
       </ol>
     </nav>
   </div>
@@ -57,8 +57,8 @@
               @foreach ($reports as $index => $report)
                 <tr>
                   <td>{{ $index + 1 }}</td>
-                  <td>{{ $report->inventory->part_name }}</td>
-                  <td>{{ $report->inventory->part_number }}</td>
+                  <td>{{ $report->inventory ? $report->inventory->part_name : '' }}</td>
+                  <td>{{ $report->inventory ? $report->inventory->part_number : '' }}</td>
                   <td>{{ $report->inventory_id }}</td>
                   <td>{{ $report->status }}</td>
                   <td>{{ $report->qty_per_box }}</td>
@@ -67,7 +67,7 @@
                   <td>{{ $report->grand_total }}</td>
                   <td>{{ $report->issued_date->format('F Y') }}</td>
                   <td>{{ $report->detail_lokasi }}</td>
-                  <td>{{ $report->inventory->customer }}</td>
+                  <td>{{ $report->inventory ? $report->inventory->customer : '' }}</td>
                   <td>
                     <div class="d-flex justify-content-center">
                       <a href="{{ route('reports.print', $report->id) }}" class="btn btn-warning me-2">

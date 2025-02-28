@@ -12,9 +12,8 @@ class ReportSTO extends Model
   protected $table = 'report_sto';
 
   protected $fillable = [
-    'issued_date',
-    'id_inventory',
     'inventory_id',
+    'issued_date',
     'prepared_by',
     'checked_by',
     'status',
@@ -26,7 +25,6 @@ class ReportSTO extends Model
     'total_2',
     'grand_total',
     'detail_lokasi',
-    'customer',
   ];
 
   protected $casts = [
@@ -35,7 +33,7 @@ class ReportSTO extends Model
 
   public function inventory()
   {
-    return $this->belongsTo(Inventory::class, 'id_inventory', 'id');
+    return $this->belongsTo(Inventory::class, 'inventory_id', 'inventory_id');
   }
 
   public function preparer()
