@@ -73,6 +73,7 @@ Route::put('/reports/{id}/edit', [ReportController::class, 'update'])->name('rep
 Route::get('/reports/{id}/print', [ReportController::class, 'print'])->name('reports.print');
 Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
 Route::post('/reports/store', [ReportController::class, 'store'])->name('reports.store');
+Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 // FETCH DATA FOR CHARTS
 Route::get('/fetch-report-sto', [DashboardController::class, 'reportSto'])->name('dashboard.sto');
 Route::get('/fetch-report-sto', [ReportController::class, 'fetchReportSTO'])->name('fetch-report-sto');

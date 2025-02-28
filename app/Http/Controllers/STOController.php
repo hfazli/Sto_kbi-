@@ -12,9 +12,7 @@ class STOController extends Controller
 {
   public function index()
   {
-    $user = Auth::user();
-    $inventoryC = new InventoryController();
-    return view('STO.index', compact('user'));
+    return view('STO.index');
   }
 
   public function show($id)
@@ -163,7 +161,7 @@ class STOController extends Controller
 
   public function search(Request $request)
   {
-    $query = $request->input('part_name_number');
+    $query = $request->input('query');
     $results = Part::where('part_name', 'LIKE', "%{$query}%")
                     ->orWhere('part_number', 'LIKE', "%{$query}%")
                     ->get();
