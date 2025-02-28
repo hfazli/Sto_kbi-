@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Data Finished Goods')
+@section('title', 'Data Inventory')
 
 @section('content')
    <div class="pagetitle">
-       <h1>Finished Goods</h1>
+       <h1>Inventory</h1>
        <nav>
            <ol class="breadcrumb">
                <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-               <li class="breadcrumb-item active"> Data Finished Goods</li>
+               <li class="breadcrumb-item active"> Data Inventory</li>
            </ol>
        </nav>
    </div>
@@ -45,14 +45,14 @@
    <section class="section">
        <div class="card">
            <div class="card-body">
-               <h5 class="card-title">Finished Goods List</h5>
+               <h5 class="card-title">Inventory List</h5>
 
-               <a href="{{ route('finished_goods.create') }}" class="btn btn-primary mb-3">
-                   <i class="fas fa-plus"></i> Create New Finished Good
+               <a href="{{ route('inventory.create') }}" class="btn btn-primary mb-3">
+                   <i class="fas fa-plus"></i> Create New Inventory
                </a>
 
                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#importModal">
-                   <i class="fas fa-file-excel"></i> Import Excel FG
+                   <i class="fas fa-file-excel"></i> Import Excel Inventory
                </button>
                <div class="table-responsive">
                    <table class="table table-bordered text-center align-middle datatable">
@@ -64,37 +64,39 @@
                                <th>Part Number</th>
                                <th>Type Package</th>
                                <th>Qty/Box</th>
+                               <th>Status Product</th>
                                <th>Project</th>
                                <th>Customer</th>
                                <th>Detail Lokasi</th>
-                               <th>Satuan</th>
-                               <th>Stok Awal</th> <!-- New column header -->
+                               <th>Unit</th>
+                               <th>Plant</th>
                                <th>Actions</th>
                            </tr>
                        </thead>
                        <tbody>
-                           @foreach($finishedGoods as $index => $finishedGood)
+                           @foreach($inventory as $index => $item)
                                <tr>
                                    <td>{{ $index + 1 }}</td>
-                                   <td>{{ $finishedGood->inventory_id }}</td>
-                                   <td>{{ $finishedGood->part_name }}</td>
-                                   <td>{{ $finishedGood->part_number }}</td>
-                                   <td>{{ $finishedGood->type_package }}</td>
-                                   <td>{{ $finishedGood->qty_package }}</td>
-                                   <td>{{ $finishedGood->project }}</td>
-                                   <td>{{ $finishedGood->customer }}</td>
-                                   <td>{{ $finishedGood->area_fg }}</td>
-                                   <td>{{ $finishedGood->satuan }}</td>
-                                   <td>{{ $finishedGood->stok_awal }}</td> <!-- New column data -->
+                                   <td>{{ $item->inventory_id }}</td>
+                                   <td>{{ $item->part_name }}</td>
+                                   <td>{{ $item->part_number }}</td>
+                                   <td>{{ $item->type_package }}</td>
+                                   <td>{{ $item->qty_package }}</td>
+                                   <td>{{ $item->status_product }}</td>
+                                   <td>{{ $item->project }}</td>
+                                   <td>{{ $item->customer }}</td>
+                                   <td>{{ $item->detail_lokasi }}</td>
+                                   <td>{{ $item->satuan }}</td>
+                                   <td>{{ $item->plant }}</td>
                                    <td>
                                        <div class="d-flex justify-content-center">
-                                           <a href="{{ route('finished_goods.edit', $finishedGood->id) }}" class="btn btn-primary me-2">
+                                           <a href="{{ route('inventory.edit', $item->id) }}" class="btn btn-primary btn-sm me-2">
                                                <i class="fas fa-edit"></i> Edit
                                            </a>
-                                           <form action="{{ route('finished_goods.destroy', $finishedGood->id) }}" method="POST" id="delete-form-{{ $finishedGood->id }}" style="display:inline;">
+                                           <form action="{{ route('inventory.destroy', $item->id) }}" method="POST" id="delete-form-{{ $item->id }}" style="display:inline;">
                                                @csrf
                                                @method('DELETE')
-                                               <button type="button" onclick="confirmDelete({{ $finishedGood->id }})" class="btn btn-danger">
+                                               <button type="button" onclick="confirmDelete({{ $item->id }})" class="btn btn-danger btn-sm">
                                                    <i class="bi bi-trash3"></i> Delete
                                                </button>
                                            </form>
@@ -113,11 +115,11 @@
        <div class="modal-dialog">
            <div class="modal-content">
                <div class="modal-header">
-                   <h5 class="modal-title" id="importModalLabel">Import Finished Goods from Excel</h5>
+                   <h5 class="modal-title" id="importModalLabel">Import Inventory from Excel</h5>
                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                </div>
                <div class="modal-body">
-                   <form id="importForm" action="{{ route('finished_goods.import') }}" method="POST" enctype="multipart/form-data">
+                   <form id="importForm" action="{{ route('inventory.import') }}" method="POST" enctype="multipart/form-data">
                        @csrf
                        <div class="mb-3">
                            <label for="file" class="form-label">Upload Excel File</label>
@@ -164,7 +166,7 @@
                cancelButtonText: 'Batal'
            }).then((result) => {
                if (result.isConfirmed) {
-                   fetch(`/finished_goods/${partId}/change-status`, {
+                   fetch(`/inventory/${partId}/change-status`, {
                        method: 'POST',
                        headers: {
                            'Content-Type': 'application/json',

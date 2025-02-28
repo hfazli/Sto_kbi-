@@ -11,40 +11,17 @@
       <li class="nav-heading">Master BOM</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-box"></i><span>Inventory List</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link" href="{{ route('inventory.index') }}">
+            <i class="bi bi-box"></i><span>Inventory List</span>
         </a>
-        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{{ route('finished_goods.index') }}">
-              <i class="bi bi-circle"></i><span>Finished Goods</span>
-            </a>
-          </li>
-          <li>
-          <a href="{{ route('wip.index') }}">
-              <i class="bi bi-circle"></i><span>Work In Process</span>
-            </a>
-          </li>
-          <li>
-             <a href="{{ route('cipat.index') }}">
-              <i class="bi bi-circle"></i><span>Component Part</span>
-            </a>
-          </li>
-          <li>
-            <a href="components-buttons.html">
-              <i class="bi bi-circle"></i><span>Raw Material</span>
-            </a>
-          </li>
-        </ul>
       </li><!-- End Inventory List Nav -->
-
-      <li class="nav-heading">Daily Inventory FG</li>
+      <li class="nav-heading">FG Forecast</li>
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-check2-square"></i><span>Stok Daily FG</span>
+        <a class="nav-link" href="{{ route('forecast.index') }}">
+            <i class="fa-regular fa-file"></i><span>Forecast List</span>
         </a>
-      </li><!-- End Forms Nav -->
+      </li><!-- End Inventory List Nav -->
 
       <li class="nav-heading">Reports</li>
       <li class="nav-item">
@@ -67,11 +44,35 @@
         <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
             @csrf
         </form>
-        <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a class="nav-link" href="#" onclick="event.preventDefault(); showLogoutConfirmation();">
             <i class="bi bi-box-arrow-right"></i><span>Logout</span>
         </a>
       </li>
 
     </ul>
 
+    <div class="text-center p-2 mt-4">
+        <small>&copy; 2025 by Hedi Fazli</small>
+    </div>
+
 </aside>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function showLogoutConfirmation() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, log out!',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('logout-form').submit();
+      }
+    });
+  }
+</script>

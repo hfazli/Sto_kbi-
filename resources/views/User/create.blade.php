@@ -25,7 +25,10 @@
                         <div class="input-group">
                             <input type="text" name="id_card_number"
                                 class="form-control @error('id_card_number') is-invalid @enderror"
-                                value="{{ old('id_card_number') }}" placeholder="silahkan inputkan ID Card Number" required>
+                                value="{{ old('id_card_number') }}" id="id_card_number" placeholder="silahkan inputkan ID Card Number" required>
+                            <button type="button" class="btn btn-outline-secondary" id="openScanner">
+                                <i class="bi bi-camera"></i> Scan
+                            </button>
                         </div>
                         @error('id_card_number')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -100,6 +103,24 @@
         </div>
     </section>
 
+    <div id="scannerModal" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Scan Barcode</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="reader" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
     <script>
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
@@ -113,6 +134,45 @@
                 passwordInput.type = 'password';
                 togglePasswordIcon.classList.remove('bi-eye');
                 togglePasswordIcon.classList.add('bi-eye-slash');
+            }
+        });
+
+        let scannerActive = false;
+        let html5QrCode;
+
+        document.getElementById('openScanner').addEventListener('click', function() {
+            const scannerModal = new bootstrap.Modal(document.getElementById('scannerModal'));
+
+            if (scannerActive) {
+                html5QrCode.stop().then(() => {
+                    scannerModal.hide();
+                    scannerActive = false;
+                }).catch((err) => {
+                    console.error(`Unable to stop scanning, error: ${err}`);
+                });
+            } else {
+                scannerModal.show();
+                html5QrCode = new Html5Qrcode("reader");
+                html5QrCode.start(
+                    { facingMode: "environment" },
+                    {
+                        fps: 10,
+                        qrbox: { width: 250, height: 100 } // Adjusted for barcode scanning
+                    },
+                    (decodedText) => {
+                        document.getElementById('id_card_number').value = decodedText;
+                        scannerModal.hide();
+                        html5QrCode.stop();
+                        scannerActive = false;
+                    },
+                    (errorMessage) => {
+                        console.warn(`Barcode scan error: ${errorMessage}`);
+                    }
+                ).then(() => {
+                    scannerActive = true;
+                }).catch((err) => {
+                    console.error(`Unable to start scanning, error: ${err}`);
+                });
             }
         });
     </script>

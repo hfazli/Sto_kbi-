@@ -1,29 +1,27 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWipsTable extends Migration
+class CreatePartsTable extends Migration
 {
     public function up()
     {
-        Schema::create('wips', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->id();
-            $table->string('inventory_id');
             $table->string('part_name');
             $table->string('part_number');
             $table->string('type_package');
-            $table->integer('qty_per_package');
-            $table->string('project');
-            $table->string('customer');
-            $table->string('location_rak');
-            $table->boolean('status')->default(1);
+            $table->integer('qty_package')->default(0);
+            $table->integer('min_value')->nullable();
+            $table->integer('max_value')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('wips');
+        Schema::dropIfExists('parts');
     }
 }

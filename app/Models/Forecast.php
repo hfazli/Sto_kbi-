@@ -1,25 +1,24 @@
 <?php
-// filepath: /d:/STO-master/STO-master/app/Models/FinishedGood.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class FinishedGood extends Model
+class Forecast extends Model
 {
     use HasFactory;
+
+    protected $table = 'Forecast'; // Correct the table name
 
     protected $fillable = [
         'inventory_id',
         'part_name',
         'part_number',
-        'type_package',
-        'qty_package',
-        'project',
         'customer',
-        'area_fg',
-        'satuan',
-        'stok_awal', // New column
+        'forecast_qty',
+        'min_stok',
+        'max_stok',
+        'forecast_date',
     ];
 }

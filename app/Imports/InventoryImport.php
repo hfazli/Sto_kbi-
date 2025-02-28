@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\FinishedGood;
+use App\Models\Inventory;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithStartRow;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 
-class FinishedGoodsImport implements ToModel, WithHeadingRow, WithStartRow
+class InventoryImport implements ToModel, WithHeadingRow, WithStartRow
 {
     public $errorRows = [];
     public $successfulRows = [];
@@ -40,8 +40,10 @@ class FinishedGoodsImport implements ToModel, WithHeadingRow, WithStartRow
             'qty_package' => 'required|integer|min:1', // Pastikan qty_package lebih dari 0
             'project' => 'nullable|string|max:255',
             'customer' => 'required|string|max:255',
-            'area_fg' => 'nullable|string|max:255',
+            'detail_lokasi' => 'nullable|string|max:255',
             'satuan' => 'required|string|max:255',
+            'plant' => 'required|string|max:255',
+            'status_product' => 'required|string|max:255', // Add validation for status_product
         ]);
 
         if ($validator->fails()) {
@@ -54,7 +56,7 @@ class FinishedGoodsImport implements ToModel, WithHeadingRow, WithStartRow
         }
 
         // Cek apakah data sudah ada berdasarkan kunci unik
-        $existingFinishedGood = FinishedGood::where('inventory_id', $row['inventory_id'])
+        $existingInventory = Inventory::where('inventory_id', $row['inventory_id'])
             ->where('part_number', $row['part_number'])
             ->first();
 
@@ -62,21 +64,23 @@ class FinishedGoodsImport implements ToModel, WithHeadingRow, WithStartRow
         DB::beginTransaction();
 
         try {
-            if ($existingFinishedGood) {
+            if ($existingInventory) {
                 // Jika sudah ada, update data
-                $existingFinishedGood->update([
+                $existingInventory->update([
                     'part_name' => $row['part_name'],
                     'type_package' => $row['type_package'],
                     'qty_package' => $row['qty_package'],
                     'project' => $row['project'],
                     'customer' => $row['customer'],
-                    'area_fg' => $row['area_fg'],
+                    'detail_lokasi' => $row['detail_lokasi'],
                     'satuan' => $row['satuan'],
+                    'plant' => $row['plant'],
+                    'status_product' => $row['status_product'], // Add this line
                 ]);
-                $this->successfulRows[] = $existingFinishedGood;
+                $this->successfulRows[] = $existingInventory;
             } else {
                 // Jika belum ada, buat data baru
-                $finishedGood = FinishedGood::create([
+                $inventory = Inventory::create([
                     'inventory_id' => $row['inventory_id'],
                     'part_name' => $row['part_name'],
                     'part_number' => $row['part_number'],
@@ -84,14 +88,16 @@ class FinishedGoodsImport implements ToModel, WithHeadingRow, WithStartRow
                     'qty_package' => $row['qty_package'],
                     'project' => $row['project'],
                     'customer' => $row['customer'],
-                    'area_fg' => $row['area_fg'],
+                    'detail_lokasi' => $row['detail_lokasi'],
                     'satuan' => $row['satuan'],
+                    'plant' => $row['plant'],
+                    'status_product' => $row['status_product'], // Add this line
                 ]);
-                $this->successfulRows[] = $finishedGood;
+                $this->successfulRows[] = $inventory;
             }
 
             DB::commit(); // Commit jika berhasil
-            return $existingFinishedGood ?? $finishedGood;
+            return $existingInventory ?? $inventory;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback jika gagal
             $this->errorRows[] = [

@@ -92,10 +92,12 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Login</button>
+                      <button class="btn btn-primary w-100 py-2 fs-5" type="submit">Login</button>
                     </div>
-                    <div class="col-12 text-center">
-                      <a href="{{ route('Login-user') }}"> Login User</a>
+                    <div class="col-12">
+                      <a href="{{ route('Login-user') }}" class="btn btn-outline-secondary w-100 py-2 fs-5">
+                        <i class="bi bi-box-arrow-in-right"></i> Login User
+                      </a>
                     </div>
                   </form>
                 </div>
