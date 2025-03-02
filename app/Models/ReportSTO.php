@@ -25,6 +25,10 @@ class ReportSTO extends Model
     'total_2',
     'grand_total',
     'detail_lokasi',
+    // Update Remove Integration to Inventory Model
+    'part_name',
+    'part_number',
+
   ];
 
   protected $casts = [
@@ -39,10 +43,5 @@ class ReportSTO extends Model
   public function preparer()
   {
     return $this->belongsTo(User::class, 'prepared_by');
-  }
-
-  public function checker()
-  {
-    return $this->belongsTo(User::class, 'checked_by'); // Corrected the relationship
   }
 }

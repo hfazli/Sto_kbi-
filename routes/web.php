@@ -62,9 +62,9 @@ Route::middleware('auth')->group(function () {
   Route::post('/sto-form/{inventory}/store', [STOController::class, 'store'])->name('sto.store');
   Route::post('/sto/store/{inventory_id}', [STOController::class, 'store'])->name('sto.store');
   Route::get('/scan-sto', [InventoryController::class, 'showForm'])->name('scan-sto');
-  Route::get('/sto/search', [STOController::class, 'search'])->name('sto.search');
-  Route::get('/sto/print/{inventory_id}', [STOController::class, 'printPDF'])->name('sto.print');
-  Route::get('/sto/print-pdf/{reportId}', [STOController::class, 'printPDF'])->name('sto.printPDF');
+  Route::get('/sto-search', [STOController::class, 'search'])->name('sto.search');
+  // Route::get('/sto/print/{inventory_id}', [STOController::class, 'printPDF'])->name('sto.print');
+  // Route::get('/sto/print-pdf/{reportId}', [STOController::class, 'printPDF'])->name('sto.printPDF');
 });
 Route::delete('/reports/{id}/destroy', [ReportController::class, 'delete'])->name('reports.destroy');
 Route::get('/reports/fg', [ReportController::class, 'index'])->name('reports.fg');
@@ -98,7 +98,7 @@ Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy']
 Route::get('/form', [STOController::class, 'showForm'])->name('form');
 
 Route::get('reports/export', function () {
-    return Excel::download(new ReportsExport, 'reports.xlsx');
+  return Excel::download(new ReportsExport, 'reports.xlsx');
 })->name('reports.export');
 
 Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');

@@ -64,17 +64,17 @@
       <tr>
         <td><b>PART NAME</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->part_name }}</td>
+        <td>{{ $report->part_name }}</td>
       </tr>
       <tr>
         <td><b>PART NO</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->part_number }}</td>
+        <td>{{ $report->part_number }}</td>
       </tr>
       <tr>
         <td><b>MASTER TYPE</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->status_product }}</td>
+        <td>{{ $report->inventory->status_product ?? '' }}</td>
       </tr>
       <tr>
         <td><b>STO PERIODE</b></td>
@@ -84,7 +84,7 @@
       <tr>
         <td><b>PLANT</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->plant }}</td>
+        <td>{{ $report->inventory->plant ?? '' }}</td>
       </tr>
       <tr>
         <td><b>DETAIL LOKASI</b></td>
@@ -94,7 +94,7 @@
       <tr>
         <td><b>CUSTOMER</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->customer }}</td>
+        <td>{{ $report->inventory->customer ?? '' }}</td>
       </tr>
       <tr>
         <td><b>PIC</b></td>
@@ -118,7 +118,7 @@
       </tr>
       <tr>
         <td>
-          <h1 class="text-center">{{ $report->inventory->stok_awal }}</h1>
+          <h1 class="text-center">{{ $report->inventory->stok_awal ?? '' }}</h1>
         </td>
         <td></td>
         <td class="text-center">

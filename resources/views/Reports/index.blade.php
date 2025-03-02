@@ -57,8 +57,8 @@
               @foreach ($reports as $index => $report)
                 <tr>
                   <td>{{ $index + 1 }}</td>
-                  <td>{{ $report->inventory ? $report->inventory->part_name : '' }}</td>
-                  <td>{{ $report->inventory ? $report->inventory->part_number : '' }}</td>
+                  <td>{{ $report->part_name ?? '' }}</td>
+                  <td>{{ $report->part_number ?? '' }}</td>
                   <td>{{ $report->inventory_id }}</td>
                   <td>{{ $report->status }}</td>
                   <td>{{ $report->qty_per_box }}</td>

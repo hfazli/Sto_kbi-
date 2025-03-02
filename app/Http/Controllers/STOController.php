@@ -42,7 +42,6 @@ class STOController extends Controller
   {
     $inventory = Inventory::where('inventory_id', $inventory_id)->first();
     if ($inventory) {
-      $inventoryC = new InventoryController();
       return view('sto.form', compact('inventory'));
     }
     return back()->with('error', 'Inventory not found. Please try again.');
@@ -63,7 +62,9 @@ class STOController extends Controller
       'qty_box_2' => 'nullable|integer',
       'total_2' => 'nullable|integer',
       'grand_total' => 'required|integer',
-      'detail_lokasi' => 'nullable|string', // Add detail_lokasi validation
+      'detail_lokasi' => 'nullable|string',
+      'part_name' => 'nullable|string',
+      'part_number' => 'nullable|string',
     ]);
 
     // Create and save the report
@@ -80,10 +81,14 @@ class STOController extends Controller
       'total_2' => $validatedData['total_2'],
       'grand_total' => $validatedData['grand_total'],
       'detail_lokasi' => $validatedData['detail_lokasi'],
+      'part_name' => $validatedData['part_name'],
+      'part_number' => $validatedData['part_number'],
     ]);
 
     // Redirect back with success message
-    return redirect()->route('sto.index')->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} created successfully.");
+    return redirect()->route('sto.index')
+      ->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} created successfully.")
+      ->with('report', $reportSTO);
   }
 
   public function storeNew(Request $request)
@@ -94,7 +99,9 @@ class STOController extends Controller
       'prepared_by' => 'required|exists:users,id',
       'part_name' => 'required|string',
       'part_number' => 'required|string',
-      'checked_by' => 'nullable|string',
+      'detail_lokasi' => 'required|string',
+
+      // 'checked_by' => 'nullable|string',
       'status' => 'required|string',
       'qty_per_box' => 'required|integer',
       'qty_box' => 'required|integer',
@@ -105,24 +112,12 @@ class STOController extends Controller
       'grand_total' => 'required|integer',
     ]);
 
-    $inventory = new Inventory();
-    $inventory->inventory_id = $validatedData["inventory_code"];
-    $inventory->part_name = $validatedData["part_name"];
-    $inventory->part_number = $validatedData["part_number"];
-    $inventory->type_package = "-";
-    $inventory->customer = "-";
-    $inventory->satuan = "-";
-    $inventory->status_product = $validatedData["status"];
-
-    $inventory->save();
-    $validatedData["id_inventory"] = $inventory->id;
-
     // Create and save the report
     $reportSTO = ReportSTO::create([
       'inventory_id' => $validatedData['inventory_code'],
       'issued_date' => $validatedData['issued_date'],
       'prepared_by' => $validatedData['prepared_by'],
-      'checked_by' => $validatedData['checked_by'],
+      // 'checked_by' => $validatedData['checked_by'],
       'status' => $validatedData['status'],
       'qty_per_box' => $validatedData['qty_per_box'],
       'qty_box' => $validatedData['qty_box'],
@@ -132,13 +127,14 @@ class STOController extends Controller
       'total_2' => $validatedData['total_2'],
       'grand_total' => $validatedData['grand_total'],
       'detail_lokasi' => $validatedData['detail_lokasi'],
+      'part_name' => $validatedData['part_name'],
+      'part_number' => $validatedData['part_number'],
     ]);
 
-    $reportSTO->inventory = $inventory;
 
     // Redirect back with success message
     return redirect()->route('sto.index')
-      ->with('success', "Report STO with Part Number {$inventory->part_number} created successfully.")
+      ->with('success', "Report STO with Part Number {$reportSTO->part_number} created successfully.")
       ->with('report', $reportSTO);
   }
 
@@ -162,9 +158,9 @@ class STOController extends Controller
   public function search(Request $request)
   {
     $query = $request->input('query');
-    $results = Part::where('part_name', 'LIKE', "%{$query}%")
-                    ->orWhere('part_number', 'LIKE', "%{$query}%")
-                    ->get();
+    $results = Inventory::where('part_name', 'LIKE', "%{$query}%")
+      ->orWhere('part_number', 'LIKE', "%{$query}%")
+      ->get();
 
     return view('STO.search', compact('results'));
   }
