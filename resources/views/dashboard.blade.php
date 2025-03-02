@@ -50,55 +50,56 @@
       <div class="row">
         <!-- Left side columns -->
         <div class="col-12">
-              <h5 class="card-title">Input Date & Customer</h5>
-              <!-- Add your select elements here -->
-              <div class="row mb-3">
-                <div class="col-md-6">
-                  <label for="dateInput">Select Month</label>
-                  {{-- <input type="date" id="dateInput" class="form-control"> --}}
-                  <select id="monthSelect" class="form-control">
-                    @for ($i = 0; $i < 12; $i++)
-                      <option value="{{ now()->addMonths($i)->format('Y-m') }}">{{ now()->addMonths($i)->format('F Y') }}</option>
-                    @endfor
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="custSelect">Select Customer</label>
-                  <select id="custSelect" class="form-control">
-                    @foreach ($customers as $customer)
-                      <option value="{{ $customer->username }}">{{ $customer->username }}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-
-              <!-- Line Chart -->
-              <div id="reportsChart"></div>
+          <h5 class="card-title">Input Date & Customer</h5>
+          <!-- Add your select elements here -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="dateInput">Select Month</label>
+              {{-- <input type="date" id="dateInput" class="form-control"> --}}
+              <select id="monthSelect" class="form-control">
+                @for ($i = 0; $i < 12; $i++)
+                  <option value="{{ now()->addMonths($i)->format('Y-m') }}">{{ now()->addMonths($i)->format('F Y') }}
+                  </option>
+                @endfor
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="custSelect">Select Customer</label>
+              <select id="custSelect" class="form-control">
+                @foreach ($customers as $customer)
+                  <option value="{{ $customer->username }}">{{ $customer->username }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
 
-          <!-- STO Report Card -->
-          <div class="card">
-            <div class="card-body pb-0">
-              <h5 class="card-title">STO Report</h5>
-              <canvas id="reportSTOChart" style="min-height: 400px;" class=""></canvas>
-            </div>
-          </div>
-
-          <!-- Inventory Report Card -->
-          <div class="card">
-            <div class="card-body pb-0">
-              <h5 class="card-title">Report FG</h5>
-              
-              <!-- Form untuk Forecast -->
-              <form id="forecastForm">
-                <div class="row mb-3">
-                  <div class="col-md-4">
-              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
-            </div>
-          </div>
+          <!-- Line Chart -->
+          <div id="reportsChart"></div>
         </div>
-        
+      </div>
+
+      <!-- STO Report Card -->
+      <div class="card">
+        <div class="card-body pb-0">
+          <h5 class="card-title">STO Report</h5>
+          <canvas id="reportSTOChart" style="min-height: 400px;" class=""></canvas>
+        </div>
+      </div>
+
+      <!-- Inventory Report Card -->
+      <div class="card">
+        <div class="card-body pb-0">
+          <h5 class="card-title">Report FG</h5>
+
+          <!-- Form untuk Forecast -->
+          <form id="forecastForm">
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <canvas id="trafficChart" style="min-height: 400px;" class="echart"></canvas>
+              </div>
+            </div>
+        </div>
+
       </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -149,8 +150,9 @@
           updateChart(reportFGChart, "fg");
         });
 
+        // Trigger Chart for the first time
         updateChart(reportSTOChart, "sto");
-        updateChart(reportFGChart, "fg");
+        // updateChart(reportFGChart, "fg");
 
         function updateChart(chart, type) {
           let selectedMonth = type === "sto" ? $("#monthSelect").val() : $("#fgMonthSelect").val();
@@ -180,8 +182,10 @@
 
         // Function to update the chart with new data
         function updateChartData(chart, data) {
-          let labels = data.map(item => item.part_name);
+          let labels = data.map(item => item.inventory.part_name);
           let values = data.map(item => item.total);
+          // let labels = data.map(item => item.part_name);
+          // let values = data.map(item => item.total);
 
           chart.data.labels = labels;
           chart.data.datasets[0].data = values;
@@ -189,8 +193,8 @@
         }
       });
 
-      $(document).ready(function () {
-        $("#forecastForm").submit(function (event) {
+      $(document).ready(function() {
+        $("#forecastForm").submit(function(event) {
           event.preventDefault();
 
           let selectedMonth = $("#fgMonthSelect").val();
@@ -215,7 +219,7 @@
               forecast: forecastValue,
               _token: "{{ csrf_token() }}"
             },
-            success: function (response) {
+            success: function(response) {
               Swal.fire({
                 icon: 'success',
                 title: 'Success',
@@ -223,7 +227,7 @@
               });
               $("#forecastInput").val("");
             },
-            error: function () {
+            error: function() {
               Swal.fire({
                 icon: 'error',
                 title: 'Error',
