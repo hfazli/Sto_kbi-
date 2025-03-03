@@ -40,8 +40,10 @@ class ReportSTO extends Model
     return $this->belongsTo(Inventory::class, 'inventory_id', 'inventory_id');
   }
 
-  public function preparer()
+  // Define the relationship with the User model
+  public function user()
   {
     return $this->belongsTo(User::class, 'prepared_by');
   }
 }
+

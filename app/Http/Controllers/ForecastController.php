@@ -107,8 +107,29 @@ class ForecastController extends Controller
         $forecasts = Forecast::whereYear('forecast_date', '=', date('Y', strtotime($month)))
             ->whereMonth('forecast_date', '=', date('m', strtotime($month)))
             ->where('customer', '=', $customer)
-            ->get();
+            ->orderBy('forecast_date', 'desc')
+            ->take(3)
+            ->get(['part_name', 'forecast_qty', 'forecast_date']);
 
         return response()->json($forecasts);
+    }
+
+    public function fetchReportSTO(Request $request)
+    {
+        $month = $request->input('month');
+        $customer = $request->input('customer');
+
+        if ($customer) {
+            // Fetch data for the specific customer
+            $data = Inventory::where('customer', $customer)
+                ->whereMonth('date', $month)
+                ->get();
+        } else {
+            // Fetch aggregated data for all customers
+            $data = Inventory::whereMonth('date', $month)
+                ->get();
+        }
+
+        return response()->json($data);
     }
 }

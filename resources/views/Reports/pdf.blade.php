@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      font-size: 15px;
+      font-size: 20px;
       text-align: center;
       width: 400px;
       max-width: 400px;
@@ -99,12 +99,12 @@
       <tr>
         <td><b>PIC</b></td>
         <td>:</td>
-        <td>{{ $report->preparer->username }}</td>
+        <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Updated to display Prepared By -->
       </tr>
       <tr>
         <td><b>ID Card</b></td>
         <td>:</td>
-        <td>{{ $report->preparer->id_card_number }}</td> <!-- Updated to display ID card -->
+        <td>{{ $report->user ? $report->user->id_card_number : '' }}</td> <!-- Updated to display ID card -->
       </tr>
       <tr>
         <td><b>TIPE</b></td>

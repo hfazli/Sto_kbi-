@@ -50,6 +50,7 @@
                 <th>STO Periode</th>
                 <th>Detail Lokasi</th>
                 <th>Customer</th>
+                <th>Prepared By</th> <!-- Added Prepared By column -->
                 <th>Actions</th>
               </tr>
             </thead>
@@ -68,6 +69,7 @@
                   <td>{{ $report->issued_date->format('F Y') }}</td>
                   <td>{{ $report->detail_lokasi }}</td>
                   <td>{{ $report->inventory ? $report->inventory->customer : '' }}</td>
+                  <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Displaying Prepared By -->
                   <td>
                     <div class="d-flex justify-content-center">
                       <a href="{{ route('reports.print', $report->id) }}" class="btn btn-warning me-2">

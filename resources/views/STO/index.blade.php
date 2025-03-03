@@ -34,7 +34,7 @@
       </form>
       <div class="text-center">
         <button class="btn btn-link mt-2 text-white" type="button" id="showFormBtn">
-          ID Inventory Kosong? Buat Inventory Baru
+          ID Inventory Kosong? Klik disini
         </button>
       </div>
     </div>
@@ -401,9 +401,9 @@
           <label for="search_query" class="form-label" style="font-size: 1.1rem;">Search Part Name or Number</label>
           <div class="input-group my-2 my-md-3">
             <input type="text" name="query" class="form-control" id="search_query" required>
-            <button class="btn btn-primary" type="submit" id="searchButton">
-              <i class="bi bi-search"></i> Search
-            </button>
+            </div>
+          <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmit">Search</Search></button>
+        </div>
           </div>
         </div>
       </form>

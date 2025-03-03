@@ -1,5 +1,5 @@
 <?php
-
+// filepath: /D:/update_sto/app/Http/Controllers/ReportController.php
 namespace App\Http\Controllers;
 
 use App\Models\ReportSTO;
@@ -12,102 +12,107 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ReportsExport;
 
 class ReportController extends Controller
 {
-  public function index()
-  {
-    // Fetch reports from the database
-    $reports = ReportSTO::with(['inventory',  'preparer'])->get();
+    public function index()
+    {
+        $reports = ReportSTO::with('user')->get();
+        return view('Reports.index', compact('reports'));
+    }
 
-    // Pass the reports to the view
-    return view('reports.index', compact('reports'));
-  }
+    public function show($id)
+    {
+        $report = ReportSTO::with(['inventory', 'user'])->findOrFail($id);
 
-  public function show($id)
-  {
-    $report = ReportSTO::with(['inventory', 'preparer'])->findOrFail($id);
+        // Pass the report to the view
+        return view('reports.show', compact('report'));
+    }
 
-    // Pass the report to the view
-    return view('reports.show', compact('report'));
-  }
+    public function print($id)
+    {
+        $report = ReportSTO::with(['inventory', 'user'])->findOrFail($id);
 
-  public function print($id)
-  {
-    $report = ReportSTO::with(['inventory', 'preparer'])->findOrFail($id);
+        $renderer = new ImageRenderer(
+            new RendererStyle(200),
+            new SvgImageBackEnd()
+        );
+        $writer = new Writer($renderer);
+        $qrCodeSvg = $writer->writeString($report->inventory_id ?? '-');
 
-    $renderer = new ImageRenderer(
-      new RendererStyle(200),
-      new SvgImageBackEnd()
-    );
-    $writer = new Writer($renderer);
-    $qrCodeSvg = $writer->writeString($report->inventory_id ?? '-');
+        // Convert SVG to Base64
+        $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrCodeSvg);
 
-    // Convert SVG to Base64
-    $qrCodeBase64 = 'data:image/svg+xml;base64,' . base64_encode($qrCodeSvg);
+        // Load Blade view with QR Code
+        $html = View::make('reports.pdf', compact('report', 'qrCodeBase64'))->render();
 
-    // Load Blade view with QR Code
-    $html = View::make('reports.pdf', compact('report', 'qrCodeBase64'))->render();
+        // PDF Options
+        $options = new Options();
+        $options->set('defaultFont', 'Helvetica');
+        $options->set('isHtml5ParserEnabled', true);
 
-    // PDF Options
-    $options = new Options();
-    $options->set('defaultFont', 'Helvetica');
-    $options->set('isHtml5ParserEnabled', true);
+        // Generate PDF
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->render();
 
-    // Generate PDF
-    $dompdf = new Dompdf($options);
-    $dompdf->loadHtml($html);
-    $dompdf->render();
+        // Stream PDF to Browser
+        return $dompdf->stream("report-sto-" . $report->inventory_id . ".pdf");
+    }
 
-    // Stream PDF to Browser
-    return $dompdf->stream("report-sto-" . $report->inventory_id . ".pdf");
-  }
+    public function delete($id)
+    {
+        $report = ReportSTO::findOrFail($id);
+        $report->delete();
 
-  public function delete($id)
-  {
-    $report = ReportSTO::findOrFail($id);
-    $report->delete();
+        // Redirect back with success message
+        return redirect()->route('reports.index')->with('success', 'Report Berhasil Dihapus');
+    }
 
-    // Redirect back with success message
-    return redirect()->route('reports.index')->with('success', 'Report Berhasil Dihapus');
-  }
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'inventory_id' => 'required|exists:inventory,inventory_id',
+            'issued_date' => 'required|date',
+            'prepared_by' => 'required|string',
+            'status' => 'required|string',
+            'qty_per_box' => 'required|integer',
+            'qty_box' => 'required|integer',
+            'total' => 'required|integer',
+            'qty_per_box_2' => 'nullable|integer',
+            'qty_box_2' => 'nullable|integer',
+            'total_2' => 'nullable|integer',
+            'grand_total' => 'required|integer',
+            'detail_lokasi' => 'nullable|string',
+            'customer' => 'nullable|string',
+        ]);
 
-  public function update(Request $request, $id)
-  {
-    $validatedData = $request->validate([
-      'inventory_id' => 'required|exists:inventory,inventory_id',
-      'issued_date' => 'required|date',
-      'prepared_by' => 'required|string',
-      'status' => 'required|string',
-      'qty_per_box' => 'required|integer',
-      'qty_box' => 'required|integer',
-      'total' => 'required|integer',
-      'qty_per_box_2' => 'nullable|integer',
-      'qty_box_2' => 'nullable|integer',
-      'total_2' => 'nullable|integer',
-      'grand_total' => 'required|integer',
-      'detail_lokasi' => 'nullable|string',
-      'customer' => 'nullable|string',
-    ]);
+        $reportSTO = ReportSTO::findOrFail($id);
+        $reportSTO->update($validatedData);
 
-    $reportSTO = ReportSTO::findOrFail($id);
-    $reportSTO->update($validatedData);
+        // Redirect back with success message
+        return redirect()->route('reports.index')->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} updated successfully.");
+    }
 
-    // Redirect back with success message
-    return redirect()->route('reports.index')->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} updated successfully.");
-  }
+    public function fetchReportSTO(Request $request)
+    {
+        $month = $request->input('month');
+        $customer = $request->input('customer');
 
-  public function fetchReportSTO(Request $request)
-  {
-    $month = $request->input('month');
-    $customer = $request->input('customer');
+        // Fetch data based on month and customer
+        $data = Inventory::where('month', $month)
+            ->where('customer', $customer)
+            ->get(['part_name', 'total']);
 
-    // Fetch data based on month and customer
-    $data = Inventory::where('month', $month)
-      ->where('customer', $customer)
-      ->get(['part_name', 'total']);
+        // Pass the data to the view
+        return view('reports.fetch', compact('data'));
+    }
 
-    // Pass the data to the view
-    return view('reports.fetch', compact('data'));
-  }
+    public function edit($id)
+    {
+        $report = ReportSTO::findOrFail($id);
+        return view('reports.edit', compact('report'));
+    }
 }

@@ -50,7 +50,7 @@
       <div class="row">
         <!-- Left side columns -->
         <div class="col-12">
-          <h5 class="card-title">Input Date & Customer</h5>
+          <h5 class="card-title">Input Month & Customer</h5>
           <!-- Add your select elements here -->
           <div class="row mb-3">
             <div class="col-md-6">
@@ -66,6 +66,7 @@
             <div class="col-md-6">
               <label for="custSelect">Select Customer</label>
               <select id="custSelect" class="form-control">
+                <option value="all">All Customers</option>
                 @foreach ($customers as $customer)
                   <option value="{{ $customer->username }}">{{ $customer->username }}</option>
                 @endforeach
@@ -81,32 +82,45 @@
       <!-- STO Report Card -->
       <div class="card">
         <div class="card-body pb-0">
-          <h5 class="card-title">STO Report</h5>
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">STO Report</h5>
+            <div class="dropdown">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonSTO" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonSTO">
+                <li><a class="dropdown-item" href="#" id="downloadSTOChart">Download Chart</a></li>
+              </ul>
+            </div>
+          </div>
           <canvas id="reportSTOChart" style="min-height: 400px;" class=""></canvas>
         </div>
       </div>
 
-      <!-- Inventory Report Card -->
+      <!-- Forecast Report Card -->
       <div class="card">
         <div class="card-body pb-0">
-          <h5 class="card-title">Report FG</h5>
-
-          <!-- Form untuk Forecast -->
-          <form id="forecastForm">
-            <div class="row mb-3">
-              <div class="col-md-4">
-                <canvas id="trafficChart" style="min-height: 400px;" class="echart"></canvas>
-              </div>
+          <div class="d-flex justify-content-between">
+            <h5 class="card-title">Forecast Report</h5>
+            <div class="dropdown">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonForecast" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonForecast">
+                <li><a class="dropdown-item" href="#" id="downloadForecastChart">Download Chart</a></li>
+              </ul>
             </div>
+          </div>
+          <canvas id="forecastChart" style="min-height: 400px;" class=""></canvas>
         </div>
-
       </div>
+          
     </section>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
       let reportSTOChart;
-      let reportFGChart;
+      let forecastChart;
 
       document.addEventListener("DOMContentLoaded", () => {
         // Initialize stoChart
@@ -125,51 +139,62 @@
           }
         });
 
-        // Initialize fgChart
-        let ctxFG = document.getElementById("trafficChart").getContext("2d");
-        reportFGChart = new Chart(ctxFG, {
-          type: "line",
+        // Initialize forecastChart
+        let ctxForecast = document.getElementById("forecastChart").getContext("2d");
+        forecastChart = new Chart(ctxForecast, {
+          type: "bar",
           data: {
-            labels: [],
+            labels: [], // Part names
             datasets: [{
-              label: "Daily Stock FG",
-              backgroundColor: "rgba(153, 102, 255, 0.2)",
-              borderColor: "rgba(153, 102, 255, 1)",
+              label: "Forecast Quantity",
+              backgroundColor: "rgba(75, 192, 192, 0.2)",
+              borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
-              data: []
+              data: [] // Forecast quantities
             }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
           }
         });
 
         // Fetch data when the dropdown changes
         $("#monthSelect, #custSelect").on("change", function() {
           updateChart(reportSTOChart, "sto");
-        });
-
-        $("#fgMonthSelect, #fgCustSelect").on("change", function() {
-          updateChart(reportFGChart, "fg");
+          updateForecastChart();
         });
 
         // Trigger Chart for the first time
         updateChart(reportSTOChart, "sto");
-        // updateChart(reportFGChart, "fg");
+        updateForecastChart();
 
         function updateChart(chart, type) {
-          let selectedMonth = type === "sto" ? $("#monthSelect").val() : $("#fgMonthSelect").val();
-          let selectedCustomer = type === "sto" ? $("#custSelect").val() : $("#fgCustSelect").val();
+          let selectedMonth = $("#monthSelect").val();
+          let selectedCustomer = $("#custSelect").val();
 
           fetchReportData(selectedMonth, selectedCustomer, type, chart);
         }
 
+        function updateForecastChart() {
+          let selectedMonth = $("#monthSelect").val();
+          let selectedCustomer = $("#custSelect").val();
+
+          fetchForecastData(selectedMonth, selectedCustomer);
+        }
+
         // Function to fetch data and update the charts
         function fetchReportData(month, cust, type, chart) {
-          let url = type === "sto" ? "/fetch-report-sto" : "/fetch-report-fg";
+          let url = "/fetch-report-sto";
           $.ajax({
             url: url,
             type: "GET",
             data: {
               month: month,
-              customer: cust,
+              customer: cust === "all" ? null : cust, // Handle "All Customers" case
             },
             success: function(response) {
               updateChartData(chart, response);
@@ -180,61 +205,59 @@
           });
         }
 
+        // Function to fetch data and update the forecast chart
+        function fetchForecastData(month, customer) {
+          $.ajax({
+            url: "/fetch-forecast-data",
+            type: "GET",
+            data: {
+              month: month,
+              customer: customer === "all" ? null : customer, // Handle "All Customers" case
+            },
+            success: function(response) {
+              updateForecastChartData(forecastChart, response);
+            },
+            error: function() {
+              alert("Failed to fetch forecast data.");
+            }
+          });
+        }
+
         // Function to update the chart with new data
         function updateChartData(chart, data) {
           let labels = data.map(item => item.inventory.part_name);
           let values = data.map(item => item.total);
-          // let labels = data.map(item => item.part_name);
-          // let values = data.map(item => item.total);
 
           chart.data.labels = labels;
           chart.data.datasets[0].data = values;
           chart.update();
         }
-      });
 
-      $(document).ready(function() {
-        $("#forecastForm").submit(function(event) {
-          event.preventDefault();
+        // Function to update the forecast chart with new data
+        function updateForecastChartData(chart, data) {
+          let labels = data.map(item => item.part_name);
+          let values = data.map(item => item.forecast_qty);
 
-          let selectedMonth = $("#fgMonthSelect").val();
-          let selectedCustomer = $("#fgCustSelect").val();
-          let forecastValue = $("#forecastInput").val();
+          chart.data.labels = labels;
+          chart.data.datasets[0].data = values;
+          chart.update();
+        }
 
-          if (!forecastValue || forecastValue <= 0) {
-            Swal.fire({
-              icon: 'error',
-              title: 'Invalid Input',
-              text: 'Forecast must be a positive number!',
-            });
-            return;
-          }
+        // Download chart as image
+        function downloadChart(chart, filename) {
+          const link = document.createElement('a');
+          link.href = chart.toBase64Image();
+          link.download = filename;
+          link.click();
+        }
 
-          $.ajax({
-            url: "/save-forecast",
-            type: "POST",
-            data: {
-              month: selectedMonth,
-              customer: selectedCustomer,
-              forecast: forecastValue,
-              _token: "{{ csrf_token() }}"
-            },
-            success: function(response) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Forecast data has been saved!',
-              });
-              $("#forecastInput").val("");
-            },
-            error: function() {
-              Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Failed to save forecast data.',
-              });
-            }
-          });
+        // Event listeners for download buttons
+        document.getElementById('downloadSTOChart').addEventListener('click', () => {
+          downloadChart(reportSTOChart, 'sto_chart.png');
+        });
+
+        document.getElementById('downloadForecastChart').addEventListener('click', () => {
+          downloadChart(forecastChart, 'forecast_chart.png');
         });
       });
     </script>
