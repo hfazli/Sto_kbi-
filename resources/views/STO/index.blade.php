@@ -446,14 +446,24 @@
     }
 
     function onScanSuccess(decodedText) {
-      decodedText = decodedText.slice(0, 6);
-      console.log(`Code matched: ${decodedText}`);
-      // Set the scanned text to the input field
-      document.getElementById('inventory_id').value = decodedText;
-      // Send the scanned ID card number to the server for validation
-      document.getElementById('stoForm').submit();
-      showLoading();
-    }
+  // Extract up to 6 digits
+  let digits = decodedText.match(/\d{1,6}/);
+  digits = digits ? digits[0] : '';
+
+  // Extract up to 3 letters
+  let letters = decodedText.match(/[a-zA-Z]{1,3}/);
+  letters = letters ? letters[0] : '';
+
+  // Combine the digits and letters
+  let limitedText = digits + letters;
+
+  console.log(`Code matched: ${limitedText}`);
+  // Set the scanned text to the input field
+  document.getElementById('inventory_id').value = limitedText;
+  // Send the scanned ID card number to the server for validation
+  document.getElementById('stoForm').submit();
+  showLoading();
+}
 
     // Keep session alive setiap 10 menit
     let sessionAlive = true; // Kendalikan secara global

@@ -174,8 +174,8 @@
                         <label for="status_product" class="form-label">Status Product</label>
                         <select name="status_product" class="form-control @error('status_product') is-invalid @enderror" id="status_product" required>
                             <option value="">Select Status Product</option>
-                            <option value="FG" {{ old('status_product', $inventory->status_product) == 'FG' ? 'selected' : '' }}>FG</option>
-                            <option value="WIP" {{ old('status_product', $inventory->status_product) == 'WIP' ? 'selected' : '' }}>WIP</option>
+                            <option value="Finished_Good" {{ old('status_product', $inventory->status_product) == 'Finished_Good' ? 'selected' : '' }}>Finished Good</option>
+                            <option value="Work_In_Process" {{ old('status_product', $inventory->status_product) == 'Work_In_Process' ? 'selected' : '' }}>Work In Procces</option>
                             <option value="CHILPART" {{ old('status_product', $inventory->status_product) == 'CHILPART' ? 'selected' : '' }}>CHILPART</option>
                             <option value="RAW MATERIAL" {{ old('status_product', $inventory->status_product) == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
                         </select>
