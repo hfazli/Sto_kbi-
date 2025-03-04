@@ -60,9 +60,10 @@ Route::middleware('auth')->group(function () {
   Route::get('/sto-form/{inventory}', [STOController::class, 'form'])->name('sto.form');
   Route::post('/sto-form/store/new', [STOController::class, 'storeNew'])->name('sto.storeNew');
   Route::post('/sto-form/{inventory}/store', [STOController::class, 'store'])->name('sto.store');
-  Route::post('/sto/store/{inventory_id}', [STOController::class, 'store'])->name('sto.store');
   Route::get('/scan-sto', [InventoryController::class, 'showForm'])->name('scan-sto');
   Route::get('/sto-search', [STOController::class, 'search'])->name('sto.search');
+  Route::get('/sto-edit', [STOController::class, 'edit'])->name('sto.edit');
+  Route::put('/sto-form/{inventory}/update', [STOController::class, 'update'])->name('sto.update');
   // Route::get('/sto/print/{inventory_id}', [STOController::class, 'printPDF'])->name('sto.print');
   // Route::get('/sto/print-pdf/{reportId}', [STOController::class, 'printPDF'])->name('sto.printPDF');
 });

@@ -401,13 +401,30 @@
           <label for="search_query" class="form-label" style="font-size: 1.1rem;">Search Part Name or Number</label>
           <div class="input-group my-2 my-md-3">
             <input type="text" name="query" class="form-control" id="search_query" required>
-            </div>
-          <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmit">Search</Search></button>
-        </div>
           </div>
+          <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmit">Search</Search></button>
         </div>
       </form>
     </div>
+
+    {{-- Edit STO --}}
+    <div class="card p-2 p-md-4 mt-4 shadow-lg">
+      <!-- Form Search Report -->
+      <form action="{{ route('sto.edit') }}" method="GET" id="editForm">
+        <div class="mb-2">
+          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO</label>
+          <div class="input-group my-2 my-md-3">
+            <input type="text" placeholder="Enter Report Number" name="id_report" class="form-control"
+              id="id_report" required>
+          </div>
+          <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmitEdit">Edit</Search></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  </div>
+  </div>
   </div>
 @endsection
 
@@ -446,24 +463,24 @@
     }
 
     function onScanSuccess(decodedText) {
-  // Extract up to 6 digits
-  let digits = decodedText.match(/\d{1,6}/);
-  digits = digits ? digits[0] : '';
+      // Extract up to 6 digits
+      let digits = decodedText.match(/\d{1,6}/);
+      digits = digits ? digits[0] : '';
 
-  // Extract up to 3 letters
-  let letters = decodedText.match(/[a-zA-Z]{1,4}/);
-  letters = letters ? letters[0] : '';
+      // Extract up to 3 letters
+      let letters = decodedText.match(/[a-zA-Z]{1,4}/);
+      letters = letters ? letters[0] : '';
 
-  // Combine the digits and letters
-  let limitedText = digits + letters;
+      // Combine the digits and letters
+      let limitedText = digits + letters;
 
-  console.log(`Code matched: ${limitedText}`);
-  // Set the scanned text to the input field
-  document.getElementById('inventory_id').value = limitedText;
-  // Send the scanned ID card number to the server for validation
-  document.getElementById('stoForm').submit();
-  showLoading();
-}
+      console.log(`Code matched: ${limitedText}`);
+      // Set the scanned text to the input field
+      document.getElementById('inventory_id').value = limitedText;
+      // Send the scanned ID card number to the server for validation
+      document.getElementById('stoForm').submit();
+      showLoading();
+    }
 
     // Keep session alive setiap 10 menit
     let sessionAlive = true; // Kendalikan secara global

@@ -164,4 +164,45 @@ class STOController extends Controller
 
     return view('STO.search', compact('results'));
   }
+
+  public function edit(Request $request)
+  {
+    $id = $request['id_report'];
+    $report = ReportSTO::with('inventory', 'user')->find($id);
+    if ($report) {
+      return view('sto.form_edit', compact('report'));
+    }
+    return back()->with('error', 'Report not found. Please search another report number.');
+  }
+
+  public function update(Request $request, $id)
+  {
+    $validatedData = $request->validate([
+      'inventory_id' => 'nullable|exists:inventory,inventory_id',
+      'issued_date' => 'required|date',
+      'prepared_by' => 'required|exists:users,id',
+      'status' => 'required|string',
+      'qty_per_box' => 'required|integer',
+      'qty_box' => 'required|integer',
+      'total' => 'required|integer',
+      'qty_per_box_2' => 'nullable|integer',
+      'qty_box_2' => 'nullable|integer',
+      'total_2' => 'nullable|integer',
+      'grand_total' => 'required|integer',
+      'detail_lokasi' => 'nullable|string',
+      'part_name' => 'nullable|string',
+      'part_number' => 'nullable|string',
+    ]);
+
+    // Create and save the report
+    $report = ReportSTO::findOrFail($id);
+
+    // Update the report with new data
+    $report->update($request->all());
+
+    // Redirect back with success message
+    return redirect()->route('sto.index')
+      ->with('success', "Report STO with Inventory ID {$report->inventory_id} updated successfully.")
+      ->with('report', $report);
+  }
 }

@@ -33,8 +33,10 @@
     }
 
     .qr-code img {
-      width: 200px; /* Adjust the width as needed */
-      height: 200px; /* Adjust the height as needed */
+      width: 200px;
+      /* Adjust the width as needed */
+      height: 200px;
+      /* Adjust the height as needed */
     }
 
     .text-center {
@@ -56,13 +58,13 @@
   <!-- Table -->
   <table>
     <tbody>
-    <tr>
+      <tr>
         <td><b>Number</b></td>
         <td>:</td>
-        <td>{{ $report->number ?? '' }}</td>
+        <td>{{ $report->id ?? '' }}</td>
       </tr>
       <tr></tr>
-    <tr>
+      <tr>
         <td><b>PLANT</b></td>
         <td>:</td>
         <td>{{ $report->inventory->plant ?? '' }}</td>
