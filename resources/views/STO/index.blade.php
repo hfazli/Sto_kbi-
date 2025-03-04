@@ -451,7 +451,7 @@
   digits = digits ? digits[0] : '';
 
   // Extract up to 3 letters
-  let letters = decodedText.match(/[a-zA-Z]{1,3}/);
+  let letters = decodedText.match(/[a-zA-Z]{1,4}/);
   letters = letters ? letters[0] : '';
 
   // Combine the digits and letters

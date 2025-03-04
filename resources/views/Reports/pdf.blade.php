@@ -32,7 +32,6 @@
       margin: 30px 0;
     }
 
-    
     .qr-code img {
       width: 200px; /* Adjust the width as needed */
       height: 200px; /* Adjust the height as needed */
@@ -57,6 +56,12 @@
   <!-- Table -->
   <table>
     <tbody>
+    <tr>
+        <td><b>Number</b></td>
+        <td>:</td>
+        <td>{{ $report->number ?? '' }}</td>
+      </tr>
+      <tr></tr>
     <tr>
         <td><b>PLANT</b></td>
         <td>:</td>
