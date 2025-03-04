@@ -32,6 +32,12 @@
       margin: 30px 0;
     }
 
+    
+    .qr-code img {
+      width: 200px; /* Adjust the width as needed */
+      height: 200px; /* Adjust the height as needed */
+    }
+
     .text-center {
       text-align: center;
     }
@@ -51,6 +57,16 @@
   <!-- Table -->
   <table>
     <tbody>
+    <tr>
+        <td><b>PLANT</b></td>
+        <td>:</td>
+        <td>{{ $report->inventory->plant ?? '' }}</td>
+      </tr>
+      <tr>
+        <td><b>STO PERIODE</b></td>
+        <td>:</td>
+        <td>{{ $report->issued_date->format('F Y') }}</td>
+      </tr>
       <tr>
         <td><b>DateTime</b></td>
         <td style="width: 0px">:</td>
@@ -77,14 +93,9 @@
         <td>{{ $report->inventory->status_product ?? '' }}</td>
       </tr>
       <tr>
-        <td><b>STO PERIODE</b></td>
+        <td><b>STATUS</b></td>
         <td>:</td>
-        <td>{{ $report->issued_date->format('F Y') }}</td>
-      </tr>
-      <tr>
-        <td><b>PLANT</b></td>
-        <td>:</td>
-        <td>{{ $report->inventory->plant ?? '' }}</td>
+        <td>{{ $report->status }}</td>
       </tr>
       <tr>
         <td><b>DETAIL LOKASI</b></td>
@@ -92,27 +103,12 @@
         <td>{{ $report->detail_lokasi }}</td>
       </tr>
       <tr>
-        <td><b>CUSTOMER</b></td>
-        <td>:</td>
-        <td>{{ $report->inventory->customer ?? '' }}</td>
-      </tr>
-      <tr>
         <td><b>PIC</b></td>
         <td>:</td>
         <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Updated to display Prepared By -->
       </tr>
       <tr>
-        <td><b>ID Card</b></td>
-        <td>:</td>
-        <td>{{ $report->user ? $report->user->id_card_number : '' }}</td> <!-- Updated to display ID card -->
-      </tr>
-      <tr>
-        <td><b>TIPE</b></td>
-        <td>:</td>
-        <td>{{ $report->status }}</td>
-      </tr>
-      <tr>
-        <td class="text-center"><b>STOCK AWAL</b></td>
+        <td class="text-center"><b>STOCK PLANT</b></td>
         <td></td>
         <td class="text-center"><b>STO ACTUAL</b></td>
       </tr>
