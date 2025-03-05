@@ -85,7 +85,8 @@
           <div class="d-flex justify-content-between">
             <h5 class="card-title">STO Report</h5>
             <div class="dropdown">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonSTO" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonSTO"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonSTO">
@@ -103,7 +104,8 @@
           <div class="d-flex justify-content-between">
             <h5 class="card-title">Forecast Report</h5>
             <div class="dropdown">
-              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonForecast" data-bs-toggle="dropdown" aria-expanded="false">
+              <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonForecast"
+                data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots"></i>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButtonForecast">
@@ -114,7 +116,7 @@
           <canvas id="forecastChart" style="min-height: 400px;" class=""></canvas>
         </div>
       </div>
-          
+
     </section>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -197,6 +199,7 @@
               customer: cust === "all" ? null : cust, // Handle "All Customers" case
             },
             success: function(response) {
+              console.log(response);
               updateChartData(chart, response);
             },
             error: function() {
@@ -225,7 +228,7 @@
 
         // Function to update the chart with new data
         function updateChartData(chart, data) {
-          let labels = data.map(item => item.inventory.part_name);
+          let labels = data.map(item => item.inventory?.part_name ?? item.customer);
           let values = data.map(item => item.total);
 
           chart.data.labels = labels;

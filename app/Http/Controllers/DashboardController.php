@@ -79,15 +79,23 @@ class DashboardController extends Controller
     $endDate = Carbon::parse($selectedMonth)->endOfMonth();
 
     // Fetch grouped data
-    $data = ReportSTO::whereBetween('issued_date', [$startDate, $endDate])
-      ->whereHas('inventory', function ($query) use ($selectedCust) {
-        $query->where('customer', $selectedCust);
-      })
-      ->groupBy('inventory_id')
-      ->selectRaw('inventory_id, SUM(total) as total')
-      ->with('inventory')
-      ->get();
-
+    if (isset($selectedCust)) {
+      $data = ReportSTO::whereBetween('issued_date', [$startDate, $endDate])
+        ->whereHas('inventory', function ($query) use ($selectedCust) {
+          $query->where('customer', $selectedCust);
+        })
+        ->groupBy('inventory_id')
+        ->selectRaw('inventory_id, SUM(grand_total) as total')
+        ->with('inventory')
+        ->get();
+    } else {
+      $data = ReportSTO::whereBetween('issued_date', [$startDate, $endDate])
+        ->join('inventory', 'report_sto.inventory_id', '=', 'inventory.inventory_id') // Join with inventory table
+        ->groupBy('inventory.customer') // Group by customer column
+        ->selectRaw('inventory.customer, SUM(report_sto.grand_total) as total') // Select customer and sum of grand_total
+        ->with('inventory')
+        ->get();
+    }
     return response()->json($data);
   }
 }
