@@ -1,59 +1,59 @@
 <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('dashboard') }}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
 
-      <li class="nav-heading">Master BOM</li>
+    <li class="nav-heading">Master BOM</li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('inventory.index') }}">
-            <i class="bi bi-box"></i><span>Inventory List</span>
-        </a>
-      </li><!-- End Inventory List Nav -->
-      <li class="nav-heading">FG Forecast</li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('inventory.index') }}">
+        <i class="bi bi-box"></i><span>Inventory List</span>
+      </a>
+    </li><!-- End Inventory List Nav -->
+    <li class="nav-heading">FG Forecast</li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('forecast.index') }}">
-            <i class="fa-regular fa-file"></i><span>Forecast List</span>
-        </a>
-      </li><!-- End Inventory List Nav -->
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('forecast.index') }}">
+        <i class="bi bi-file-earmark"></i><span>Forecast List</span>
+      </a>
+    </li><!-- End Inventory List Nav -->
 
-      <li class="nav-heading">Reports</li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('reports.index') }}">
-            <i class="bi bi-file-earmark-bar-graph"></i><span>Report STO</span>
-        </a>
-      </li><!-- End Reports Nav -->
+    <li class="nav-heading">Reports</li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('reports.index') }}">
+        <i class="bi bi-file-earmark-bar-graph"></i><span>Report STO</span>
+      </a>
+    </li><!-- End Reports Nav -->
 
-      <li class="nav-heading">User Management</li>
+    <li class="nav-heading">User Management</li>
 
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('users.index') }}">
-            <i class="bi bi-person"></i><span>User</span>
-        </a>
-      </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{{ route('users.index') }}">
+        <i class="bi bi-person"></i><span>User</span>
+      </a>
+    </li>
 
-      <li class="nav-heading">AUTH</li>
+    <li class="nav-heading">AUTH</li>
 
-      <li class="nav-item">
-        <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-            @csrf
-        </form>
-        <a class="nav-link" href="#" onclick="event.preventDefault(); showLogoutConfirmation();">
-            <i class="bi bi-box-arrow-right"></i><span>Logout</span>
-        </a>
-      </li>
+    <li class="nav-item">
+      <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+      <a class="nav-link" href="#" onclick="event.preventDefault(); showLogoutConfirmation();">
+        <i class="bi bi-box-arrow-right"></i><span>Logout</span>
+      </a>
+    </li>
 
-    </ul>
+  </ul>
 
-    <div class="text-center p-2 mt-4">
-        <small>&copy; 2025 by Hedi Fazli</small>
-    </div>
+  <div class="text-center p-2 mt-4">
+    <small>&copy; 2025 by Hedi Fazli</small>
+  </div>
 
 </aside>
 

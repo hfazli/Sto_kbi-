@@ -46,12 +46,49 @@ Route::get('/Login-user', function () {
 
 Route::post('/login-user', [UserController::class, 'login'])->name('loginUser');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::middleware('admin.auth')->group(function () {
+  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+  // Report
+  Route::delete('/reports/{id}/destroy', [ReportController::class, 'delete'])->name('reports.destroy');
+  Route::get('/reports/fg', [ReportController::class, 'index'])->name('reports.fg');
+  Route::get('/reports/{id}/edit', [ReportController::class, 'edit'])->name('reports.edit');
+  Route::put('/reports/{id}/edit', [ReportController::class, 'update'])->name('reports.update');
+  Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
+  Route::post('/reports/store', [ReportController::class, 'store'])->name('reports.store');
+  Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
-Route::resource('users', UserController::class);
-Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-Route::get('/users/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.editPassword');
-Route::post('/users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+  // Inventory
+  Route::resource('inventory', InventoryController::class);
+  Route::get('inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+  Route::post('inventory/import', [InventoryController::class, 'import'])->name('inventory.import');
+  Route::get('inventory/upload', [InventoryController::class, 'showUploadForm'])->name('inventory.upload');
+  Route::post('inventory/upload', [InventoryController::class, 'upload'])->name('inventory.upload');
+  Route::post('/inventory/change_status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.change_status');
+  Route::post('inventory/{id}/change-status', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+  Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
+  Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+  Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
+  Route::post('/inventory/{id}/change-status', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
+  Route::get('/inventory/downloadPdf', [InventoryController::class, 'downloadPdf'])->name('inventory.downloadPdf');
+  Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
+  Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+
+  // Forecast
+  Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
+  Route::get('/forecast/create', [ForecastController::class, 'create'])->name('forecast.create');
+  Route::post('/forecast', [ForecastController::class, 'store'])->name('forecast.store');
+  Route::get('/forecast/{id}/edit', [ForecastController::class, 'edit'])->name('forecast.edit');
+  Route::put('/forecast/{id}', [ForecastController::class, 'update'])->name('forecast.update');
+  Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
+  Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
+  Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
+  // Users
+  Route::resource('users', UserController::class);
+  Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+  Route::get('/users/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.editPassword');
+  Route::post('/users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+});
+
 
 Route::middleware('auth')->group(function () {
   Route::get('/sto', [STOController::class, 'index'])->name('sto.index');
@@ -67,45 +104,16 @@ Route::middleware('auth')->group(function () {
   // Route::get('/sto/print/{inventory_id}', [STOController::class, 'printPDF'])->name('sto.print');
   // Route::get('/sto/print-pdf/{reportId}', [STOController::class, 'printPDF'])->name('sto.printPDF');
 });
-Route::delete('/reports/{id}/destroy', [ReportController::class, 'delete'])->name('reports.destroy');
-Route::get('/reports/fg', [ReportController::class, 'index'])->name('reports.fg');
-Route::get('/reports/{id}/edit', [ReportController::class, 'edit'])->name('reports.edit');
-Route::put('/reports/{id}/edit', [ReportController::class, 'update'])->name('reports.update');
-Route::get('/reports/{id}/print', [ReportController::class, 'print'])->name('reports.print');
-Route::post('/reports', [ReportController::class, 'store'])->name('reports.store');
-Route::post('/reports/store', [ReportController::class, 'store'])->name('reports.store');
-Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+
 // FETCH DATA FOR CHARTS
+Route::get('/reports/{id}/print', [ReportController::class, 'print'])->name('reports.print');
 Route::get('/fetch-report-sto', [DashboardController::class, 'reportSto'])->name('dashboard.sto');
 Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
 
-// Define the inventory routes
-Route::resource('inventory', InventoryController::class);
-Route::get('inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
-Route::post('inventory/import', [InventoryController::class, 'import'])->name('inventory.import');
-Route::get('inventory/upload', [InventoryController::class, 'showUploadForm'])->name('inventory.upload');
-Route::post('inventory/upload', [InventoryController::class, 'upload'])->name('inventory.upload');
-Route::post('/inventory/change_status/{id}', [InventoryController::class, 'changeStatus'])->name('inventory.change_status');
-Route::post('inventory/{id}/change-status', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
-Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
-Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
-Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
-Route::post('/inventory/{id}/change-status', [InventoryController::class, 'changeStatus'])->name('inventory.changeStatus');
-Route::get('/inventory/downloadPdf', [InventoryController::class, 'downloadPdf'])->name('inventory.downloadPdf');
-Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
-Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
 
 Route::get('/form', [STOController::class, 'showForm'])->name('form');
 
 Route::get('reports/export', function () {
   return Excel::download(new ReportsExport, 'reports.xlsx');
 })->name('reports.export');
-
-Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
-Route::get('/forecast/create', [ForecastController::class, 'create'])->name('forecast.create');
-Route::post('/forecast', [ForecastController::class, 'store'])->name('forecast.store');
-Route::get('/forecast/{id}/edit', [ForecastController::class, 'edit'])->name('forecast.edit');
-Route::put('/forecast/{id}', [ForecastController::class, 'update'])->name('forecast.update');
-Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
-Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
-Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
