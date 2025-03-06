@@ -11,6 +11,7 @@ use App\Http\Controllers\InventoryController;
 use App\Exports\ReportsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\ForecastController;
+use App\Http\Controllers\PriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -82,11 +83,16 @@ Route::middleware('admin.auth')->group(function () {
   Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
   Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
   Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
+
   // Users
   Route::resource('users', UserController::class);
   Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
   Route::get('/users/{user}/edit-password', [UserController::class, 'editPassword'])->name('users.editPassword');
   Route::post('/users/{user}/update-password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
+
+  // Define the price routes
+  Route::resource('price', PriceController::class);
+  Route::post('price/import', [PriceController::class, 'import'])->name('price.import');
 });
 
 

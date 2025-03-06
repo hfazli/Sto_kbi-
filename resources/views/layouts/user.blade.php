@@ -88,9 +88,9 @@
             </div>
             <ul class="dropdown-menu dropdown-menu-end bg-dark text-white" aria-labelledby="userDropdown">
               <li>
-                <form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST" id="logoutForm">
                   @csrf
-                  <button type="submit" class="dropdown-item text-white bg-dark">Log Out</button>
+                  <button type="button" class="dropdown-item text-white bg-dark" onclick="confirmLogout()">Log Out</button>
                 </form>
               </li>
             </ul>
@@ -156,7 +156,24 @@
       // Sembunyikan loader setelah halaman selesai dimuat
       document.getElementById('loader').style.display = 'none';
     });
+
+    function confirmLogout() {
+      Swal.fire({
+        title: 'Apakah Anda yakin ingin keluar?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, keluar!',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          document.getElementById('logoutForm').submit();
+        }
+      });
+    }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   @yield('script')
   {{-- reload with ajax  --}}
