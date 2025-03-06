@@ -79,62 +79,46 @@
             </div>
 
             <!-- Status (Radio Buttons) -->
-            <div class="mb-3 row">
+             <div class="mb-3 row">
               <label for="status" class="col-md-3 col-form-label text-white">Status</label>
               <div class="col-md-9">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="status_ng" value="NG"
-                    {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_ng">NG</label>
-                </div>
-                <label class="col-form-label mt-2 text-white">Finished Good</label>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="status_wip" value="WIP"
-                    {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_wip">WIP</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="status_fg" value="FG"
-                    {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_fg">FG</label>
-                </div>
-                <label class="col-form-label mt-2 text-white">Childpart</label>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="status_good" value="GOOD"
-                    {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_good">GOOD</label>
-                </div>
-                <label class="col-form-label mt-2 text-white">Raw Material</label>
-                <div class="form-check">
-                  <input class="form-check-input mt-2 text-white" type="radio" name="status" id="status_virgin"
-                    value="VIRGIN" {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_virgin">VIRGIN</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="status" id="status_fungsai" value="FUNGSAI"
-                    {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'checked' : '' }}>
-                  <label class="form-check-label text-white" for="status_fungsai">FUNGSAI</label>
-                </div>
+                <select name="status" id="status" class="form-select">
+                  <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>
+                    NG</option>
+                  <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>
+                    OK</option>
+                  <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>
+                    FG</option>
+                  <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>
+                    WIP</option>
+                  <option value="GOOD"
+                    {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                  <option value="VIRGIN"
+                    {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
+                  <option value="FUNGSAI"
+                    {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+                </select>
               </div>
             </div>
 
 
+
             <!-- Qty Detail -->
-            <div class="mb-3 p-3 border rounded">
+            <div cs="mb-3 p-3 border rounded">
               <h6 class="mb-3 text-center">QUANTITY INPUT</h6>
-              <label for="qty_per_box" class="col-form-label text-danger">WAJIB SINI</label>
+              <label for="qty_per_box" class="col-form-label text-white">WAJIB SINI</label>
               <div class="row">
                 <label for="qty_per_box" class="col-form-label text-danger"></label>
                 <label for="qty_per_box" class="col-form-label"></label>
                 <div class="mb-3 col-md-3">
                   <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                   <input type="number" id="qty_per_box" name="qty_per_box" class="form-control"
-                    placeholder="Enter quantity per box" required
+                    placeholder="Enter quantity per box" 
                     value="{{ old('qty_per_box', $inventory->qty_package ?? '') }}">
                 </div>
                 <div class="mb-3 col-md-3">
                   <label for="qty_box" class="col-form-label">Qty Box</label>
-                  <input type="number" id="qty_box" name="qty_box" class="form-control" required
+                  <input type="number" id="qty_box" name="qty_box" class="form-control" 
                     placeholder="Enter box quantity">
                 </div>
                 <div class="mb-3 col-md-3">
@@ -150,23 +134,41 @@
               </div>
               <!-- Second Value -->
               <div class="row">
-                <label for="qty_per_box" class="col-form-label text-danger">ITEM RECEH JIKA ADA (OPTIONAL)</label>
-                <div class="mb-3 col-md-3">
-                  <label for="qty_per_box" class="col-form-label">Qty/Box</label>
-                  <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control"
-                    placeholder="Enter quantity per box" value="{{ old('qty_per_box_2') }}">
-                </div>
-                <div class="mb-3 col-md-3">
-                  <label for="qty_box" class="col-form-label">Qty Box</label>
-                  <input type="number" id="qty_box_2" name="qty_box_2" class="form-control"
-                    placeholder="Enter box quantity" value="{{ old('qty_box_2') }}">
-                </div>
-                <div class="mb-3 col-md-3">
-                  <label for="total" class="col-form-label">Total</label>
-                  <input type="number" id="total_2" name="total_2" class="form-control" placeholder="Total"
-                    value="{{ old('qty_per_box_2') }}" readonly>
+                <div id="optionalQuantityInputs" class="row" style="display: none;">
+                  <label for="qty_per_box" class="col-form-label text-white">ITEM RECEH JIKA ADA (OPTIONAL)</label>
+                  <div class="mb-3 col-md-3">
+                    <label for="qty_per_box" class="col-form-label">Qty/Box</label>
+                    <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control"
+                      placeholder="Enter quantity per box" value="{{ old('qty_per_box_2') }}">
+                  </div>
+                  <div class="mb-3 col-md-3">
+                    <label for="qty_box" class="col-form-label">Qty Box</label>
+                    <input type="number" id="qty_box_2" name="qty_box_2" class="form-control"
+                      placeholder="Enter box quantity" value="{{ old('qty_box_2') }}">
+                  </div>
+                  <div class="mb-3 col-md-3">
+                    <label for="total" class="col-form-label">Total</label>
+                    <input type="number" id="total_2" name="total_2" class="form-control" placeholder="Total"
+                      value="{{ old('qty_per_box_2') }}" readonly>
+                  </div>
                 </div>
               </div>
+              <button type="button" class="btn btn-primary toggle-btn w-100" id="optionalInputButton"
+                onclick="toggleOptionalQuantityInputs()">SHOW INCOMPLETE ITEM (ITEM RECEH)</button>
+
+              <script>
+                function toggleOptionalQuantityInputs() {
+                  var optionalInputButton = document.getElementById('optionalInputButton');
+                  var optionalQuantityInputs = document.getElementById('optionalQuantityInputs');
+                  if (optionalQuantityInputs.style.display === 'none') {
+                    optionalQuantityInputs.style.display = 'flex';
+                    optionalInputButton.innerText = 'HIDE INCOMPLETE ITEM (ITEM RECEH)';
+                  } else {
+                    optionalQuantityInputs.style.display = 'none';
+                    optionalInputButton.innerText = 'SHOW INCOMPLETE ITEM (ITEM RECEH)';
+                  }
+                }
+              </script>
             </div>
 
             <div class="d-flex row">
