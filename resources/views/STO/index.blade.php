@@ -20,7 +20,7 @@
         <div class="mb-2">
           <label for="inventory_id" class="form-label" style="font-size: 1.1rem;">Inventory ID (Scan QR)</label>
           <div class="input-group my-2 my-md-3">
-            <input type="text" name="inventory_id" class="form-control" id="inventory_id" required autofocus>
+            <input type="text" name="inventory_id" class="form-control" id="inventory_id" placeholder="Masukkan ID Inventory" required autofocus>
             <button class="btn btn-secondary" type="button" id="scanPart" onclick="toggleScanner()">
               <i class="bi bi-camera"></i>
             </button>
@@ -400,9 +400,9 @@
       <!-- Form Search -->
       <form action="{{ route('sto.search') }}" method="GET" id="searchForm">
         <div class="mb-2">
-          <label for="search_query" class="form-label" style="font-size: 1.1rem;">Search Part Name or Number</label>
+          <label for="search_query" class="form-label" style="font-size: 1.1rem;">Cari Part Name Atau Number</label>
           <div class="input-group my-2 my-md-3">
-            <input type="text" name="query" class="form-control" id="search_query" required>
+            <input type="text" name="query" class="form-control" id="search_query" placeholder="Masukkan Part Name atau Part Number" required>
           </div>
           <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmit">Search</Search></button>
         </div>
@@ -414,7 +414,7 @@
       <!-- Form Search Report -->
       <form action="{{ route('sto.edit') }}" method="GET" id="editForm">
         <div class="mb-2">
-          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO</label>
+          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO (Berdsakan Number)</label>
           <div class="input-group my-2 my-md-3">
             <input type="text" placeholder="Enter Report Number" name="id_report" class="form-control"
               id="id_report" required>
