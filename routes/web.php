@@ -11,6 +11,7 @@ use App\Http\Controllers\InventoryController;
 use App\Exports\ReportsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\ForecastController;
+use App\Http\Controllers\PriceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,3 +110,7 @@ Route::put('/forecast/{id}', [ForecastController::class, 'update'])->name('forec
 Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
 Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
 Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
+
+// Define the price routes
+Route::resource('price', PriceController::class);
+Route::post('price/import', [PriceController::class, 'import'])->name('price.import');

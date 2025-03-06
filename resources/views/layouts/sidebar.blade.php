@@ -22,6 +22,13 @@
             <i class="fa-regular fa-file"></i><span>Forecast List</span>
         </a>
       </li><!-- End Inventory List Nav -->
+      <li class="nav-heading">Price</li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('price.index') }}">
+            <i class="bi bi-currency-dollar"></i><span>Price List</span>
+        </a>
+      </li><!-- End Price List Nav -->
 
       <li class="nav-heading">Reports</li>
       <li class="nav-item">
@@ -61,14 +68,14 @@
 <script>
   function showLogoutConfirmation() {
     Swal.fire({
-      title: 'Are you sure?',
-      text: "You will be logged out!",
+      title: 'Apakah Anda yakin?',
+      text: "Anda akan keluar!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, log out!',
-      cancelButtonText: 'Cancel'
+      confirmButtonText: 'Ya, keluar!',
+      cancelButtonText: 'Batal'
     }).then((result) => {
       if (result.isConfirmed) {
         document.getElementById('logout-form').submit();
