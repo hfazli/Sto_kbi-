@@ -19,7 +19,7 @@
 
       <li class="nav-item">
         <a class="nav-link" href="{{ route('forecast.index') }}">
-            <i class="fa-regular fa-file"></i><span>Forecast List</span>
+            <i class="fa fa-chart-line"></i><span>Forecast List</span>
         </a>
       </li><!-- End Inventory List Nav -->
       <li class="nav-heading">Price</li>
