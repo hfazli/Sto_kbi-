@@ -115,7 +115,7 @@
         <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Updated to display Prepared By -->
       </tr>
       <tr>
-        <td class="text-center"><b>STOCK PLANT</b></td>
+        <td class="text-center"><b>STOCK PLAN</b></td>
         <td></td>
         <td class="text-center"><b>STO ACTUAL</b></td>
       </tr>

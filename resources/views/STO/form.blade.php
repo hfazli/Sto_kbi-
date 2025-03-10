@@ -75,13 +75,13 @@
               <div id="quantityInputs" class="row">
                 <label for="qty_per_box" class="col-form-label text-white">WAJIB SINI</label>
                 <div class="mb-3 col-md-3">
-                  <label for="qty_per_box" class="col-form-label">Qty/Box</label>
+                  <label for="qty_per_box" class="col-form-label">Qty Box</label>
                   <input type="number" id="qty_per_box" name="qty_per_box" class="form-control"
                     placeholder="Enter quantity per box" required
                     value="{{ old('qty_per_box', $inventory->qty_package ?? '') }}" readonly>
                 </div>
                 <div class="mb-3 col-md-3">
-                  <label for="qty_box" class="col-form-label">Qty Box</label>
+                  <label for="qty_box" class="col-form-label">Qty/Box</label>
                   <input type="number" id="qty_box" name="qty_box" class="form-control" required
                     placeholder="Enter box quantity">
                 </div>
