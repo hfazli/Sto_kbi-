@@ -56,37 +56,31 @@
             @enderror
           </div>
 
-          <!-- Inventory Code -->
-          <div class="col-md-6">
-            <label for="inventory-code" class="form-label">Inventory Code</label>
-            <input required type="text" id="inventory-code" name="inventory_id"
-              class="form-control @error('inventory_id') is-invalid @enderror" placeholder="Enter inventory code"
-              value="{{ old('inventory_id', $report->inventory->inventory_id ?? '') }}">
-            @error('inventory_id')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-          <div class="mb-3 row">
-              <label for="status" class="col-md-3 col-form-label text-white">Status</label>
-              <div class="col-md-9">
-                <select name="status" id="status" class="form-select">
-                  <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>
-                    NG</option>
-                  <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>
-                    OK</option>
-                  <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>
-                    FG</option>
-                  <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>
-                    WIP</option>
-                  <option value="GOOD"
-                    {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                  <option value="VIRGIN"
-                    {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                  <option value="FUNGSAI"
-                    {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
-                </select>
-              </div>
+          <!-- Inventory Code and Status -->
+          <div class="row">
+            <div class="col-md-6">
+              <label for="inventory-code" class="form-label">Inventory Code</label>
+              <input required type="text" id="inventory-code" name="inventory_id"
+                class="form-control @error('inventory_id') is-invalid @enderror" placeholder="Enter inventory code"
+                value="{{ old('inventory_id', $report->inventory->inventory_id ?? '') }}">
+              @error('inventory_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+
+            <div class="col-md-6">
+              <label for="status" class="form-label">Status</label>
+              <select name="status" id="status" class="form-select">
+                <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
+                <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
+                <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
+                <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
+                <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                <option value="VIRGIN" {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
+                <option value="FUNGSAI" {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+              </select>
+            </div>
+          </div>
 
           <!-- Quantity Details -->
           <div class="col-12 border rounded p-3">
@@ -277,19 +271,6 @@
     let inputs = document.querySelectorAll("#qty_per_box_2, #qty_box_2, #qty_per_box, #qty_box");
     inputs.forEach(input => {
       input.addEventListener("input", calculateTotals);
-    });
-
-    document.getElementById('checked_by_checkbox').addEventListener('change', function() {
-      let input = document.getElementById('checker');
-      let inputId = document.getElementById('checked_by');
-      if (this.checked) {
-        // Masih error, mengambil data admin yang login saat ini
-        // console.log("{{ Auth::user() }}")
-        // inputId.value = "{{ Auth::user()->id }}";
-        // input.value = "{{ Auth::user()->username }}"; // Set the current user's username
-      } else {
-        input.value = ""; // Clear the field when unchecked
-      }
     });
   </script>
 @endsection
