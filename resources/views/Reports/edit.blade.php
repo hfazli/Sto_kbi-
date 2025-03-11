@@ -66,46 +66,27 @@
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
-
-          <!-- Status (Radio Buttons) -->
-          <div class="col-md-6">
-            <label class="form-label">Status</label>
-            <div class="d-flex flex-column">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_ng" value="NG"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'NG' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_ng">NG</label>
-              </div>
-              <label class="col-form-label mt-2">Finished Good</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_wip" value="WIP"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'WIP' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_wip">WIP</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_fg" value="FG"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'FG' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_fg">FG</label>
-              </div>
-              <label class="col-form-label mt-2">Childpart</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_good" value="GOOD"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'GOOD' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_good">GOOD</label>
-              </div>
-              <label class="col-form-label mt-2">Raw Material</label>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_virgin" value="VIRGIN"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'VIRGIN' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_virgin">VIRGIN</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="status_fungsai" value="FUNGSAI"
-                  {{ old('status', $report->inventory->status_product ?? '') == 'FUNGSAI' ? 'checked' : '' }} onclick="return false;">
-                <label class="form-check-label" for="status_fungsai">FUNGSAI</label>
+          <div class="mb-3 row">
+              <label for="status" class="col-md-3 col-form-label text-white">Status</label>
+              <div class="col-md-9">
+                <select name="status" id="status" class="form-select">
+                  <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>
+                    NG</option>
+                  <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>
+                    OK</option>
+                  <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>
+                    FG</option>
+                  <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>
+                    WIP</option>
+                  <option value="GOOD"
+                    {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                  <option value="VIRGIN"
+                    {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
+                  <option value="FUNGSAI"
+                    {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+                </select>
               </div>
             </div>
-          </div>
 
           <!-- Quantity Details -->
           <div class="col-12 border rounded p-3">
