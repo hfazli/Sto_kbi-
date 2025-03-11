@@ -15,8 +15,8 @@ STO Management System adalah aplikasi web yang digunakan untuk mengelola invento
 1. Clone repositori ini:
 
    ```sh
-   git clone https://github.com/username/sto-management-system.git
-   cd sto-management-system
+   git clone (https://github.com/hfazli/update_sto.git)
+   cd update_sto
    ```
 
 2. Install dependensi menggunakan Composer:
