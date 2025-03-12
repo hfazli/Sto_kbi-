@@ -126,8 +126,8 @@ class DashboardController extends Controller
 
     $data = ForecastSummary::where('customer_name', $customer)
       ->whereDate('date', $date)
-      ->selectRaw('customer_name, stock_day, SUM(stock_value) as stock_value')
-      ->groupBy('customer_name', 'stock_day')
+      ->selectRaw('customer_name, stock_day, date, SUM(stock_value) as stock_value')
+      ->groupBy('customer_name', 'stock_day', 'date')
       ->get();
 
     return response()->json($data);

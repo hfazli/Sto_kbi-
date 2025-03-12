@@ -8,8 +8,6 @@ use App\Models\Customer; // Import the Customer model
 use Illuminate\Http\Request;
 use App\Imports\ForecastImport; // Import the ForecastImport class
 use App\Imports\ForecastSummaryImport;
-use App\Models\ForecastSummary;
-use App\Services\ForecastSummaryImportService;
 use Maatwebsite\Excel\Facades\Excel; // Import the Excel facade
 
 class ForecastController extends Controller
@@ -102,21 +100,14 @@ class ForecastController extends Controller
     }
   }
 
-  public function importSummary(Request $request,  ForecastSummaryImportService $importService)
+  public function importSummary(Request $request)
   {
     $request->validate([
       'file' => 'required|mimes:xls,xlsx'
     ]);
 
     try {
-      $filePath = $request->file('file')->store('temp'); // Store temporarily
-      $data = $importService->import(storage_path("app/{$filePath}"));
-      dd($data);
-      // Save to database
-      foreach ($data as $row) {
-        ForecastSummary::create($row);
-      }
-
+      Excel::import(new ForecastSummaryImport, $request->file('file'));
       return redirect()->route('forecast.index')->with('success', 'Forecast imported successfully.');
     } catch (\Exception $e) {
       return redirect()->route('forecast.index')->with('error', 'Error importing forecast: ' . $e->getMessage());

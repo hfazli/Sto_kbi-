@@ -3,78 +3,139 @@
 namespace App\Imports;
 
 use App\Models\ForecastSummary;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\WithCalculatedFormulas;
-use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+use PhpOffice\PhpSpreadsheet\Shared\Date as ExcelDate;
 
-class ForecastSummaryImport implements ToModel, WithMultipleSheets, WithCalculatedFormulas
+class ForecastSummaryImport implements ToCollection, WithMultipleSheets
 {
   private $sheetName = 'Summary';
-  private $startRow = 83;
-  private $lastColIndex;
-  private $dateColumns = [];
-  private $stockDays = [0, 0.5, 1, 1.5, 2, 2.5, 3, '>3'];
 
   public function sheets(): array
   {
-    return [$this->sheetName => $this]; // Process only the "Summary" sheet
+    return [
+      $this->sheetName => $this, // Specify the "Summary" sheet
+    ];
   }
 
-  public function model(array $row)
+  public function collection(Collection $rows)
   {
-    // Skip header detection
-    if ($this->startRow === null) {
-      $this->detectHeader($row);
-      return null;
-    }
+    $startRow = null;
+    $lastColIndex = null;
+    $dateColumns = [];
+    $stockDays = ['0', '0.5', '1', '1.5', '2', '2.5', '3', '>3'];
 
-    // Skip non-data rows
-    if ($this->startRow > count($row)) {
-      return null;
-    }
-
-    dd($row);
-
-    // Process row data
-    return $this->processRow($row);
-  }
-
-  private function detectHeader(array $row)
-  {
-    foreach ($row as $index => $cell) {
-      if (isset($cell) && strtolower(trim($cell)) === "customer") {
-        $this->startRow = $index + 1;
+    // Find the starting row (where "Customer" is found in column B)
+    foreach ($rows as $index => $row) {
+      if (isset($row[1]) && strtolower(trim($row[1])) === "customer") {
+        $startRow = $index + 1; // Data starts from the next row
         break;
       }
     }
-  }
 
-  private function processRow(array $row)
-  {
-    $customerName = $this->getCellValue($row, 1);
-    $stockDayIndex = (count($row) - $this->startRow) % 8;
+    if ($startRow === null) {
+      throw new \Exception("Header row not found in '{$this->sheetName}' sheet.");
+    }
 
-    if ($stockDayIndex < count($this->stockDays)) {
-      foreach ($this->dateColumns as $colIndex => $date) {
-        return new ForecastSummary([
-          'customer_name' => $customerName,
-          'dec' => $this->getCellValue($row, 2),
-          'total_part' => $this->getCellValue($row, 3),
-          'stock_day' => $this->stockDays[$stockDayIndex] ?? null,
-          'date' => $date,
-          'stock_value' => $this->getCellValue($row, $colIndex),
-          'avg' => $this->getCellValue($row, $this->lastColIndex + 1),
-        ]);
+    // Extract date columns
+    $headerRow = $rows[$startRow - 1];
+    for ($colIndex = 5; $colIndex < count($headerRow); $colIndex++) {
+      $cellValue = $headerRow[$colIndex] ?? '';
+
+      // Stop processing if we reach "AVG"
+      if (strtoupper(trim($cellValue)) === "AVG") {
+        $lastColIndex = $colIndex - 1;
+        break;
+      }
+
+      if (is_numeric($cellValue)) {
+        $date = ExcelDate::excelToDateTimeObject($cellValue);
+        $formattedDate = $date->format('Y-m-d');
+        $dateColumns[$colIndex] = $formattedDate;
+      } elseif (preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $cellValue)) {
+        $date = Carbon::createFromFormat('d/m/Y', $cellValue);
+        $formattedDate = $date->format('Y-m-d');
+        $dateColumns[$colIndex] = $formattedDate;
+      } else {
+        if (!empty($dateColumns)) {
+          $lastDate = Carbon::createFromFormat('Y-m-d', end($dateColumns));
+          $formattedDate = $lastDate->addDay()->format('Y-m-d');
+          $dateColumns[$colIndex] = $formattedDate;
+        } else {
+          break;
+        }
       }
     }
 
-    return null;
+    // Process data rows
+    $currentCustomer = null;
+    $forecasts = [];
+
+    foreach ($rows as $index => $row) {
+      if ($index < $startRow) continue; // Skip headers
+
+      if (!empty($row[1])) { // Column B - Customer Name
+        $currentCustomer = $row[1];
+      } else {
+        break;
+      }
+
+      if ($currentCustomer) {
+        $stockDayIndex = ($index - $startRow) % 8;
+
+        if ($stockDayIndex < count($stockDays)) {
+          foreach ($dateColumns as $colIndex => $date) {
+            $forecastData = [
+              'customer_name' => $this->getCellValue($row, 1), // Column B
+              'dec' => $this->getCellValue($row, 2), // Column C
+              'total_part' => $this->getCellValue($row, 3), // Column D
+              'stock_day' => $stockDays[$stockDayIndex] ?? null, // 0, 0.5, 1, etc.
+              'date' => $date, // Dynamic date from dateColumns
+              'stock_value' => $this->getCellValue($row, $colIndex), // Column F to last date column
+              'avg' => $this->getCellValue($row, $lastColIndex + 1), // AVG column is right after last date column
+            ];
+
+            // Debugging
+            // dd($forecastData); // Uncomment for debugging
+            array_push($forecasts, $forecastData);
+            // Save to DB
+            DB::table('forecast_summaries')->updateOrInsert(
+              [
+                'customer_name' => $forecastData['customer_name'],
+                'date' => $forecastData['date'],
+                'stock_day' => $forecastData['stock_day'],
+              ], // Search condition (if exists, update)
+              [
+                'dec' => $forecastData['dec'],
+                'total_part' => $forecastData['total_part'],
+                'stock_value' => $forecastData['stock_value '],
+                'avg' => $forecastData['avg'],
+                'updated_at' => now(), // Optional, if using timestamps
+              ] // Data to update or insert
+            );;
+          }
+        }
+      }
+    }
+    // dd(end($forecasts));
   }
 
   private function getCellValue($row, int $index)
   {
-    return isset($row[$index]) ? (is_numeric($row[$index]) ? $row[$index] : trim((string)$row[$index])) : null;
+    if (!isset($row[$index])) {
+      return null;
+    }
+
+    $cell = $row[$index];
+
+    // Check if the cell contains a formula
+    if ($cell instanceof \PhpOffice\PhpSpreadsheet\Cell\Cell) {
+      return $cell->getCalculatedValue(); // Get the evaluated result
+    }
+
+    return $cell; // Return normal value
   }
 }

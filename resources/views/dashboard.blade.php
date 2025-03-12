@@ -179,10 +179,12 @@
 
         // Initialize forecastChart
         let ctxForecast = document.getElementById("forecastChart").getContext("2d");
+        const yAxisLabels = ['0', '0.5', '1', '1.5', '2', '2.5', '3', ">3"];
+
         forecastChart = new Chart(ctxForecast, {
           type: "bar",
           data: {
-            labels: [], // Part names
+            labels: yAxisLabels, // Part names
             datasets: [{
               label: "Forecast Quantity",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
@@ -192,9 +194,24 @@
             }]
           },
           options: {
+            indexAxis: "y",
             scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: "Stock Value" // X-axis label
+                }
+              },
               y: {
-                beginAtZero: true
+                title: {
+                  display: true,
+                  text: "Stock Day" // Y-axis label
+                },
+                ticks: {
+                  callback: function(value) {
+                    return value; // Ensure correct display of sorted labels
+                  }
+                }
               }
             }
           }
@@ -282,31 +299,53 @@
 
         // Function to update the forecast chart with new data
         function updateForecastChartData(chart, data) {
-          let labels = data.map(item => item.stock_day);
-          let values = data.map(item => item.stock_value);
+          // Define the correct Y-axis labels in the required order
+          const yAxisLabels = ['0', '0.5', '1', '1.5', '2', '2.5', '3', ">3"];
 
-          chart.data.labels = labels;
-          chart.data.datasets[0].data = values;
+          // Initialize an array to store values in the correct order
+          let orderedValues = new Array(yAxisLabels.length).fill(0); // Default to 0 or null
+          let custName = '';
+          let date = '';
+          // Map data to correct Y-axis label positions
+          data.forEach(item => {
+            let index = yAxisLabels.indexOf(item.stock_day);
+            custName = item.customer_name;
+            date = new Date(item.date).toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            });
+            if (index !== -1) {
+              orderedValues[index] = item.stock_value;
+            }
+          });
 
-          // Add axis labels
-          chart.options.scales = {
-            x: {
-              title: {
-                display: true,
-                text: "Stock Day" // X-axis label
-              }
-            },
-            y: {
-              title: {
-                display: true,
-                text: "Stock Value" // Y-axis label
+
+          // Keep the original Y-axis labels, only update the dataset
+          chart.data.datasets[0].data = orderedValues;
+
+          // Ensure the Y-axis uses the predefined labels
+          chart.options.scales.y.ticks = {
+            callback: function(value, index) {
+              return yAxisLabels[index] ?? value; // Use predefined labels
+            }
+          };
+
+          chart.options.plugins = {
+            title: {
+              display: true,
+              text: `Forecast Cust. ${custName} - ${date}`, // Dynamic title
+              font: {
+                size: 16
               }
             }
           };
 
-          chart.update();
-          chart.update();
+          chart.update(); // Only update once
         }
+
+
+
 
         // Download chart as image
         function downloadChart(chart, filename) {
