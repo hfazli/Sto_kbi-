@@ -121,12 +121,11 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="status_product" class="form-label">Status Product</label>
-                            <select class="form-control" id="status_product" name="status_product" required>
-                                <option value="">Select Status Product</option>
-                                <option value="FG" {{ old('status_product') == 'FG' ? 'selected' : '' }}>Finished Good</option>
-                                <option value="WIP" {{ old('status_product') == 'WIP' ? 'selected' : '' }}>Work In Procces</option>
-                                <option value="CHILPART" {{ old('status_product') == 'CHILPART' ? 'selected' : '' }}>CHILPART</option>
-                                <option value="RAW MATERIAL" {{ old('status_product') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
+                            <select class="form-control" id="status_product" name="status_product" required>>
+                                <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
+                       <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                       <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                       <option value="RAW MATERIAL" {{ request('status') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
                             </select>
                         </div>
                     </div>

@@ -173,11 +173,10 @@
                     <div class="col-md-6">
                         <label for="status_product" class="form-label">Status Product</label>
                         <select name="status_product" class="form-control @error('status_product') is-invalid @enderror" id="status_product" required>
-                            <option value="">Select Status Product</option>
-                            <option value="Finished_Good" {{ old('status_product', $inventory->status_product) == 'Finished_Good' ? 'selected' : '' }}>Finished Good</option>
-                            <option value="Work_In_Process" {{ old('status_product', $inventory->status_product) == 'Work_In_Process' ? 'selected' : '' }}>Work In Procces</option>
-                            <option value="CHILPART" {{ old('status_product', $inventory->status_product) == 'CHILPART' ? 'selected' : '' }}>CHILPART</option>
-                            <option value="RAW MATERIAL" {{ old('status_product', $inventory->status_product) == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
+                        <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
+                       <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                       <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                       <option value="RAW MATERIAL" {{ request('status') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
                         </select>
                         @error('status_product')
                             <div class="invalid-feedback">{{ $message }}</div>
