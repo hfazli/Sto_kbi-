@@ -43,7 +43,7 @@
                                     <tr>
                                         <th scope="col" class="text-center">NO</th>
                                         <th scope="col" class="text-center">ID Card Number</th>
-                                        <!--<th scope="col" class="text-center">Username</th>-->
+                                        <th scope="col" class="text-center">Username</th>
                                         <th scope="col" class="text-center">Name</th>
                                         <th scope="col" class="text-center">Role</th>
                                         <th scope="col" class="text-center">Department</th>
@@ -56,7 +56,7 @@
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
                                             <td class="text-center">{{ $user->id_card_number }}</td>
-                                            <!--<td class="text-center">{{ $user->username }}</td>-->
+                                            <td class="text-center">{{ $user->username }}</td>
                                             <td class="text-center">{{ $user->first_name . ' ' . $user->last_name }}</td>
                                             <td class="text-center">{{ $user->role }}</td>
                                             <td class="text-center">{{ $user->department }}</td>
@@ -68,7 +68,7 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
-                                                @if ($user->role === 'viewer') <!-- Tambahkan kondisi untuk role viewer -->
+                                                @if ($user->role === 'admin') <!-- Tambahkan kondisi untuk role admin -->
                                                 <a href="{{ route('users.editPassword', $user) }}" class="btn btn-warning btn-sm mt-2">
                                                     <i class="bi bi-key"></i>
                                                 </a>

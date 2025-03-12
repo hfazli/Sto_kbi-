@@ -1,3 +1,4 @@
+\create.blade.php
 @extends('layouts.app')
 
 @section('title', 'Create User')
@@ -61,20 +62,6 @@
                         @enderror
                     </div>
                     <div class="col-md-12">
-                        <label for="password" class="form-label">Password</label>
-                        <div class="input-group">
-                            <input type="password" name="password" id="password" 
-                                   class="form-control @error('password') is-invalid @enderror" placeholder="Minimum 8 characters">
-                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                                <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
-                            </button>
-                        </div>
-                        <small class="text-muted">Minimum 8 characters</small>
-                        @error('password')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-12">
                         <label for="department" class="form-label">Department</label>
                         <input type="text" name="department" class="form-control @error('department') is-invalid @enderror"
                             value="{{ old('department') }}" placeholder="silahkan inputkan department" required>
@@ -85,12 +72,28 @@
                     
                     <div class="col-md-12">
                         <label for="role" class="form-label">Role</label>
-                        <select name="role" id="role" class="form-select  mb-3 @error('role') is-invalid @enderror" required>
+                        <select name="role" id="role" class="form-select mb-3 @error('role') is-invalid @enderror" required>
                             <option value="" disabled selected>Pilih Role</option>
+                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                             <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
                             <option value="viewer" {{ old('role') == 'viewer' ? 'selected' : '' }}>Viewer</option>
                         </select>
                         @error('role')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="col-md-12" id="password-field" style="display: none;">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" name="password" id="password" 
+                                   class="form-control @error('password') is-invalid @enderror" placeholder="Minimum 3 characters">
+                            <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                                <i class="bi bi-eye-slash" id="togglePasswordIcon"></i>
+                            </button>
+                        </div>
+                        <small class="text-muted">Minimum 3 characters</small>
+                        @error('password')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -122,6 +125,15 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
     <script>
+        document.getElementById('role').addEventListener('change', function() {
+            const passwordField = document.getElementById('password-field');
+            if (this.value === 'admin') {
+                passwordField.style.display = 'block';
+            } else {
+                passwordField.style.display = 'none';
+            }
+        });
+
         document.getElementById('togglePassword').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const togglePasswordIcon = document.getElementById('togglePasswordIcon');

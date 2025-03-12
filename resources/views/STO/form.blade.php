@@ -50,24 +50,27 @@
               <label for="status" class="col-md-3 col-form-label text-white">Status</label>
               <div class="col-md-9">
                 <select name="status" id="status" class="form-select">
-                  <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>
-                    NG</option>
-                  <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>
-                    OK</option>
-                  <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>
-                    FG</option>
-                  <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>
-                    WIP</option>
-                  <option value="GOOD"
-                    {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                  <option value="VIRGIN"
-                    {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                  <option value="FUNGSAI"
-                    {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+                <optgroup label="Other">
+                        <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
+                        <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
+                    </optgroup>
+                    <optgroup label="Finished Good">
+                        <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
+                        <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
+                    </optgroup>
+                    <optgroup label="Child Part">
+                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                    </optgroup>
+                    <optgroup label="Pakage">
+                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                    </optgroup>
+                    <optgroup label="Raw Material">
+                        <option value="VIRGIN" {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
+                        <option value="FUNGSAI" {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+                    </optgroup>
                 </select>
               </div>
             </div>
-
 
             <!-- Qty Detail -->
             <div class="mb-3 p-3 border rounded">

@@ -13,11 +13,7 @@ class UserController extends Controller
   // method show get show data
   public function index()
   {
-    // Ambil semua pengguna dengan role user dan viewer, kecuali admin
-    $users = User::whereIn('role', ['user', 'viewer'])
-      ->orderBy('created_at', 'desc')
-      ->get();
-
+    $users = User::all();
     return view('User.index', compact('users'));
   }
 
@@ -30,29 +26,23 @@ class UserController extends Controller
   // method post create user
   public function store(Request $request)
   {
-    $request->validate([
-      'id_card_number' => 'required|string|regex:/^[a-zA-Z0-9]+$/|unique:users',
-      'first_name' => 'required|string|max:255',
-      'last_name' => 'required|string|max:255',
-      'username' => 'nullable|string|max:255|unique:users',
-      'password' => 'nullable|string|min:8',
-      'department' => 'required|string|max:255',
-      'role' => 'required|string|in:user,viewer',
+    $validatedData = $request->validate([
+        'id_card_number' => 'required|string|max:255|unique:users',
+        'first_name' => 'required|string|max:255',
+        'last_name' => 'required|string|max:255',
+        'username' => 'nullable|string|max:255|unique:users',
+        'department' => 'required|string|max:255',
+        'role' => 'required|string|in:admin,user,viewer',
+        'password' => 'nullable|string|min:3|required_if:role,admin',
     ]);
 
-    $user = new User();
-    $user->id_card_number = $request->id_card_number;
-    $user->first_name = $request->first_name;
-    $user->last_name = $request->last_name;
-    $user->username = $request->username;
-    $user->department = $request->department;
-    $user->role = $request->role;
-
-    if ($request->filled('password')) {
-      $user->password = Hash::make($request->password);
+    if ($request->role !== 'admin') {
+        $validatedData['password'] = Hash::make('default_password'); // Set a default password for non-admin users
+    } else {
+        $validatedData['password'] = Hash::make($request->password);
     }
 
-    $user->save();
+    User::create($validatedData);
 
     return redirect()->route('users.index')->with('success', 'User created successfully.');
   }
@@ -66,27 +56,19 @@ class UserController extends Controller
 
   public function editPassword(User $user)
   {
-    // Pastikan hanya role viewer yang bisa diakses
-    if ($user->role !== 'viewer') {
-      return redirect()->route('users.index')->with('error', 'Hanya pengguna dengan role viewer yang dapat mengubah password.');
-    }
-
-    return view('User.edit-password', compact('user'));
+    return view('User.editPassword', compact('user'));
   }
 
   public function updatePassword(Request $request, User $user)
   {
-    // Validasi input
-    $request->validate([
-      'password' => 'required|string|min:8|confirmed',
+    $validatedData = $request->validate([
+        'password' => 'required|string|min:8|confirmed',
     ]);
 
-    // Update password
-    $user->update([
-      'password' => bcrypt($request->input('password')),
-    ]);
+    $user->password = Hash::make($validatedData['password']);
+    $user->save();
 
-    return redirect()->route('users.index')->with('success', 'Password berhasil diperbarui.');
+    return redirect()->route('users.index')->with('success', 'Password updated successfully.');
   }
 
   public function login(Request $request)

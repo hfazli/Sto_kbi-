@@ -54,6 +54,20 @@
                <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#importModal">
                    <i class="fas fa-file-excel"></i> Import Excel Inventory
                </button>
+
+               <form action="{{ route('inventory.index') }}" method="GET" class="mb-3 d-flex align-items-center">
+                   <label for="statusFilter" class="me-2 fw-bold">
+                       <i class="bi bi-filter"></i> Filter Status:
+                   </label>
+                   <select name="status" id="statusFilter" class="form-select w-auto" onchange="this.form.submit()">
+                       <option value="">All Status</option>
+                       <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
+                       <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                       <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                       <option value="RAW MATERIAL" {{ request('status') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
+                   </select>
+               </form>
+
                <div class="table-responsive">
                    <table class="table table-bordered text-center align-middle datatable">
                        <thead class="thead-light">
@@ -70,39 +84,45 @@
                                <th>Detail Lokasi</th>
                                <th>Unit</th>
                                <th>Plant</th>
+                               <th>Periode</th> <!-- Added Periode column -->
+                               <th>Date</th> <!-- Added Date column -->
                                <th>Actions</th>
                            </tr>
                        </thead>
                        <tbody>
                            @foreach($inventory as $index => $item)
-                               <tr>
-                                   <td>{{ $index + 1 }}</td>
-                                   <td>{{ $item->inventory_id }}</td>
-                                   <td>{{ $item->part_name }}</td>
-                                   <td>{{ $item->part_number }}</td>
-                                   <td>{{ $item->type_package }}</td>
-                                   <td>{{ $item->qty_package }}</td>
-                                   <td>{{ $item->status_product }}</td>
-                                   <td>{{ $item->project }}</td>
-                                   <td>{{ $item->customer }}</td>
-                                   <td>{{ $item->detail_lokasi }}</td>
-                                   <td>{{ $item->satuan }}</td>
-                                   <td>{{ $item->plant }}</td>
-                                   <td>
-                                       <div class="d-flex justify-content-center">
-                                           <a href="{{ route('inventory.edit', $item->id) }}" class="btn btn-primary btn-sm me-2">
-                                               <i class="fas fa-edit"></i> Edit
-                                           </a>
-                                           <form action="{{ route('inventory.destroy', $item->id) }}" method="POST" id="delete-form-{{ $item->id }}" style="display:inline;">
-                                               @csrf
-                                               @method('DELETE')
-                                               <button type="button" onclick="confirmDelete({{ $item->id }})" class="btn btn-danger btn-sm">
-                                                   <i class="bi bi-trash3"></i> Delete
-                                               </button>
-                                           </form>
-                                       </div>
-                                   </td>
-                               </tr>
+                               @if(request('status') == '' || request('status') == $item->status_product)
+                                   <tr>
+                                       <td>{{ $index + 1 }}</td>
+                                       <td>{{ $item->inventory_id }}</td>
+                                       <td>{{ $item->part_name }}</td>
+                                       <td>{{ $item->part_number }}</td>
+                                       <td>{{ $item->type_package }}</td>
+                                       <td>{{ $item->qty_package }}</td>
+                                       <td>{{ $item->status_product }}</td>
+                                       <td>{{ $item->project }}</td>
+                                       <td>{{ $item->customer }}</td>
+                                       <td>{{ $item->detail_lokasi }}</td>
+                                       <td>{{ $item->satuan }}</td>
+                                       <td>{{ $item->plant }}</td>
+                                       <td>{{ \Carbon\Carbon::now()->format('F Y') }}</td> <!-- Displaying current month and year -->
+                                       <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td> <!-- Displaying current date -->
+                                       <td>
+                                           <div class="d-flex justify-content-center">
+                                               <a href="{{ route('inventory.edit', $item->id) }}" class="btn btn-primary btn-sm me-2">
+                                                   <i class="fas fa-edit"></i> Edit
+                                               </a>
+                                               <form action="{{ route('inventory.destroy', $item->id) }}" method="POST" id="delete-form-{{ $item->id }}" style="display:inline;">
+                                                   @csrf
+                                                   @method('DELETE')
+                                                   <button type="button" onclick="confirmDelete({{ $item->id }})" class="btn btn-danger btn-sm">
+                                                       <i class="bi bi-trash3"></i> Delete
+                                                   </button>
+                                               </form>
+                                           </div>
+                                       </td>
+                                   </tr>
+                               @endif
                            @endforeach
                        </tbody>
                    </table>
