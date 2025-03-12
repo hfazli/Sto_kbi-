@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Part;
 use App\Models\Customer;
+use App\Models\ForecastSummary;
 use App\Models\Invoice;
 use App\Models\ReportSTO;
 use Illuminate\Http\Request;
@@ -52,6 +53,24 @@ class DashboardController extends Controller
       }
     }
 
+    $minForecast = ForecastSummary::min('date');
+    $maxForecast = ForecastSummary::max('date');
+
+    if (!$minForecast || !$maxForecast) {
+      $dates = [];
+    } else {
+      // Convert to Carbon instances
+      $start = Carbon::parse($minForecast);
+      $end = Carbon::parse($maxForecast);
+
+      // Generate the list of dates
+      $dates = [];
+      while ($start->lte($end)) {
+        $dates[] = $start->copy(); // Ensure string format (YYYY-MM-DD)
+        $start->addDay();
+      }
+    }
+
     // return view('dashboard', [
     //   'customers' => $customers,
     //   'partNames' => $partNames,
@@ -66,6 +85,7 @@ class DashboardController extends Controller
     return view('dashboard', compact(
       'customers',
       'months',
+      'dates',
     ));
   }
 
@@ -96,6 +116,20 @@ class DashboardController extends Controller
         ->with('inventory')
         ->get();
     }
+    return response()->json($data);
+  }
+
+  public function forecastSummary(Request $request)
+  {
+    $date = $request->query('date');
+    $customer = $request->query('customer');
+
+    $data = ForecastSummary::where('customer_name', $customer)
+      ->whereDate('date', $date)
+      ->selectRaw('customer_name, stock_day, SUM(stock_value) as stock_value')
+      ->groupBy('customer_name', 'stock_day')
+      ->get();
+
     return response()->json($data);
   }
 }

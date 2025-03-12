@@ -98,6 +98,42 @@
         </div>
       </div>
 
+      <div class="row">
+        <!-- Left side columns -->
+        <div class="col-12">
+          <h5 class="card-title">Input Date & Customer</h5>
+          <!-- Add your select elements here -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="dateForecast">Select Date</label>
+              {{-- <input type="date" id="dateInput" class="form-control"> --}}
+              <select id="dateForecast" onchange="
+              ()" class="form-control">
+                @foreach ($dates as $date)
+                  <option value="{{ $date }}">{{ $date->format('d M Y') }}
+                  </option>
+                @endforeach
+                {{-- @for ($i = 0; $i < 12; $i++)
+                  <option value="{{ now()->addMonths($i)->format('Y-m') }}">{{ now()->addMonths($i)->format('F Y') }}
+                  </option>
+                @endfor --}}
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="custForecast">Select Customer</label>
+              <select id="custForecast" class="form-control">
+                @foreach ($customers as $customer)
+                  <option value="{{ $customer->username }}">{{ $customer->username }}</option>
+                @endforeach
+              </select>
+            </div>
+          </div>
+
+          <!-- Line Chart -->
+          <div id="reportsChart"></div>
+        </div>
+      </div>
+
       <!-- Forecast Report Card -->
       <div class="card">
         <div class="card-body pb-0">
@@ -113,7 +149,7 @@
               </ul>
             </div>
           </div>
-          <canvas id="forecastChart" style="min-height: 400px;" class=""></canvas>
+          <canvas id="forecastChart" style="min-height: 300px;" class=""></canvas>
         </div>
       </div>
 
@@ -167,6 +203,11 @@
         // Fetch data when the dropdown changes
         $("#monthSelect, #custSelect").on("change", function() {
           updateChart(reportSTOChart, "sto");
+          // 
+          // ();
+        });
+
+        $("#dateForecast, #custForecast").on("change", function() {
           updateForecastChart();
         });
 
@@ -182,10 +223,10 @@
         }
 
         function updateForecastChart() {
-          let selectedMonth = $("#monthSelect").val();
-          let selectedCustomer = $("#custSelect").val();
-
-          fetchForecastData(selectedMonth, selectedCustomer);
+          let selectedDate = $("#dateForecast").val();
+          let selectedCustomer = $("#custForecast").val();
+          console.log("Update Forecast");
+          fetchForecastData(selectedDate, selectedCustomer);
         }
 
         // Function to fetch data and update the charts
@@ -209,15 +250,18 @@
         }
 
         // Function to fetch data and update the forecast chart
-        function fetchForecastData(month, customer) {
+        function fetchForecastData(date, customer) {
+          console.log("Fetch Forecast");
+
           $.ajax({
-            url: "/fetch-forecast-data",
+            url: "/fetch-forecast-summary",
             type: "GET",
             data: {
-              month: month,
+              date: date,
               customer: customer === "all" ? null : customer, // Handle "All Customers" case
             },
             success: function(response) {
+              console.log(response);
               updateForecastChartData(forecastChart, response);
             },
             error: function() {
@@ -238,11 +282,29 @@
 
         // Function to update the forecast chart with new data
         function updateForecastChartData(chart, data) {
-          let labels = data.map(item => item.part_name);
-          let values = data.map(item => item.forecast_qty);
+          let labels = data.map(item => item.stock_day);
+          let values = data.map(item => item.stock_value);
 
           chart.data.labels = labels;
           chart.data.datasets[0].data = values;
+
+          // Add axis labels
+          chart.options.scales = {
+            x: {
+              title: {
+                display: true,
+                text: "Stock Day" // X-axis label
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: "Stock Value" // Y-axis label
+              }
+            }
+          };
+
+          chart.update();
           chart.update();
         }
 

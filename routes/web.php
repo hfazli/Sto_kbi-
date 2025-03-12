@@ -82,6 +82,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::put('/forecast/{id}', [ForecastController::class, 'update'])->name('forecast.update');
   Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
   Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
+  Route::post('/forecast/import/summary', [ForecastController::class, 'importSummary'])->name('forecast.summary.import');
   Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
 
   // Users
@@ -115,6 +116,7 @@ Route::middleware('auth')->group(function () {
 // FETCH DATA FOR CHARTS
 Route::get('/reports/{id}/print', [ReportController::class, 'print'])->name('reports.print');
 Route::get('/fetch-report-sto', [DashboardController::class, 'reportSto'])->name('dashboard.sto');
+Route::get('/fetch-forecast-summary', [DashboardController::class, 'forecastSummary'])->name('dashboard.forecast');
 Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
 
 
