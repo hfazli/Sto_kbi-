@@ -138,7 +138,7 @@
       <div class="card">
         <div class="card-body pb-0">
           <div class="d-flex justify-content-between">
-            <h5 class="card-title">Forecast Report</h5>
+            <h5 class="card-title">Daily Report</h5>
             <div class="dropdown">
               <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonForecast"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -186,7 +186,7 @@
           data: {
             labels: yAxisLabels, // Part names
             datasets: [{
-              label: "Forecast Quantity",
+              label: "Daily Report",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -300,7 +300,7 @@
         // Function to update the forecast chart with new data
         function updateForecastChartData(chart, data) {
           // Define the correct Y-axis labels in the required order
-          const yAxisLabels = ['0', '0.5', '1', '1.5', '2', '2.5', '3', ">3"];
+          const yAxisLabels = ['3', '2,5', '2', '1,5', '1', '0,5', ">0"];
 
           // Initialize an array to store values in the correct order
           let orderedValues = new Array(yAxisLabels.length).fill(0); // Default to 0 or null
@@ -334,7 +334,7 @@
           chart.options.plugins = {
             title: {
               display: true,
-              text: `Forecast Cust. ${custName} - ${date}`, // Dynamic title
+              text: `Daily Report${custName} - ${date}`, // Dynamic title
               font: {
                 size: 16
               }

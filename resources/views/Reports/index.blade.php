@@ -31,10 +31,27 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Reports List</h5>
-        <div class="table-responsive">
-          <a href="{{ route('reports.export') }}" class="btn btn-success mb-3">
+        <div class="d-flex justify-content-between mb-3">
+          <a href="{{ route('reports.export') }}" class="btn btn-success">
             <i class="fas fa-file-excel"></i> Export Excel FG
           </a>
+        </div>
+        <form action="{{ route('reports.index') }}" method="GET" class="mb-3 d-flex align-items-center">
+          <label for="statusFilter" class="me-2 fw-bold">
+            <i class="bi bi-filter"></i> Filter Status:
+          </label>
+          <select name="status" id="statusFilter" class="form-select w-auto" onchange="this.form.submit()">
+            <option value="">All Status</option>
+            <option value="OK" {{ request('status') == 'OK' ? 'selected' : '' }}>OK</option>
+            <option value="NG" {{ request('status') == 'NG' ? 'selected' : '' }}>NG</option>
+            <option value="FG" {{ request('status') == 'FG' ? 'selected' : '' }}>FG</option>
+            <option value="WIP" {{ request('status') == 'WIP' ? 'selected' : '' }}>WIP</option>
+            <option value="Good" {{ request('status') == 'Good' ? 'selected' : '' }}>Good</option>
+            <option value="Fungsai" {{ request('status') == 'Fungsai' ? 'selected' : '' }}>Fungsai</option>
+            <option value="Virgin" {{ request('status') == 'Virgin' ? 'selected' : '' }}>Virgin</option>
+          </select>
+        </form>
+        <div class="table-responsive">
           <table class="table table-bordered text-center align-middle datatable">
             <thead class="thead-light">
               <tr>
@@ -50,45 +67,49 @@
                 <th>STO Periode</th>
                 <th>Detail Lokasi</th>
                 <th>Customer</th>
-                <th>Prepared By</th> <!-- Added Prepared By column -->
+                <th>Prepared By</th>
+                <th>Date</th> <!-- Added Date column -->
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($reports as $index => $report)
-                <tr>
-                  <td>{{ $index + 1 }}</td>
-                  <td>{{ $report->part_name ?? '' }}</td>
-                  <td>{{ $report->part_number ?? '' }}</td>
-                  <td>{{ $report->inventory_id }}</td>
-                  <td>{{ $report->status }}</td>
-                  <td>{{ $report->qty_per_box }}</td>
-                  <td>{{ $report->qty_box }}</td>
-                  <td>{{ $report->total }}</td>
-                  <td>{{ $report->grand_total }}</td>
-                  <td>{{ $report->issued_date->format('F Y') }}</td>
-                  <td>{{ $report->detail_lokasi }}</td>
-                  <td>{{ $report->inventory ? $report->inventory->customer : '' }}</td>
-                  <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Displaying Prepared By -->
-                  <td>
-                    <div class="d-flex justify-content-center">
-                      <a href="{{ route('reports.print', $report->id) }}" class="btn btn-warning me-2">
-                        <i class="fas fa-print"></i> Print
-                      </a>
-                      <a href="{{ route('reports.edit', $report->id) }}" class="btn btn-primary me-2">
-                        <i class="fas fa-edit"></i> Edit
-                      </a>
-                      <form action="{{ route('reports.destroy', $report->id) }}" method="POST"
-                        id="delete-form-{{ $report->id }}" style="display:inline;">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" onclick="confirmDelete({{ $report->id }})" class="btn btn-danger">
-                          <i class="bi bi-trash3"></i> Delete
-                        </button>
-                      </form>
-                    </div>
-                  </td>
-                </tr>
+                @if(request('status') == '' || request('status') == $report->status)
+                  <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $report->part_name ?? '' }}</td>
+                    <td>{{ $report->part_number ?? '' }}</td>
+                    <td>{{ $report->inventory_id }}</td>
+                    <td>{{ $report->status }}</td>
+                    <td>{{ $report->qty_per_box }}</td>
+                    <td>{{ $report->qty_box }}</td>
+                    <td>{{ $report->total }}</td>
+                    <td>{{ $report->grand_total }}</td>
+                    <td>{{ $report->issued_date->format('F Y') }}</td>
+                    <td>{{ $report->detail_lokasi }}</td>
+                    <td>{{ $report->inventory ? $report->inventory->customer : '' }}</td>
+                    <td>{{ $report->user ? $report->user->username : '' }}</td>
+                    <td>{{ $report->issued_date ? $report->issued_date->format('d-m-Y') : 'N/A' }}</td> <!-- Displaying Date -->
+                    <td>
+                      <div class="d-flex justify-content-center">
+                        <a href="{{ route('reports.print', $report->id) }}" class="btn btn-warning me-2">
+                          <i class="fas fa-print"></i> Print
+                        </a>
+                        <a href="{{ route('reports.edit', $report->id) }}" class="btn btn-primary me-2">
+                          <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form action="{{ route('reports.destroy', $report->id) }}" method="POST"
+                          id="delete-form-{{ $report->id }}" style="display:inline;">
+                          @csrf
+                          @method('DELETE')
+                          <button type="button" onclick="confirmDelete({{ $report->id }})" class="btn btn-danger">
+                            <i class="bi bi-trash3"></i> Delete
+                          </button>
+                        </form>
+                      </div>
+                    </td>
+                  </tr>
+                @endif
               @endforeach
             </tbody>
           </table>

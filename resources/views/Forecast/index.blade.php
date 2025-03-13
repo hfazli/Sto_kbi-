@@ -63,11 +63,6 @@
         <a href="{{ route('forecast.create') }}" class="btn btn-primary mb-3">
           <i class="fas fa-plus"></i> Create New Forecast
         </a>
-
-        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#importModal">
-          <i class="fas fa-file-excel"></i> Import Excel Forecast
-        </button>
-
         <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#forecastSummaryModal">
           <i class="fas fa-file-excel"></i> Import Forecast Summary
         </button>
