@@ -111,11 +111,12 @@ class ForecastSummaryImport implements ToCollection, WithMultipleSheets
               [
                 'dec' => $forecastData['dec'],
                 'total_part' => $forecastData['total_part'],
-                'stock_value' => $forecastData['stock_value '],
+                'stock_value' => $forecastData['stock_value'],
                 'avg' => $forecastData['avg'],
                 'updated_at' => now(), // Optional, if using timestamps
               ] // Data to update or insert
             );;
+            // dd($forecasts);
           }
         }
       }
