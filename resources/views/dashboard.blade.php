@@ -300,7 +300,7 @@
         // Function to update the forecast chart with new data
         function updateForecastChartData(chart, data) {
           // Define the correct Y-axis labels in the required order
-          const yAxisLabels = ['0', '0.5', '1', '1.5', '2', '2.5', '3', ">3"];
+          const yAxisLabels = ['3', '2,5', '2', '1,5', '1', '0,5', ">0"];
 
           // Initialize an array to store values in the correct order
           let orderedValues = new Array(yAxisLabels.length).fill(0); // Default to 0 or null
