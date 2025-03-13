@@ -138,7 +138,7 @@
       <div class="card">
         <div class="card-body pb-0">
           <div class="d-flex justify-content-between">
-            <h5 class="card-title">Forecast Report</h5>
+            <h5 class="card-title">Daily Report</h5>
             <div class="dropdown">
               <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButtonForecast"
                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -186,7 +186,7 @@
           data: {
             labels: yAxisLabels, // Part names
             datasets: [{
-              label: "Forecast Quantity",
+              label: "Daily Report",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -334,7 +334,7 @@
           chart.options.plugins = {
             title: {
               display: true,
-              text: `Forecast Cust. ${custName} - ${date}`, // Dynamic title
+              text: `Daily Report${custName} - ${date}`, // Dynamic title
               font: {
                 size: 16
               }
