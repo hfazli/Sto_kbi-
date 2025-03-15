@@ -59,7 +59,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
   // Inventory
-  Route::resource('inventory', InventoryController::class);
+    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
   Route::get('inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
   Route::post('inventory/import', [InventoryController::class, 'import'])->name('inventory.import');
   Route::get('inventory/upload', [InventoryController::class, 'showUploadForm'])->name('inventory.upload');
