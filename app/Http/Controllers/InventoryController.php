@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Inventory;
 use App\Models\Customer;
 use App\Imports\InventoryImport;
+use App\Exports\InventoryExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class InventoryController extends Controller
@@ -179,5 +180,10 @@ class InventoryController extends Controller
         } else {
             return redirect()->route('sto.index')->with('notfound', 'Inventory not found');
         }
+    }
+
+    public function export()
+    {
+        return Excel::download(new InventoryExport, 'inventory.xlsx');
     }
 }

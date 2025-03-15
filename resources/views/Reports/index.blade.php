@@ -38,7 +38,7 @@
         </div>
         <form action="{{ route('reports.index') }}" method="GET" class="mb-3 d-flex align-items-center">
           <label for="statusFilter" class="me-2 fw-bold">
-            <i class="bi bi-filter"></i> Filter Status:
+            <i class="bi bi-filter"></i> Filter Category:
           </label>
           <select name="status" id="statusFilter" class="form-select w-auto" onchange="this.form.submit()">
             <option value="">All Status</option>
@@ -47,7 +47,7 @@
             <option value="FG" {{ request('status') == 'FG' ? 'selected' : '' }}>FG</option>
             <option value="WIP" {{ request('status') == 'WIP' ? 'selected' : '' }}>WIP</option>
             <option value="Good" {{ request('status') == 'Good' ? 'selected' : '' }}>Good</option>
-            <option value="Fungsai" {{ request('status') == 'Fungsai' ? 'selected' : '' }}>Fungsai</option>
+            <option value="Fungsai" {{ request('status') == 'Fungsai' ? 'selected' : '' }}>Funsai</option>
             <option value="Virgin" {{ request('status') == 'Virgin' ? 'selected' : '' }}>Virgin</option>
           </select>
         </form>
@@ -68,7 +68,8 @@
                 <th>Detail Lokasi</th>
                 <th>Customer</th>
                 <th>Prepared By</th>
-                <th>Date</th> <!-- Added Date column -->
+                <th>Date</th>
+                <th>Plant</th> <!-- Added Plant column -->
                 <th>Actions</th>
               </tr>
             </thead>
@@ -89,7 +90,8 @@
                     <td>{{ $report->detail_lokasi }}</td>
                     <td>{{ $report->inventory ? $report->inventory->customer : '' }}</td>
                     <td>{{ $report->user ? $report->user->username : '' }}</td>
-                    <td>{{ $report->issued_date ? $report->issued_date->format('d-m-Y') : 'N/A' }}</td> <!-- Displaying Date -->
+                    <td>{{ $report->issued_date ? $report->issued_date->format('d-m-Y') : 'N/A' }}</td>
+                    <td>{{ $report->inventory ? $report->inventory->plant : 'N/A' }}</td> <!-- Displaying Plant from inventory -->
                     <td>
                       <div class="d-flex justify-content-center">
                         <a href="{{ route('reports.print', $report->id) }}" class="btn btn-warning me-2">

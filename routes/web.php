@@ -73,6 +73,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/inventory/downloadPdf', [InventoryController::class, 'downloadPdf'])->name('inventory.downloadPdf');
   Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
   Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+  Route::get('inventory/export', [InventoryController::class, 'export'])->name('inventory.export');
 
   // Forecast
   Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
