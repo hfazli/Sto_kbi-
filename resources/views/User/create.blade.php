@@ -63,8 +63,27 @@
                     </div>
                     <div class="col-md-12">
                         <label for="department" class="form-label">Department</label>
-                        <input type="text" name="department" class="form-control @error('department') is-invalid @enderror"
-                            value="{{ old('department') }}" placeholder="silahkan inputkan department" required>
+                        <select name="department" id="department" class="form-select @error('department') is-invalid @enderror" required>
+                            <option value="" disabled selected>Pilih Department</option>
+                            <option value="Finishing 1" {{ old('department') == 'Finishing 1' ? 'selected' : '' }}>Finishing 1</option>
+                            <option value="Finishing 2" {{ old('department') == 'Finishing 2' ? 'selected' : '' }}>Finishing 2</option>
+                            <option value="Molding 1" {{ old('department') == 'Molding 1' ? 'selected' : '' }}>Molding 1</option>
+                            <option value="Molding 2" {{ old('department') == 'Molding 2' ? 'selected' : '' }}>Molding 2</option>
+                            <option value="Injection 2" {{ old('department') == 'Injection 2' ? 'selected' : '' }}>Injection 2</option>
+                            <option value="Sanding 2" {{ old('department') == 'Sanding 2' ? 'selected' : '' }}>Sanding 2</option>
+                            <option value="PPIC 1" {{ old('department') == 'PPIC 1' ? 'selected' : '' }}>PPIC 1</option>
+                            <option value="PPIC 2" {{ old('department') == 'PPIC 2' ? 'selected' : '' }}>PPIC 2</option>
+                            <option value="QC 1" {{ old('department') == 'QC 1' ? 'selected' : '' }}>QC 1</option>
+                            <option value="QC 2" {{ old('department') == 'QC 2' ? 'selected' : '' }}>QC 2</option>
+                            <option value="NPD" {{ old('department') == 'NDP' ? 'selected' : '' }}>NPD</option>
+                            <option value="DE" {{ old('department') == 'DE' ? 'selected' : '' }}>DE</option>
+                            <option value="QE" {{ old('department') == 'QE' ? 'selected' : '' }}>QE</option>
+                            <option value="PE" {{ old('department') == 'PE' ? 'selected' : '' }}>PE</option>
+                            <option value="PUD" {{ old('department') == 'PUD' ? 'selected' : '' }}>PUD</option>
+                            <option value="Marketing" {{ old('department') == 'Marketing' ? 'selected' : '' }}>Marketing</option>
+                            <option value="Acoounting" {{ old('department') == 'Accounting' ? 'selected' : '' }}>Accounting</option>
+                            <option value="HRGA" {{ old('department') == 'HRGA' ? 'selected' : '' }}>HRGA</option>
+                        </select>
                         @error('department')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
