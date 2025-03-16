@@ -30,7 +30,7 @@ class AdminAuthController extends Controller
         Log::error('User not found: ' . $request->username);
         return back()->withErrors(['username' => 'Invalid credentials'])->with('error', 'Invalid username or password.');
       }
-      return redirect()->route('dashboard');
+      return redirect()->route('dashboard')->with('success', 'Login successful!, Welcome back ' . $request->username);
     }
 
     return back()->with('error', 'Invalid username or password.');

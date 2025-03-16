@@ -20,7 +20,8 @@
         <div class="mb-2">
           <label for="inventory_id" class="form-label" style="font-size: 1.1rem;">Inventory ID (Scan QR)</label>
           <div class="input-group my-2 my-md-3">
-            <input type="text" name="inventory_id" class="form-control" id="inventory_id" placeholder="Masukkan ID Inventory" required autofocus>
+            <input type="text" name="inventory_id" class="form-control" id="inventory_id"
+              placeholder="Masukkan ID Inventory" required autofocus>
             <button class="btn btn-secondary" type="button" id="scanPart" onclick="toggleScanner()">
               <i class="bi bi-camera"></i>
             </button>
@@ -83,24 +84,33 @@
               <label for="status" class="col-md-3 col-form-label text-white">Status</label>
               <div class="col-md-9">
                 <select name="status" id="status" class="form-select">
-                <optgroup label="Other">
-                        <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
-                        <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
-                    </optgroup>
-                    <optgroup label="Finished Good">
-                        <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
-                        <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
-                    </optgroup>
-                    <optgroup label="Child Part">
-                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                    </optgroup>
-                    <optgroup label="Pakage">
-                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                    </optgroup>
-                    <optgroup label="Raw Material">
-                        <option value="VIRGIN" {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                        <option value="FUNGSAI" {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
-                    </optgroup>
+                  <optgroup label="Other">
+                    <option value="OK"
+                      {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
+                    <option value="NG"
+                      {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
+                  </optgroup>
+                  <optgroup label="Finished Good">
+                    <option value="FG"
+                      {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
+                    <option value="WIP"
+                      {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
+                  </optgroup>
+                  <optgroup label="Child Part">
+                    <option value="GOOD"
+                      {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                  </optgroup>
+                  <optgroup label="Pakage">
+                    <option value="GOOD"
+                      {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
+                  </optgroup>
+                  <optgroup label="Raw Material">
+                    <option value="VIRGIN"
+                      {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
+                    <option value="FUNGSAI"
+                      {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI
+                    </option>
+                  </optgroup>
                 </select>
               </div>
             </div>
@@ -117,12 +127,12 @@
                 <div class="mb-3 col-md-3">
                   <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                   <input type="number" id="qty_per_box" name="qty_per_box" class="form-control"
-                    placeholder="Enter quantity per box" 
+                    placeholder="Enter quantity per box"
                     value="{{ old('qty_per_box', $inventory->qty_package ?? '') }}">
                 </div>
                 <div class="mb-3 col-md-3">
                   <label for="qty_box" class="col-form-label">Qty Box</label>
-                  <input type="number" id="qty_box" name="qty_box" class="form-control" 
+                  <input type="number" id="qty_box" name="qty_box" class="form-control"
                     placeholder="Enter box quantity">
                 </div>
                 <div class="mb-3 col-md-3">
@@ -406,7 +416,8 @@
         <div class="mb-2">
           <label for="search_query" class="form-label" style="font-size: 1.1rem;">Cari Part Name Atau Number</label>
           <div class="input-group my-2 my-md-3">
-            <input type="text" name="query" class="form-control" id="search_query" placeholder="Masukkan Part Name atau Part Number" required>
+            <input type="text" name="query" class="form-control" id="search_query"
+              placeholder="Masukkan Part Name atau Part Number" required>
           </div>
           <button class="btn btn-primary btn-lg w-100 mt-2" type="submit" id="btnSubmit">Search</Search></button>
         </div>
@@ -418,7 +429,8 @@
       <!-- Form Search Report -->
       <form action="{{ route('sto.edit') }}" method="GET" id="editForm">
         <div class="mb-2">
-          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO (Berdsakan Number)</label>
+          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO (Berdsakan
+            Number)</label>
           <div class="input-group my-2 my-md-3">
             <input type="text" placeholder="Enter Report Number" name="id_report" class="form-control"
               id="id_report" required>
@@ -432,6 +444,21 @@
   </div>
   </div>
   </div>
+
+  @if (session('success'))
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "success",
+        title: "{{ session('success') }}",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+      });
+    </script>
+  @endif
 @endsection
 
 @section('script')
@@ -528,6 +555,7 @@
       inputs.forEach(input => {
         input.addEventListener("input", calculateTotals);
       });
+      document.getElementById('loader').style.display = 'none';
     });
 
     $(document).ready(function() {
@@ -546,11 +574,11 @@
               response.forEach(function(status) {
                 var checked = (status === initialStatus) ? 'checked' : '';
                 var radioInput = `
-                                <div class="form-check me-3">
-                                    <input class="form-check-input" type="radio" name="status" id="${status}" value="${status}" ${checked}>
-                                    <label class="form-check-label" for="${status}">${status}</label>
-                                </div>
-                            `;
+  <div class="form-check me-3">
+    <input class="form-check-input" type="radio" name="status" id="${status}" value="${status}" ${checked}>
+    <label class="form-check-label" for="${status}">${status}</label>
+  </div>
+  `;
                 statusContainer.append(radioInput);
               });
             } else {
