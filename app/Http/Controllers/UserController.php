@@ -14,8 +14,7 @@ class UserController extends Controller
   // method show get show data
   public function index()
   {
-    // $users = User::all();
-    $users = User::all()->merge(Admin::all());
+    $users = User::all();
     return view('User.index', compact('users'));
   }
 
@@ -29,21 +28,21 @@ class UserController extends Controller
   public function store(Request $request)
   {
     $validatedData = $request->validate([
-        'id_card_number' => 'required|string|max:255|unique:users',
-        'first_name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'username' => 'nullable|string|max:255|unique:users',
-        'department' => 'required|string|max:255',
-        'role' => 'required|string|in:admin,user,viewer',
-        'password' => 'nullable|string|min:3|required_if:role,admin',
+      'id_card_number' => 'required|string|max:255|unique:users',
+      'first_name' => 'required|string|max:255',
+      'last_name' => 'required|string|max:255',
+      'username' => 'nullable|string|max:255|unique:users',
+      'department' => 'required|string|max:255',
+      'role' => 'required|string|in:admin,user,viewer',
+      'password' => 'nullable|string|min:3|required_if:role,admin',
     ]);
 
-    if ($request->role =='admin') {
-        $validatedData['password'] = Hash::make($request->password);
-        Admin::create($validatedData);
+    if ($request->role == 'admin') {
+      $validatedData['password'] = Hash::make($request->password);
+      Admin::create($validatedData);
     } else {
-        $validatedData['password'] = Hash::make('default_password'); // Set a default password for non-admin users
-        User::create($validatedData);
+      $validatedData['password'] = Hash::make('default_password'); // Set a default password for non-admin users
+      User::create($validatedData);
     }
 
 
@@ -60,13 +59,13 @@ class UserController extends Controller
 
   public function editPassword(User $user)
   {
-    return view('User.editPassword', compact('user'));
+    return view('User.edit-password', compact('user'));
   }
 
   public function updatePassword(Request $request, User $user)
   {
     $validatedData = $request->validate([
-        'password' => 'required|string|min:8|confirmed',
+      'password' => 'required|string|min:8|confirmed',
     ]);
 
     $user->password = Hash::make($validatedData['password']);

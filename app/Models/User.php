@@ -48,9 +48,9 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
-    public function getLastLoginAttribute($value)
-    {
-        return Carbon::parse($value)->format('d-m-Y H:i:s');
-    }
+    // public function getLastLoginAttribute($value)
+    // {
+    //     return Carbon::parse($value)->format('d-m-Y H:i:s');
+    // }
 
 }
