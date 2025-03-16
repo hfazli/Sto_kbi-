@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory; // Import the Inventory model
 use App\Models\ReportSTO;
 use App\Models\Part; // Assuming you have a Part model
+use Illuminate\Support\Facades\DB; // Import DB facade
 
 class STOController extends Controller
 {
@@ -204,5 +205,11 @@ class STOController extends Controller
     return redirect()->route('sto.index')
       ->with('success', "Report STO with Inventory ID {$report->inventory_id} updated successfully.")
       ->with('report', $report);
+  }
+
+  public function create()
+  {
+    $detailLokasi = DB::table('detail_lokasi')->get()->groupBy('category');
+    return view('STO.form', compact('detailLokasi'));
   }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +14,8 @@ class UserController extends Controller
   // method show get show data
   public function index()
   {
-    $users = User::all();
+    // $users = User::all();
+    $users = User::all()->merge(Admin::all());
     return view('User.index', compact('users'));
   }
 
@@ -36,13 +38,15 @@ class UserController extends Controller
         'password' => 'nullable|string|min:3|required_if:role,admin',
     ]);
 
-    if ($request->role !== 'admin') {
-        $validatedData['password'] = Hash::make('default_password'); // Set a default password for non-admin users
-    } else {
+    if ($request->role =='admin') {
         $validatedData['password'] = Hash::make($request->password);
+        Admin::create($validatedData);
+    } else {
+        $validatedData['password'] = Hash::make('default_password'); // Set a default password for non-admin users
+        User::create($validatedData);
     }
 
-    User::create($validatedData);
+
 
     return redirect()->route('users.index')->with('success', 'User created successfully.');
   }

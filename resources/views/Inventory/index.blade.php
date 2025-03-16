@@ -55,12 +55,16 @@
                    <i class="fas fa-file-excel"></i> Import Excel Inventory
                </button>
 
+               <a href="{{ route('inventory.export') }}" class="btn btn-info mb-3">
+                   <i class="fas fa-file-export"></i> Export Excel Inventory
+               </a>
+
                <form action="{{ route('inventory.index') }}" method="GET" class="mb-3 d-flex align-items-center">
                    <label for="statusFilter" class="me-2 fw-bold">
-                       <i class="bi bi-filter"></i> Filter Status:
+                       <i class="bi bi-filter"></i> Filter Category:
                    </label>
                    <select name="status" id="statusFilter" class="form-select w-auto" onchange="this.form.submit()">
-                       <option value="">All Status</option>
+                       <option value="">All Category</option>
                        <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
                        <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
                        <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>

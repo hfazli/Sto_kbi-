@@ -59,7 +59,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
   // Inventory
-  Route::resource('inventory', InventoryController::class);
+    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
   Route::get('inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
   Route::post('inventory/import', [InventoryController::class, 'import'])->name('inventory.import');
   Route::get('inventory/upload', [InventoryController::class, 'showUploadForm'])->name('inventory.upload');
@@ -73,6 +73,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/inventory/downloadPdf', [InventoryController::class, 'downloadPdf'])->name('inventory.downloadPdf');
   Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
   Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+  Route::get('inventory/export', [InventoryController::class, 'export'])->name('inventory.export');
 
   // Forecast
   Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');

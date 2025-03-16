@@ -14,7 +14,8 @@ class CreateAdminsTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('password');
-            $table->string('role');
+            $table->string('id_card_number')->unique();
+            $table->enum('role', ['admin', 'user', 'viewer'])->default('admin');
             $table->timestamps();
         });
     }

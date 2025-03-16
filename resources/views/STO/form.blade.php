@@ -46,27 +46,24 @@
               </div>
             </div>
 
+             <!-- Category -->
+             <div class="mb-3 row">
+              <label for="category" class="col-md-3 col-form-label">Category</label>
+              <div class="col-md-9">
+                <input type="text" id="category" name="category" class="form-control" placeholder="Enter category"
+                  value="{{ old('category', $inventory->status_product ?? '') }}"readonly>
+              </div>
+            </div>
+
             <div class="mb-3 row">
               <label for="status" class="col-md-3 col-form-label text-white">Status</label>
               <div class="col-md-9">
                 <select name="status" id="status" class="form-select">
-                <optgroup label="Other">
+                <optgroup label="Status">
                         <option value="OK" {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
                         <option value="NG" {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
-                    </optgroup>
-                    <optgroup label="Finished Good">
-                        <option value="FG" {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
-                        <option value="WIP" {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
-                    </optgroup>
-                    <optgroup label="Child Part">
-                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                    </optgroup>
-                    <optgroup label="Pakage">
-                        <option value="GOOD" {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                    </optgroup>
-                    <optgroup label="Raw Material">
-                        <option value="VIRGIN" {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                        <option value="FUNGSAI" {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI</option>
+                        <option value="Virgin" {{ old('status', $inventory->status_product ?? '') == 'Virgin' ? 'selected' : '' }}>Virgin</option>
+                        <option value="Funsai" {{ old('status', $inventory->status_product ?? '') == 'Funsai' ? 'selected' : '' }}>Funsai</option>
                     </optgroup>
                 </select>
               </div>
@@ -318,7 +315,7 @@
                       Area Material Line Molding F</option>
                     <option value="rak_material_molding_03"
                       {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Fungsai Mix</option>
+                      Area Material Line Funsai Mix</option>
                   </optgroup>
                   <optgroup label="WIP Rak Daisha">
                     <option value="rak_wip_daisha_01"
@@ -403,6 +400,78 @@
       }
     }
   </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    function updateStatusOptions() {
+      const category = document.getElementById('category').value;
+      const statusSelect = document.getElementById('status');
+      const statusOptions = statusSelect.querySelectorAll('option');
+
+      statusOptions.forEach(option => {
+        option.style.display = 'block';
+      });
+
+      if (category === 'Finished Good') {
+        statusOptions.forEach(option => {
+          if (option.value !== 'OK' && option.value !== 'NG') {
+            option.style.display = 'none';
+          }
+        });
+      } else if (category === 'Work In Process') {
+        statusOptions.forEach(option => {
+          if (option.value !== 'OK' && option.value !== 'NG') {
+            option.style.display = 'none';
+          }
+        });
+      } else if (category === 'ChildPart') {
+        statusOptions.forEach(option => {
+          if (option.value !== 'OK' && option.value !== 'NG') {
+            option.style.display = 'none';
+          }
+        });
+      } else if (category === 'Raw Material') {
+        statusOptions.forEach(option => {
+          if (option.value !== 'Virgin' && option.value !== 'Funsai' && option.value !== 'NG') {
+            option.style.display = 'none';
+          }
+        });
+      }
+    }
+
+    function updateDetailLokasiOptions() {
+      const category = document.getElementById('category').value;
+      const detailLokasiSelect = document.getElementById('detail_lokasi');
+      const detailLokasiOptions = detailLokasiSelect.querySelectorAll('optgroup');
+
+      detailLokasiOptions.forEach(optgroup => {
+        optgroup.style.display = 'block';
+      });
+
+      if (category === 'Finished Good') {
+        detailLokasiOptions.forEach(optgroup => {
+          if (optgroup.label !== 'Shutter FG Fin' && optgroup.label !== 'Finished Good Area' && optgroup.label !== 'Area Service Part' && optgroup.label !== 'Area Warehouse' && optgroup.label !== 'Area Delivery' && optgroup.label !== 'QC Office Room' && optgroup.label !== 'Manufacture Office') {
+            optgroup.style.display = 'none';
+          }
+        });
+      } else {
+        detailLokasiOptions.forEach(optgroup => {
+          if (optgroup.label === 'Area Service Part' || optgroup.label === 'Area Warehouse' || optgroup.label === 'Area Delivery' || optgroup.label === 'QC Office Room' || optgroup.label === 'Manufacture Office') {
+            optgroup.style.display = 'none';
+          }
+        });
+      }
+    }
+
+    updateStatusOptions();
+    updateDetailLokasiOptions();
+
+    document.getElementById('category').addEventListener('input', function() {
+      updateStatusOptions();
+      updateDetailLokasiOptions();
+    });
+  });
+</script>
 @endsection
 
 <style>
