@@ -70,6 +70,15 @@
               </div>
             </div>
 
+            <!-- Inventory Code -->
+            <div class="mb-3 row">
+              <label for="inventory-code" class="col-md-3 col-form-label">Inventory Code</label>
+              <div class="col-md-9">
+                <input type="text" id="inventory-code" name="inventory_code" class="form-control"
+                  placeholder="Enter inventory code" value="{{ old('inventory_code') }}">
+              </div>
+            </div>
+
           <!-- Category -->
           <div class="mb-3 row">
             <label for="category" class="col-md-3 col-form-label">Category</label>
