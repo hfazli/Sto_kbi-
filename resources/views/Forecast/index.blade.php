@@ -66,6 +66,9 @@
         <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#forecastSummaryModal">
           <i class="fas fa-file-excel"></i> Import Forecast Summary
         </button>
+        <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#importForecastModal">
+          <i class="fas fa-file-import"></i> Import Forecast
+        </button>
 
         <div class="table-responsive">
           <table class="table table-bordered text-center align-middle datatable">
@@ -168,6 +171,31 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="importForecastModal" tabindex="-1" aria-labelledby="importForecastModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importForecastModalLabel">Import Forecast from Excel</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="importForecastForm" action="{{ route('forecast.import') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="mb-3">
+              <label for="file" class="form-label">Upload Excel File</label>
+              <input type="file" name="file" class="form-control" id="file" required accept=".xls,.xlsx">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success">Import</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     function confirmDelete(id) {

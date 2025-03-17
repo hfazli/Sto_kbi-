@@ -15,7 +15,7 @@ class ForecastImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        return new Forecast([
+        $forecastData = [
             'inventory_id' => $row['inventory_id'],
             'part_name' => $row['part_name'],
             'part_number' => $row['part_number'],
@@ -23,7 +23,15 @@ class ForecastImport implements ToModel, WithHeadingRow
             'forecast_qty' => $row['forecast_qty'],
             'min_stok' => $row['min_stok'],
             'max_stok' => $row['max_stok'],
-            'forecast_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['forecast_date']),
-        ]);
+        ];
+
+        if (isset($row['forecast_date'])) {
+            $forecastData['forecast_date'] = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['forecast_date']);
+        } else {
+            // Set a default value for forecast_date if it is not provided
+            $forecastData['forecast_date'] = now();
+        }
+
+        return new Forecast($forecastData);
     }
 }
