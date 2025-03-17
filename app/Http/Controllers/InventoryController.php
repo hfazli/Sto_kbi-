@@ -33,8 +33,8 @@ class InventoryController extends Controller
 
     public function create()
     {
-        $customers = Customer::all(); // Get all customers
-        return view('inventory.create', compact('customers'));
+        $customers = Customer::all(); // Fetch all customers from the database
+        return view('Inventory.create', compact('customers'));
     }
 
     public function store(Request $request)
@@ -79,9 +79,9 @@ class InventoryController extends Controller
 
     public function edit($id)
     {
-        $inventory = Inventory::findOrFail($id);
-        $customers = Customer::all();
-        return view('inventory.edit', compact('inventory', 'customers'));
+        $inventory = Inventory::findOrFail($id); // Fetch the inventory item
+        $customers = Customer::all(); // Fetch all customers from the database
+        return view('Inventory.edit', compact('inventory', 'customers'));
     }
 
     public function update(Request $request, $id)

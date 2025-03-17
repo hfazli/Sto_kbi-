@@ -11,7 +11,7 @@
 
   <!-- Favicons -->
   <link href="{{ asset('assets/img/icon-kbi.png') }}" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -107,8 +107,8 @@
             <div class="col-md-6">
               <label for="dateForecast">Select Date</label>
               {{-- <input type="date" id="dateInput" class="form-control"> --}}
-              <select id="dateForecast" onchange="
-              ()" class="form-control">
+              <select id="dateForecast" onchange="()"
+                class="form-control">
                 @foreach ($dates as $date)
                   <option value="{{ $date }}">{{ $date->format('d M Y') }}
                   </option>
@@ -156,6 +156,7 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
       let reportSTOChart;
       let forecastChart;
@@ -174,19 +175,47 @@
               borderWidth: 1,
               data: []
             }]
+          },
+          options: {
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "Stock Jumlah" // Y-axis label
+                }
+              }
+            },
+            plugins: {
+              annotation: {
+                annotations: {
+                  line1: {
+                    type: 'line',
+                    yMin: 0,
+                    yMax: 0,
+                    borderColor: 'red',
+                    borderWidth: 2,
+                    label: {
+                      content: 'Threshold',
+                      enabled: true,
+                      position: 'center'
+                    }
+                  }
+                }
+              }
+            }
           }
         });
 
         // Initialize forecastChart
         let ctxForecast = document.getElementById("forecastChart").getContext("2d");
-        const yAxisLabels = ['0', '0.5', '1', '1.5', '2', '2.5', '3', ">3"];
+        const yAxisLabels = ['>3', '3', '2.5', '2', '1.5', '1', '0.5', '0'];
 
         forecastChart = new Chart(ctxForecast, {
           type: "bar",
           data: {
             labels: yAxisLabels, // Part names
             datasets: [{
-              label: "Daily Report",
+              label: "Forecast Quantity",
               backgroundColor: "rgba(75, 192, 192, 0.2)",
               borderColor: "rgba(75, 192, 192, 1)",
               borderWidth: 1,
@@ -199,13 +228,13 @@
               x: {
                 title: {
                   display: true,
-                  text: "Stock Value" // X-axis label
+                  text: "Stock Jumlah" // X-axis label
                 }
               },
               y: {
                 title: {
                   display: true,
-                  text: "Stock Day" // Y-axis label
+                  text: "Stock Hari" // Y-axis label
                 },
                 ticks: {
                   callback: function(value) {
@@ -220,8 +249,6 @@
         // Fetch data when the dropdown changes
         $("#monthSelect, #custSelect").on("change", function() {
           updateChart(reportSTOChart, "sto");
-          // 
-          // ();
         });
 
         $("#dateForecast, #custForecast").on("change", function() {
@@ -261,7 +288,11 @@
               updateChartData(chart, response);
             },
             error: function() {
-              alert("Failed to fetch data.");
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to fetch data.',
+              });
             }
           });
         }
@@ -282,7 +313,11 @@
               updateForecastChartData(forecastChart, response);
             },
             error: function() {
-              alert("Failed to fetch forecast data.");
+              Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Failed to fetch forecast data.',
+              });
             }
           });
         }
@@ -294,13 +329,19 @@
 
           chart.data.labels = labels;
           chart.data.datasets[0].data = values;
+
+          // Update the annotation line position based on the maximum value
+          let maxValue = Math.max(...values);
+          chart.options.plugins.annotation.annotations.line1.yMin = maxValue;
+          chart.options.plugins.annotation.annotations.line1.yMax = maxValue;
+
           chart.update();
         }
 
         // Function to update the forecast chart with new data
         function updateForecastChartData(chart, data) {
           // Define the correct Y-axis labels in the required order
-          const yAxisLabels = ['3', '2,5', '2', '1,5', '1', '0,5', ">0"];
+          const yAxisLabels = ['>3', '3', '2.5', '2', '1.5', '1', '0.5', '0'];
 
           // Initialize an array to store values in the correct order
           let orderedValues = new Array(yAxisLabels.length).fill(0); // Default to 0 or null
@@ -320,7 +361,6 @@
             }
           });
 
-
           // Keep the original Y-axis labels, only update the dataset
           chart.data.datasets[0].data = orderedValues;
 
@@ -334,7 +374,7 @@
           chart.options.plugins = {
             title: {
               display: true,
-              text: `Daily Report${custName} - ${date}`, // Dynamic title
+              text: `Daily Report, ${custName} - ${date}`, // Dynamic title
               font: {
                 size: 16
               }
@@ -343,9 +383,6 @@
 
           chart.update(); // Only update once
         }
-
-
-
 
         // Download chart as image
         function downloadChart(chart, filename) {

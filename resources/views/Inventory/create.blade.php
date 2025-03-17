@@ -59,40 +59,9 @@
                             <label for="customer" class="form-label">Customer</label>
                             <select class="form-control" id="customer" name="customer" required>
                                 <option value="">Select Customer</option>
-                                <option value="ADM-KAP" {{ old('customer') == 'ADM-KAP' ? 'selected' : '' }}>ADM-KAP</option>
-                                <option value="ADM-KEP" {{ old('customer') == 'ADM-KEP' ? 'selected' : '' }}>ADM-KEP</option>
-                                <option value="ADM-SAP" {{ old('customer') == 'ADM-SAP' ? 'selected' : '' }}>ADM-SAP</option>
-                                <option value="ADM-SEP" {{ old('customer') == 'ADM-SEP' ? 'selected' : '' }}>ADM-SEP</option>
-                                <option value="ADM-SPD" {{ old('customer') == 'ADM-SPD' ? 'selected' : '' }}>ADM-SPD</option>
-                                <option value="ASMO-DMIA" {{ old('customer') == 'ASMO-DMIA' ? 'selected' : '' }}>ASMO-DMIA</option>
-                                <option value="DENSO" {{ old('customer') == 'DENSO' ? 'selected' : '' }}>DENSO</option>
-                                <option value="GMK" {{ old('customer') == 'GMK' ? 'selected' : '' }}>GMK</option>
-                                <option value="HAC" {{ old('customer') == 'HAC' ? 'selected' : '' }}>HAC</option>
-                                <option value="HINO" {{ old('customer') == 'HINO' ? 'selected' : '' }}>HINO</option>
-                                <option value="HINO-SPD" {{ old('customer') == 'HINO-SPD' ? 'selected' : '' }}>HINO-SPD</option>
-                                <option value="HMMI" {{ old('customer') == 'HMMI' ? 'selected' : '' }}>HMMI</option>
-                                <option value="HPM" {{ old('customer') == 'HPM' ? 'selected' : '' }}>HPM</option>
-                                <option value="HPM-SPD LOKAL" {{ old('customer') == 'HPM-SPD LOKAL' ? 'selected' : '' }}>HPM-SPD LOKAL</option>
-                                <option value="IAMI" {{ old('customer') == 'IAMI' ? 'selected' : '' }}>IAMI</option>
-                                <option value="IPI" {{ old('customer') == 'IPI' ? 'selected' : '' }}>IPI</option>
-                                <option value="IRC" {{ old('customer') == 'IRC' ? 'selected' : '' }}>IRC</option>
-                                <option value="KTB" {{ old('customer') == 'KTB' ? 'selected' : '' }}>KTB</option>
-                                <option value="KTB-SPD" {{ old('customer') == 'KTB-SPD' ? 'selected' : '' }}>KTB-SPD</option>
-                                <option value="MAH SING" {{ old('customer') == 'MAH SING' ? 'selected' : '' }}>MAH SING</option>
-                                <option value="MMKI" {{ old('customer') == 'MMKI' ? 'selected' : '' }}>MMKI</option>
-                                <option value="MMKI-SPD" {{ old('customer') == 'MMKI-SPD' ? 'selected' : '' }}>MMKI-SPD</option>
-                                <option value="NAFUCO" {{ old('customer') == 'NAFUCO' ? 'selected' : '' }}>NAFUCO</option>
-                                <option value="NAGASSE" {{ old('customer') == 'NAGASSE' ? 'selected' : '' }}>NAGASSE</option>
-                                <option value="NISSEN" {{ old('customer') == 'NISSEN' ? 'selected' : '' }}>NISSEN</option>
-                                <option value="PBI" {{ old('customer') == 'PBI' ? 'selected' : '' }}>PBI</option>
-                                <option value="SIM" {{ old('customer') == 'SIM' ? 'selected' : '' }}>SIM</option>
-                                <option value="SIM-SPD" {{ old('customer') == 'SIM-SPD' ? 'selected' : '' }}>SIM-SPD</option>
-                                <option value="SMI" {{ old('customer') == 'SMI' ? 'selected' : '' }}>SMI</option>
-                                <option value="TMMIN" {{ old('customer') == 'TMMIN' ? 'selected' : '' }}>TMMIN</option>
-                                <option value="TMMIN-POQ" {{ old('customer') == 'TMMIN-POQ' ? 'selected' : '' }}>TMMIN-POQ</option>
-                                <option value="TRID" {{ old('customer') == 'TRID' ? 'selected' : '' }}>TRID</option>
-                                <option value="VALEO" {{ old('customer') == 'VALEO' ? 'selected' : '' }}>VALEO</option>
-                                <option value="YMPI" {{ old('customer') == 'YMPI' ? 'selected' : '' }}>YMPI</option>
+                                @foreach($customers as $customer)
+                                    <option value="{{ $customer->username }}" {{ old('customer') == $customer->username ? 'selected' : '' }}>{{ $customer->username }}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -110,22 +79,27 @@
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="stok_awal" class="form-label">Stok Awal</label>
+                            <label for="stok_awal" class="form-label">Stok Plan</label>
                             <input type="number" name="stok_awal" class="form-control" id="stok_awal" value="{{ old('stok_awal') }}" required>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="plant" class="form-label">Plant</label>
-                            <input type="text" class="form-control" id="plant" name="plant" value="{{ old('plant') }}">
+                            <label for="plant" class="form-label">Plan</label>
+                            <select class="form-control" id="plant" name="plant" required>
+                                <option value="">Select Plant</option>
+                                <option value="Plant 1" {{ old('plant') == 'Plant 1' ? 'selected' : '' }}>Plan 1</option>
+                                <option value="Plant 2" {{ old('plant') == 'Plant 2' ? 'selected' : '' }}>Plan 2</option>
+                            </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="status_product" class="form-label">Status Product</label>
-                            <select class="form-control" id="status_product" name="status_product" required>>
+                            <select class="form-control" id="status_product" name="status_product" required>
                                 <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
-                       <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
-                       <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
-                       <option value="RAW MATERIAL" {{ request('status') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
+                                <option value="Wip" {{ request('status') == 'Wip' ? 'selected' : '' }}>Wip</option>
+                                <option value="Packaging" {{ request('status') == 'Packaging' ? 'selected' : '' }}>Packaging</option>
+                                <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                                <option value="Raw Material" {{ request('status') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
                             </select>
                         </div>
                     </div>

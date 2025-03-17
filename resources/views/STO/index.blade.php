@@ -70,52 +70,58 @@
               </div>
             </div>
 
-            <!-- Inventory Code -->
-            <div class="mb-3 row">
-              <label for="inventory-code" class="col-md-3 col-form-label">Inventory Code</label>
-              <div class="col-md-9">
-                <input type="text" id="inventory-code" name="inventory_code" class="form-control"
-                  placeholder="Enter inventory code" value="{{ old('inventory_code') }}">
-              </div>
+          <!-- Category -->
+          <div class="mb-3 row">
+            <label for="category" class="col-md-3 col-form-label">Category</label>
+            <div class="col-md-9">
+              <select id="category" name="category" class="form-select">
+                <option value="Finished Good" {{ old('category', $inventory->status_product ?? '') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
+                <option value="Work In Process" {{ old('category', $inventory->status_product ?? '') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                <option value="ChildPart" {{ old('category', $inventory->status_product ?? '') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                <option value="Package" {{ old('category', $inventory->status_product ?? '') == 'Package' ? 'selected' : '' }}>Package</option>
+                <option value="Raw Material" {{ old('category', $inventory->status_product ?? '') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
+              </select>
             </div>
+          </div>
 
-            <!-- Status (Radio Buttons) -->
-            <div class="mb-3 row">
-              <label for="status" class="col-md-3 col-form-label text-white">Status</label>
-              <div class="col-md-9">
-                <select name="status" id="status" class="form-select">
-                  <optgroup label="Other">
-                    <option value="OK"
-                      {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
-                    <option value="NG"
-                      {{ old('status', $inventory->status_product ?? '') == 'NG' ? 'selected' : '' }}>NG</option>
-                  </optgroup>
-                  <optgroup label="Finished Good">
-                    <option value="FG"
-                      {{ old('status', $inventory->status_product ?? '') == 'FG' ? 'selected' : '' }}>FG</option>
-                    <option value="WIP"
-                      {{ old('status', $inventory->status_product ?? '') == 'WIP' ? 'selected' : '' }}>WIP</option>
-                  </optgroup>
-                  <optgroup label="Child Part">
-                    <option value="GOOD"
-                      {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                  </optgroup>
-                  <optgroup label="Pakage">
-                    <option value="GOOD"
-                      {{ old('status', $inventory->status_product ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD</option>
-                  </optgroup>
-                  <optgroup label="Raw Material">
-                    <option value="VIRGIN"
-                      {{ old('status', $inventory->status_product ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN</option>
-                    <option value="FUNGSAI"
-                      {{ old('status', $inventory->status_product ?? '') == 'FUNGSAI' ? 'selected' : '' }}>FUNGSAI
-                    </option>
-                  </optgroup>
-                </select>
-              </div>
+          <!-- Status (Dropdown) -->
+          <div class="mb-3 row">
+            <label for="status" class="col-md-3 col-form-label text-white">Status</label>
+            <div class="col-md-9">
+              <select id="status" name="status" class="form-select status-container">
+                <!-- Status options will be dynamically inserted here -->
+              </select>
             </div>
+          </div>
 
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              function updateStatusOptions() {
+                const category = document.getElementById('category').value;
+                const statusContainer = document.getElementById('status');
+                statusContainer.innerHTML = ''; // Clear previous options
 
+                let options = [];
+
+                if (category === 'Finished Good' || category === 'Work In Process' || category === 'ChildPart' || category === 'Package') {
+                  options = ['OK', 'NG'];
+                } else if (category === 'Raw Material') {
+                  options = ['VIRGIN', 'FUNGSAI', 'NG'];
+                }
+
+                options.forEach(status => {
+                  const selected = (status === "{{ old('status', $inventory->status_product ?? '') }}") ? 'selected' : '';
+                  const option = `<option value="${status}" ${selected}>${status}</option>`;
+                  statusContainer.insertAdjacentHTML('beforeend', option);
+                });
+              }
+
+              document.getElementById('category').addEventListener('change', updateStatusOptions);
+
+              // Trigger change event to load initial status when the page loads
+              updateStatusOptions();
+            });
+          </script>
 
             <!-- Qty Detail -->
             <div cs="mb-3 p-3 border rounded">
@@ -202,8 +208,8 @@
                   placeholder="Enter name" value="{{ Auth::user()->username }}">
               </div>
               <div class="mb-3 col-md-4">
-                <label for="detail_lokasi" class="col-form-label">Detail Lokasi</label>
-                <select id="detail_lokasi" name="detail_lokasi" class="form-select">
+                <label for="detail_lokasi_1" class="col-form-label">Detail Lokasi</label>
+                <select id="detail_lokasi_1" name="detail_lokasi" class="form-select">
                   <optgroup label="Childpart Area">
                     <option value="rak_a_a1_a25"
                       {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_a_a1_a25' ? 'selected' : '' }}>
@@ -372,10 +378,10 @@
                   <optgroup label="Material Molding ">
                     <option value="rak_material_molding_01"
                       {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Molding V</option>
+                      Area Material Line Molding Virgin</option>
                     <option value="rak_material_molding_02"
                       {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Molding F</option>
+                      Area Material Line Molding Fungsai</option>
                     <option value="rak_material_molding_03"
                       {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
                       Area Material Line Fungsai Mix</option>

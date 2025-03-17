@@ -154,7 +154,7 @@
   <script>
     Swal.fire({
       icon: 'error',
-      title: 'Oops...',
+      title: 'Gagal Login',
       text: '{{ session('error') }}',
     });
   </script>

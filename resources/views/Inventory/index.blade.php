@@ -66,9 +66,10 @@
                    <select name="status" id="statusFilter" class="form-select w-auto" onchange="this.form.submit()">
                        <option value="">All Category</option>
                        <option value="Finished Good" {{ request('status') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
-                       <option value="Work In Process" {{ request('status') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                       <option value="Wip" {{ request('status') == 'Wip' ? 'selected' : '' }}>Wip</option>
+                       <option value="Packaging" {{ request('status') == 'Packaging' ? 'selected' : '' }}>Packaging</option>
                        <option value="ChildPart" {{ request('status') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
-                       <option value="RAW MATERIAL" {{ request('status') == 'RAW MATERIAL' ? 'selected' : '' }}>RAW MATERIAL</option>
+                       <option value="Raw Material" {{ request('status') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
                    </select>
                </form>
 

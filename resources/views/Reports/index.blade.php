@@ -44,11 +44,6 @@
             <option value="">All Status</option>
             <option value="OK" {{ request('status') == 'OK' ? 'selected' : '' }}>OK</option>
             <option value="NG" {{ request('status') == 'NG' ? 'selected' : '' }}>NG</option>
-            <option value="FG" {{ request('status') == 'FG' ? 'selected' : '' }}>FG</option>
-            <option value="WIP" {{ request('status') == 'WIP' ? 'selected' : '' }}>WIP</option>
-            <option value="Good" {{ request('status') == 'Good' ? 'selected' : '' }}>Good</option>
-            <option value="Fungsai" {{ request('status') == 'Fungsai' ? 'selected' : '' }}>Funsai</option>
-            <option value="Virgin" {{ request('status') == 'Virgin' ? 'selected' : '' }}>Virgin</option>
           </select>
         </form>
         <div class="table-responsive">

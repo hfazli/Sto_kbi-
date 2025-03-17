@@ -74,6 +74,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/inventory-data', [InventoryController::class, 'data'])->name('inventory.data');
   Route::delete('/inventory/destroy/{id}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
   Route::get('inventory/export', [InventoryController::class, 'export'])->name('inventory.export');
+  Route::put('inventory/{inventory}', [InventoryController::class, 'update'])->name('inventory.update'); // Add this line
 
   // Forecast
   Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
