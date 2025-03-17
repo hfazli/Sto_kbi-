@@ -85,7 +85,7 @@
             <div class="col-md-9">
               <select id="category" name="category" class="form-select">
                 <option value="Finished Good" {{ old('category', $inventory->status_product ?? '') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
-                <option value="Work In Process" {{ old('category', $inventory->status_product ?? '') == 'Work In Process' ? 'selected' : '' }}>Work In Process</option>
+                <option value="Wip" {{ old('category', $inventory->status_product ?? '') == 'Wip' ? 'selected' : '' }}>Wip</option>
                 <option value="ChildPart" {{ old('category', $inventory->status_product ?? '') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
                 <option value="Package" {{ old('category', $inventory->status_product ?? '') == 'Package' ? 'selected' : '' }}>Package</option>
                 <option value="Raw Material" {{ old('category', $inventory->status_product ?? '') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
@@ -112,7 +112,7 @@
 
                 let options = [];
 
-                if (category === 'Finished Good' || category === 'Work In Process' || category === 'ChildPart' || category === 'Package') {
+                if (category === 'Finished Good' || category === 'Wip' || category === 'ChildPart' || category === 'Package') {
                   options = ['OK', 'NG'];
                 } else if (category === 'Raw Material') {
                   options = ['VIRGIN', 'FUNGSAI', 'NG'];

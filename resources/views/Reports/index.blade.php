@@ -44,6 +44,8 @@
             <option value="">All Status</option>
             <option value="OK" {{ request('status') == 'OK' ? 'selected' : '' }}>OK</option>
             <option value="NG" {{ request('status') == 'NG' ? 'selected' : '' }}>NG</option>
+            <option value="VIRGIN" {{ request('status') == 'NG' ? 'selected' : '' }}>VIRGIN</option>
+            <option value="FUNSAI" {{ request('status') == 'FUNSAI' ? 'selected' : '' }}>FUNSAI</option>
           </select>
         </form>
         <div class="table-responsive">

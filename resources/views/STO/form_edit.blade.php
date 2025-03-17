@@ -43,28 +43,58 @@
                   readonly>
               </div>
             </div>
-
-            <div class="mb-3 row">
-              <label for="status" class="col-md-3 col-form-label text-white">Status</label>
+ <!-- Category -->
+ <div class="mb-3 row">
+              <label for="category" class="col-md-3 col-form-label">Category</label>
               <div class="col-md-9">
-                <select name="status" id="status" class="form-select">
-                  <option value="NG" {{ old('status', $report->status ?? '') == 'NG' ? 'selected' : '' }}>
-                    NG</option>
-                  <option value="OK" {{ old('status', $report->status ?? '') == 'OK' ? 'selected' : '' }}>
-                    OK</option>
-                  <option value="FG" {{ old('status', $report->status ?? '') == 'FG' ? 'selected' : '' }}>
-                    FG</option>
-                  <option value="WIP" {{ old('status', $report->status ?? '') == 'WIP' ? 'selected' : '' }}>
-                    WIP</option>
-                  <option value="GOOD" {{ old('status', $report->status ?? '') == 'GOOD' ? 'selected' : '' }}>GOOD
-                  </option>
-                  <option value="VIRGIN" {{ old('status', $report->status ?? '') == 'VIRGIN' ? 'selected' : '' }}>VIRGIN
-                  </option>
-                  <option value="FUNGSAI" {{ old('status', $report->status ?? '') == 'FUNGSAI' ? 'selected' : '' }}>
-                    FUNGSAI</option>
+                <select id="category" name="category" class="form-select">
+                  <option value="Finished Good" {{ old('category', $report->category ?? '') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
+                  <option value="Wip" {{ old('category', $report->category ?? '') == 'Wip' ? 'selected' : '' }}>Wip</option>
+                  <option value="ChildPart" {{ old('category', $report->category ?? '') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
+                  <option value="Package" {{ old('category', $report->category ?? '') == 'Package' ? 'selected' : '' }}>Package</option>
+                  <option value="Raw Material" {{ old('category', $report->category ?? '') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
                 </select>
               </div>
             </div>
+
+            <!-- Status -->
+            <div class="mb-3 row">
+              <label for="status" class="col-md-3 col-form-label">Status</label>
+              <div class="col-md-9">
+                <select name="status" id="status" class="form-select">
+                  <!-- Status options will be dynamically inserted here -->
+                </select>
+              </div>
+            </div>
+
+            <script>
+            document.addEventListener('DOMContentLoaded', function() {
+              function updateStatusOptions() {
+                const category = document.getElementById('category').value;
+                const statusContainer = document.getElementById('status');
+                statusContainer.innerHTML = ''; // Clear previous options
+
+                let options = [];
+
+                if (category === 'Finished Good' || category === 'Wip' || category === 'ChildPart' || category === 'Package') {
+                  options = ['OK', 'NG'];
+                } else if (category === 'Raw Material') {
+                  options = ['VIRGIN', 'FUNGSAI', 'NG'];
+                }
+
+                options.forEach(status => {
+                  const selected = (status === "{{ old('status', $inventory->status_product ?? '') }}") ? 'selected' : '';
+                  const option = `<option value="${status}" ${selected}>${status}</option>`;
+                  statusContainer.insertAdjacentHTML('beforeend', option);
+                });
+              }
+
+              document.getElementById('category').addEventListener('change', updateStatusOptions);
+
+              // Trigger change event to load initial status when the page loads
+              updateStatusOptions();
+            });
+          </script>
 
             <!-- Qty Detail -->
             <div class="mb-3 p-3 border rounded">
