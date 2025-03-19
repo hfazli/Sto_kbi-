@@ -59,7 +59,10 @@ class ReportController extends Controller
         $dompdf->render();
 
         // Stream PDF to Browser
-        return $dompdf->stream("report-sto-" . $report->inventory_id . ".pdf");
+        $pdfContent = $dompdf->output();
+        return response($pdfContent)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'attachment; filename="report-sto-' . $report->inventory_id . '.pdf"');
     }
 
     public function delete($id)
