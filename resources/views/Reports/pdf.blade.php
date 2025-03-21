@@ -59,15 +59,15 @@
   <table>
     <tbody>
       <tr>
-        <td><b>Number</b></td>
+        <td><b>NUMBER</b></td>
         <td>:</td>
         <td>{{ $report->id ?? '' }}</td>
       </tr>
       <tr></tr>
       <tr>
-        <td><b>PLANT</b></td>
+        <td><b>PLANT LOKASI</b></td>
         <td>:</td>
-        <td>{{ $report->inventory->plant ?? '' }}</td>
+        <td>{{ $report->plan ?? 'N/A' }}</td>
       </tr>
       <tr>
         <td><b>STO PERIODE</b></td>
@@ -113,6 +113,11 @@
         <td><b>PIC</b></td>
         <td>:</td>
         <td>{{ $report->user ? $report->user->username : '' }}</td> <!-- Updated to display Prepared By -->
+      </tr>
+      <tr>
+        <td><b>Notes</b></td>
+        <td>:</td>
+        <td>{{ $report->notes ?? '' }}</td>
       </tr>
       <tr>
         <td class="text-center"><b>STOCK PLAN</b></td>
