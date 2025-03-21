@@ -12,6 +12,7 @@
     </div>
   @endif
   {{-- Main Content --}}
+  
   <div class="container">
     <div class="card p-2 p-md-4 mt-4 shadow-lg">
       <!-- Form Packing -->
@@ -216,202 +217,187 @@
                 <input readonly type="text" id="prepared_by_name" name="prepared_by_name" class="form-control"
                   placeholder="Enter name" value="{{ Auth::user()->username }}">
               </div>
+              
               <div class="mb-3 col-md-4">
                 <label for="detail_lokasi_1" class="col-form-label">Detail Lokasi</label>
                 <select id="detail_lokasi_1" name="detail_lokasi" class="form-select">
                   <optgroup label="Childpart Area">
-                    <option value="rak_a_a1_a25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_a_a1_a25' ? 'selected' : '' }}>
-                      Area Rak A (A1-A25)</option>
-                    <option value="rak_a_a26_a52"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_a_a26_a52' ? 'selected' : '' }}>
-                      Area Rak A (A26-A52)</option>
-                    <option value="rak_b_b1_b25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_b_b1_b25' ? 'selected' : '' }}>
-                      Area Rak B (B1-B25)</option>
-                    <option value="rak_b_b26_b54"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_b_b26_b54' ? 'selected' : '' }}>
-                      Area Rak B (B26-B54)</option>
-                    <option value="rak_c_c1_c25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_c_c1_c25' ? 'selected' : '' }}>
-                      Area Rak C (C1-C25)</option>
-                    <option value="rak_c_c26_c50"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_c_c26_c50' ? 'selected' : '' }}>
-                      Area Rak C (C26-C50)</option>
-                    <option value="rak_d_d1_d25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_d_d1_d25' ? 'selected' : '' }}>
-                      Area Rak D (D1-D25)</option>
-                    <option value="rak_d_d26_d50"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_d_d26_d50' ? 'selected' : '' }}>
-                      Area Rak D (D26-D50)</option>
-                    <option value="rak_e_e1_e25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_e_e1_e25' ? 'selected' : '' }}>
-                      Area Rak E (E1-E25)</option>
-                    <option value="rak_e_e26_e50"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_e_e26_e50' ? 'selected' : '' }}>
-                      Area Rak E (E26-E50)</option>
-                    <option value="rak_f_f1_f25"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_f_f1_f25' ? 'selected' : '' }}>
-                      Area Rak F (F1-F25)</option>
-                    <option value="rak_f_f26_f50"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_f_f26_f50' ? 'selected' : '' }}>
-                      Area Rak F (F26-F50)</option>
+                    <option value="rak_a_a1_a25">Area Rak A (A1-A25)</option>
+                    <option value="rak_a_a26_a52">Area Rak A (A26-A52)</option>
+                    <option value="rak_b_b1_b25">Area Rak B (B1-B25)</option>
+                    <option value="rak_b_b26_b54">Area Rak B (B26-B54)</option>
+                    <option value="rak_c_c1_c25">Area Rak C (C1-C25)</option>
+                    <option value="rak_c_c26_c50">Area Rak C (C26-C50)</option>
+                    <option value="rak_d_d1_d25">Area Rak D (D1-D25)</option>
+                    <option value="rak_d_d26_d50">Area Rak D (D26-D50)</option>
+                    <option value="rak_e_e1_e25">Area Rak E (E1-E25)</option>
+                    <option value="rak_e_e26_e50">Area Rak E (E26-E50)</option>
+                    <option value="rak_f_f1_f25">Area Rak F (F1-F25)</option>
+                    <option value="rak_f_f26_f50">Area Rak F (F26-F50)</option>
                   </optgroup>
                   <optgroup label="Pakaging Area">
-                    <option value="rak_packing"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_packing' ? 'selected' : '' }}>Area
-                      Packanging YPC</option>
-                    <option value="rak_packing"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_packing' ? 'selected' : '' }}>Area
-                      Packanging Carton Box WH(2)</option>
-                    <option value="rak_packing"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_packing' ? 'selected' : '' }}>Area
-                      Packanging Carton Box WH(3)</option>
+                    <option value="rak_packing">Area Packanging YPC</option>
+                    <option value="rak_packing">Area Packanging Carton Box WH(2)</option>
+                    <option value="rak_packing">Area Packanging Carton Box WH(3)</option>
                   </optgroup>
                   <optgroup label="Finished Good Area">
-                    <option value="rak_finished_good_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_finished_good' ? 'selected' : '' }}>
-                      Area Finished Good WH (11.1)</option>
-                    <option value="rak_finished_good_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_finished_good' ? 'selected' : '' }}>
-                      Area Finished Good WH (11.2)</option>
-                    <option value="rak_finished_good_03"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_finished_good' ? 'selected' : '' }}>
-                      Area Finished Good WH (11.3)</option>
-                    <option value="rak_finished_good_04"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_finished_good' ? 'selected' : '' }}>
-                      Area Shutter FG, Prep MMKI (12.1)</option>
-                    <option value="rak_finished_good_05"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_finished_good' ? 'selected' : '' }}>
-                      Area Shutter FG, Prep MMKI (12.2)</option>
+                    <option value="rak_finished_good_01">Area Finished Good WH (11.1)</option>
+                    <option value="rak_finished_good_02">Area Finished Good WH (11.2)</option>
+                    <option value="rak_finished_good_03">Area Finished Good WH (11.3)</option>
+                    <option value="rak_finished_good_04">Area Shutter FG, Prep MMKI (12.1)</option>
+                    <option value="rak_finished_good_05">Area Shutter FG, Prep MMKI (12.2)</option>
                   </optgroup>
                   <optgroup label="Area Subcont">
-                    <option value="rak_subcont_wip"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_subcont' ? 'selected' : '' }}>Area
-                      Subcont FG</option>
-                    <option value="rak_subcont_wip"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_subcont' ? 'selected' : '' }}>Area
-                      Subcont WIP</option>
+                    <option value="rak_subcont_wip">Area Subcont FG</option>
+                    <option value="rak_subcont_wip">Area Subcont WIP</option>
                   </optgroup>
                   <optgroup label="Area Delivery">
-                    <option value="rak_delivery"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_delivery' ? 'selected' : '' }}>
-                      Area Delivery</option>
+                    <option value="rak_delivery">Area Delivery</option>
                   </optgroup>
                   <optgroup label="Material Transit">
-                    <option value="rak_material"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'Material' ? 'selected' : '' }}>Area
-                      Material Transit</option>
-                    <option value="rak_material"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'Material' ? 'selected' : '' }}>Area
-                      Matrial WorkShop</option>
+                    <option value="rak_material">Area Material Transit</option>
+                    <option value="rak_material">Area Matrial WorkShop</option>
                   </optgroup>
                   <optgroup label="Shutter FG Fin">
-                    <option value="rak_shutter_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_shutter_01' ? 'selected' : '' }}>
-                      Area Shutter FG Fin Line 1-23 (16.1)</option>
-                    <option value="rak_shutter_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_shutter_02' ? 'selected' : '' }}>
-                      Area Shutter FG Fin Line 1-23 (16.2)</option>
-                    <option value="rak_shutter_03"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_shutter_03' ? 'selected' : '' }}>
-                      Area Shutter FG Fin Line 1-23 (16.3)</option>
+                    <option value="rak_shutter_01">Area Shutter FG Fin Line 1-23 (16.1)</option>
+                    <option value="rak_shutter_02">Area Shutter FG Fin Line 1-23 (16.2)</option>
+                    <option value="rak_shutter_03">Area Shutter FG Fin Line 1-23 (16.3)</option>
                   </optgroup>
                   <optgroup label="QC Office Room">
-                    <option value="rak_qc_wip"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_qc_wip' ? 'selected' : '' }}>Area
-                      WIP QC Office</option>
-                    <option value="rak_qc_fg"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_qc_fg' ? 'selected' : '' }}>Area
-                      FG QC Office</option>
+                    <option value="rak_qc_wip">Area WIP QC Office</option>
+                    <option value="rak_qc_fg">Area FG QC Office</option>
                   </optgroup>
                   <optgroup label="Manufacture Office">
-                    <option value="rak_manufacture_FG"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_manufacture' ? 'selected' : '' }}>
-                      Area Office FG</option>
-                    <option value="rak_manufacture_WIP"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_manufacture' ? 'selected' : '' }}>
-                      Area Office WIP</option>
+                    <option value="rak_manufacture_FG">Area Office FG</option>
+                    <option value="rak_manufacture_WIP">Area Office WIP</option>
                   </optgroup>
                   <optgroup label="WIP Lin Fin">
-                    <option value="rak_wip_fin_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_fin_01' ? 'selected' : '' }}>
-                      Area Produksi (Finishing) WIP</option>
+                    <option value="rak_wip_fin_01">Area Produksi (Finishing) WIP</option>
                   </optgroup>
                   <optgroup label="Childpart Fin">
-                    <option value="rak_childpart_fin_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_childpart_fin_01' ? 'selected' : '' }}>
-                      Area Childpart Fin Line (1-10)</option>
-                    <option value="rak_childpart_fin_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_childpart_fin_02' ? 'selected' : '' }}>
-                      Area Childpart Fin Line (11-20)</option>
-                    <option value="rak_childpart_fin_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_childpart_fin_01' ? 'selected' : '' }}>
-                      Area Childpart Fin Line (21-30)</option>
+                    <option value="rak_childpart_fin_01">Area Childpart Fin Line (1-10)</option>
+                    <option value="rak_childpart_fin_02">Area Childpart Fin Line (11-20)</option>
+                    <option value="rak_childpart_fin_01">Area Childpart Fin Line (21-30)</option>
                   </optgroup>
                   <optgroup label="WIP Shutter Molding">
-                    <option value="rak_wip_shutter_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_shutter_01' ? 'selected' : '' }}>
-                      Area WIP Shutter Molding 1-30 (21.1)</option>
-                    <option value="rak_wip_shutter_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_shutter_02' ? 'selected' : '' }}>
-                      Area WIP Shutter Molding 1-30 (21.2)</option>
-                    <option value="rak_wip_shutter_03"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_shutter_03' ? 'selected' : '' }}>
-                      Area WIP Shutter Molding 32-59 (21.3)</option>
-                    <option value="rak_wip_shutter_04"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_shutter_04' ? 'selected' : '' }}>
-                      Area WIP Shutter Molding 32-59 (21.4)</option>
+                    <option value="rak_wip_shutter_01">Area WIP Shutter Molding 1-30 (21.1)</option>
+                    <option value="rak_wip_shutter_02">Area WIP Shutter Molding 1-30 (21.2)</option>
+                    <option value="rak_wip_shutter_03">Area WIP Shutter Molding 32-59 (21.3)</option>
+                    <option value="rak_wip_shutter_04">Area WIP Shutter Molding 32-59 (21.4)</option>
                   </optgroup>
                   <optgroup label="WIP Pianica">
-                    <option value="rak_wip_pianica_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_pianica_01' ? 'selected' : '' }}>
-                      Area WIP Pianca (23.1)</option>
-                    <option value="rak_wip_pianica_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_pianica_02' ? 'selected' : '' }}>
-                      Area WIP Pianca (23.2)</option>
+                    <option value="rak_wip_pianica_01">Area WIP Pianca (23.1)</option>
+                    <option value="rak_wip_pianica_02">Area WIP Pianca (23.2)</option>
                   </optgroup>
                   <optgroup label="WIP WH 2">
-                    <option value="rak_wip_wh2_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_wh2_01' ? 'selected' : '' }}>
-                      Area WIP WH 2 (24.1)</option>
-                    <option value="rak_wip_wh2_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_wh2_02' ? 'selected' : '' }}>
-                      Area WIP WH 2 (24.2)</option>
+                    <option value="rak_wip_wh2_01">Area WIP WH 2 (24.1)</option>
+                    <option value="rak_wip_wh2_02">Area WIP WH 2 (24.2)</option>
                   </optgroup>
                   <optgroup label="WIP Molding">
-                    <option value="rak_wip_molding"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_wh3_01' ? 'selected' : '' }}>
-                      Area WIP Molding</option>
+                    <option value="rak_wip_molding">Area WIP Molding</option>
                   </optgroup>
-                  <optgroup label="Material Molding ">
-                    <option value="rak_material_molding_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Molding Virgin</option>
-                    <option value="rak_material_molding_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Molding Fungsai</option>
-                    <option value="rak_material_molding_03"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_material_molding' ? 'selected' : '' }}>
-                      Area Material Line Fungsai Mix</option>
+                  <optgroup label="Material Molding">
+                    <option value="rak_material_molding_01">Area Material Line Molding Virgin</option>
+                    <option value="rak_material_molding_02">Area Material Line Molding Fungsai</option>
+                    <option value="rak_material_molding_03">Area Material Line Fungsai Mix</option>
                   </optgroup>
                   <optgroup label="WIP Rak Daisha">
-                    <option value="rak_wip_daisha_01"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_daisha' ? 'selected' : '' }}>
-                      Area WIP Rak Daisha (27.1)</option>
-                    <option value="rak_wip_daisha_02"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_wip_daisha' ? 'selected' : '' }}>
-                      Area WIP Rak Daisha (27.2)</option>
+                    <option value="rak_wip_daisha_01">Area WIP Rak Daisha (27.1)</option>
+                    <option value="rak_wip_daisha_02">Area WIP Rak Daisha (27.2)</option>
                   </optgroup>
                   <optgroup label="Area Service Part">
-                    <option value="rak_service_part"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_service_part' ? 'selected' : '' }}>
-                      Area SPD</option>
+                    <option value="rak_service_part">Area SPD</option>
                   </optgroup>
                   <optgroup label="Cut Off Delivery">
-                    <option value="rak_Off_Deliver"
-                      {{ old('detail_lokasi', $inventory->detail_lokasi ?? '') == 'rak_subcont' ? 'selected' : '' }}>Area
-                      Cut Off Delivery</option>
+                    <option value="rak_Off_Deliver">Area Cut Off Delivery</option>
+                  </optgroup>
+                  <optgroup label="Wip Line Blowmodlding">
+                    <option value="Wip_Line_Blowmolding">Area Wip Line Blowmodlding</option>
+                  </optgroup>
+                </select>
+                      <optgroup label="Material Line Blowmolding">
+                        <option value="material_line_blowmolding">Material Line Blowmolding</option>
+                      </optgroup>
+                      <optgroup label="WIP Shutter Spoiler">
+                        <option value="wip_shutter_spoiler">WIP Shutter Spoiler</option>
+                      </optgroup>
+                      <optgroup label="WIP Sanding Area">
+                        <option value="wip_sanding_area">WIP Sanding Area</option>
+                      </optgroup>
+                      <optgroup label="FG Area NG Spoiler">
+                        <option value="fg_area_ng_spoiler">FG Area NG Spoiler</option>
+                      </optgroup>
+                      <optgroup label="WIP Shutter">
+                        <option value="wip_shutter_1">WIP Shutter 1</option>
+                        <option value="wip_shutter_2">WIP Shutter 2</option>
+                      </optgroup>
+                      <optgroup label="Material Warehouse">
+                        <option value="material_warehouse">Material Warehouse</option>
+                      </optgroup>
+                      <optgroup label="Packaging WH">
+                        <option value="packaging_wh">Packaging WH</option>
+                      </optgroup>
+                      <optgroup label="WIP Ducting WH">
+                        <option value="wip_ducting_wh">WIP Ducting WH</option>
+                      </optgroup>
+                      <optgroup label="Finishing Line">
+                        <option value="finishing_line_1_9">Finishing Line 1-9</option>
+                        <option value="finishing_line_10_18">Finishing Line 10-18</option>
+                      </optgroup>
+                      <optgroup label="Childpart Rack">
+                        <option value="childpart_rack_a">Childpart Rack - A</option>
+                        <option value="childpart_rack_b">Childpart Rack - B</option>
+                        <option value="childpart_rack_c">Childpart Rack - C</option>
+                        <option value="childpart_rack_d">Childpart Rack - D</option>
+                        <option value="childpart_rack_e">Childpart Rack - E</option>
+                        <option value="childpart_rack_f">Childpart Rack - F</option>
+                        <option value="childpart_rack_g">Childpart Rack - G</option>
+                        <option value="childpart_rack_h">Childpart Rack - H</option>
+                        <option value="childpart_rack_i">Childpart Rack - I</option>
+                        <option value="childpart_rack_j">Childpart Rack - J</option>
+                        <option value="childpart_pallet_area">Childpart Pallet Area</option>
+                        <option value="childpart_rack_k">Childpart Rack - K</option>
+                        <option value="childpart_rack_l">Childpart Rack - L</option>
+                        <option value="childpart_rack_m">Childpart Rack - M</option>
+                        <option value="childpart_rack_na">Childpart Rack - NA</option>
+                        <option value="childpart_rack_nb">Childpart Rack - NB</option>
+                      </optgroup>
+                      <optgroup label="Receiving Cpart & Temporary Area">
+                        <option value="receiving_cpart_temporary_area">Receiving Cpart & Temporary Area</option>
+                      </optgroup>
+                      <optgroup label="FG Shutter">
+                        <option value="fg_shutter_a">FG Shutter A</option>
+                        <option value="fg_shutter_b">FG Shutter B</option>
+                      </optgroup>
+                      <optgroup label="WIP Inoac">
+                        <option value="wip_inoac">WIP Inoac</option>
+                      </optgroup>
+                      <optgroup label="FG Area">
+                        <option value="fg_area_prepare_denso">FG Area Prepare Denso</option>
+                        <option value="fg_palet">FG Palet</option>
+                        <option value="fg_export">FG Export +</option>
+                        <option value="fg_prepare_adm">FG Prepare ADM</option>
+                        <option value="fg_prepare_spd">FG Prepare SPD</option>
+                        <option value="fg_dmia_wh">FG DMIA WH+</option>
+                      </optgroup>
+                      <optgroup label="FG Injection Area">
+                        <option value="fg_injection_area">FG Injection Area</option>
+                      </optgroup>
+                      <optgroup label="PE Room">
+                        <option value="pe_room">PE Room</option>
+                      </optgroup>
+                      <optgroup label="Area Crusher & Material Injection">
+                        <option value="area_crusher_material_injection">Area Crusher & Material Injection</option>
+                      </optgroup>
+                      <optgroup label="Delivery Area">
+                        <option value="delivery_area">Delivery Area +</option>
+                      </optgroup>
+                      <optgroup label="Lantai-2">
+                        <option value="lantai_2">Lantai-2</option>
+                      </optgroup>
+                      <optgroup label="DOJO Area">
+                        <option value="dojo_area">DOJO Area</option>
+                      </optgroup>
                 </select>
               </div>
             </div>
@@ -444,7 +430,7 @@
       <!-- Form Search Report -->
       <form action="{{ route('sto.edit') }}" method="GET" id="editForm">
         <div class="mb-2">
-          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO (Berdsakan
+          <label for="id_report" class="form-label" style="font-size: 1.1rem;">Edit Report STO (Berdasarkan
             Number)</label>
           <div class="input-group my-2 my-md-3">
             <input type="text" placeholder="Enter Report Number" name="id_report" class="form-control"

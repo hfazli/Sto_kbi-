@@ -73,7 +73,7 @@
             <div class="mb-3 p-3 border rounded">
               <h6 class="mb-3 text-center"><strong>QUANTITY INPUT</strong></h6>
               <div id="quantityInputs" class="row">
-                <label for="qty_per_box" class="col-form-label text-white">WAJIB SINI</label>
+                <label for="qty_per_box" class="col-form-label text-white">ITEMCOMPLETE</label>
                 <div class="mb-3 col-md-3">
                   <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                   <input type="number" id="qty_per_box" name="qty_per_box" class="form-control"
@@ -118,8 +118,7 @@
                 </div>
               </div>
               <button type="button" class="btn btn-primary toggle-btn" id="optionalInputButton"
-                onclick="toggleOptionalQuantityInputs()">SHOW INCOMPLETE ITEM (ITEM RECEH)</button>
-
+                onclick="toggleOptionalQuantityInputs()">SHOW UNCOMPLETE ITEM</button>
             </div>
 
             <div class="d-flex row">
