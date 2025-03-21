@@ -28,7 +28,7 @@ class InventoryController extends Controller
             $inventory = $query->paginate($entries);
         }
 
-        return view('Inventory.index', compact('Inventory', 'search'));
+        return view('Inventory.index', compact('inventory', 'search'));
     }
 
     public function create()
