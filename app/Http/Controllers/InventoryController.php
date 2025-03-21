@@ -28,7 +28,7 @@ class InventoryController extends Controller
             $inventory = $query->paginate($entries);
         }
 
-        return view('inventory.index', compact('inventory', 'search'));
+        return view('Inventory.index', compact('Inventory', 'search'));
     }
 
     public function create()
@@ -68,13 +68,13 @@ class InventoryController extends Controller
 
         $inventory->save();
 
-        return redirect()->route('inventory.index')->with('success', 'Inventory created successfully.');
+        return redirect()->route('Inventory.index')->with('success', 'Inventory created successfully.');
     }
 
     public function show($id)
     {
         $inventory = Inventory::findOrFail($id);
-        return view('inventory.show', compact('inventory'));
+        return view('Inventory.show', compact('Inventory'));
     }
 
     public function edit($id)
