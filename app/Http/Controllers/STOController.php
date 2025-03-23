@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DetailLokasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Inventory; // Import the Inventory model
@@ -13,7 +14,8 @@ class STOController extends Controller
 {
   public function index()
   {
-    return view('STO.index');
+    $detail_lokasi = DetailLokasi::all();
+    return view('STO.index', compact('detail_lokasi'));
   }
 
   public function show($id)
@@ -43,7 +45,8 @@ class STOController extends Controller
   {
     $inventory = Inventory::where('inventory_id', $inventory_id)->first();
     if ($inventory) {
-      return view('sto.form', compact('inventory'));
+      $detail_lokasi = DetailLokasi::all();
+      return view('sto.form', compact('inventory', 'detail_lokasi'));
     }
     return back()->with('error', 'Inventory not found. Please try again.');
   }
@@ -66,6 +69,7 @@ class STOController extends Controller
       'detail_lokasi' => 'nullable|string',
       'part_name' => 'nullable|string',
       'part_number' => 'nullable|string',
+      'plant' => 'nullable|string',
     ]);
 
     // Create and save the report
@@ -84,6 +88,7 @@ class STOController extends Controller
       'detail_lokasi' => $validatedData['detail_lokasi'],
       'part_name' => $validatedData['part_name'],
       'part_number' => $validatedData['part_number'],
+      'plant' => $validatedData['plant'],
     ]);
 
     // Redirect back with success message
@@ -111,6 +116,8 @@ class STOController extends Controller
       'qty_box_2' => 'nullable|integer',
       'total_2' => 'nullable|integer',
       'grand_total' => 'required|integer',
+      'plant' => 'nullable|string',
+
     ]);
 
     // Create and save the report
@@ -130,6 +137,7 @@ class STOController extends Controller
       'detail_lokasi' => $validatedData['detail_lokasi'],
       'part_name' => $validatedData['part_name'],
       'part_number' => $validatedData['part_number'],
+      'plant' => $validatedData['plant'],
     ]);
 
 
@@ -143,12 +151,12 @@ class STOController extends Controller
   {
     $user = auth()->user();
     $inventory = null;
-
+    $detail_lokasi = DetailLokasi::all();
     if ($request->has('part_number')) {
       $inventory = Inventory::where('part_number', $request->input('part_number'))->first();
     }
 
-    return view('STO.from', compact('user', 'inventory'));
+    return view('STO.from', compact('user', 'inventory', 'detail_lokasi'));
   }
 
   public function manage(Request $request, $id)
@@ -170,8 +178,9 @@ class STOController extends Controller
   {
     $id = $request['id_report'];
     $report = ReportSTO::with('inventory', 'user')->find($id);
+    $detail_lokasi = DetailLokasi::all();
     if ($report) {
-      return view('sto.form_edit', compact('report'));
+      return view('sto.form_edit', compact('report', 'detail_lokasi'));
     }
     return back()->with('error', 'Report not found. Please search another report number.');
   }
@@ -193,6 +202,7 @@ class STOController extends Controller
       'detail_lokasi' => 'nullable|string',
       'part_name' => 'nullable|string',
       'part_number' => 'nullable|string',
+      'plant' => 'nullable|string',
     ]);
 
     // Create and save the report

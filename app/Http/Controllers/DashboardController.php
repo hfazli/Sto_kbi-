@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Part;
 use App\Models\Customer;
+use App\Models\Forecast;
 use App\Models\ForecastSummary;
 use App\Models\Invoice;
 use App\Models\ReportSTO;
@@ -53,39 +54,14 @@ class DashboardController extends Controller
       }
     }
 
-    $minForecast = ForecastSummary::min('date');
-    $maxForecast = ForecastSummary::max('date');
+    $startDate = Forecast::min('forecast_date') ? Carbon::parse(Forecast::min('forecast_date')) : Carbon::today()->addDays(-30);
+    $endDate = Forecast::max('forecast_date') ? Carbon::parse(Forecast::max('forecast_date')) : Carbon::today()->addDays(30); // Default to 30 days from today
 
-    if (!$minForecast || !$maxForecast) {
-      $dates = [];
-    } else {
-      // Convert to Carbon instances
-      $start = Carbon::parse($minForecast);
-      $end = Carbon::parse($maxForecast);
-
-      // Generate the list of dates
-      $dates = [];
-      while ($start->lte($end)) {
-        $dates[] = $start->copy(); // Ensure string format (YYYY-MM-DD)
-        $start->addDay();
-      }
-    }
-
-    // return view('dashboard', [
-    //   'customers' => $customers,
-    //   'partNames' => $partNames,
-    //   'partData' => $partData,
-    //   'minValues' => $minValues,
-    //   'maxValues' => $maxValues,
-    //   'days' => $days,
-    //   'month' => $month,
-    //   'year' => $year,
-    //   'invoices' => $invoices,
-    // ]);
     return view('dashboard', compact(
       'customers',
       'months',
-      'dates',
+      'startDate',
+      'endDate',
     ));
   }
 

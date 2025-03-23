@@ -67,7 +67,7 @@
       <tr>
         <td><b>PLANT LOKASI</b></td>
         <td>:</td>
-        <td>{{ $report->plan ?? 'N/A' }}</td>
+        <td>{{ $report->plant ?? 'N/A' }}</td>
       </tr>
       <tr>
         <td><b>STO PERIODE</b></td>

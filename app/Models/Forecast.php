@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Forecast extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $table = 'Forecast'; // Correct the table name
+  protected $table = 'Forecast'; // Correct the table name
 
-    protected $fillable = [
-        'inventory_id',
-        'part_name',
-        'part_number',
-        'customer',
-        'forecast_qty',
-        'min_stok',
-        'max_stok',
-        'forecast_date',
-    ];
+  protected $fillable = [
+    'inventory_id',
+    'part_name',
+    'part_number',
+    'customer',
+    'forecast_qty',
+    'forecast_day',
+    'min_stok',
+    'max_stok',
+    'forecast_date',
+  ];
 }

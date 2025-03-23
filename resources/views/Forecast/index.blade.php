@@ -61,13 +61,13 @@
         <h5 class="card-title">Update Daily Stok</h5>
 
         <a href="{{ route('forecast.create') }}" class="btn btn-primary mb-3">
-          <i class="fas fa-plus"></i> Create New Forecast
+          <i class="fas fa-plus"></i> Create New Daily Stock
         </a>
-        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#forecastSummaryModal">
+        {{-- <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#forecastSummaryModal">
           <i class="fas fa-file-excel"></i> Import Forecast Summary
-        </button>
+        </button> --}}
         <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal" data-bs-target="#importForecastModal">
-          <i class="fas fa-file-import"></i> Import Forecast
+          <i class="fas fa-file-import"></i> Import Daily Stock
         </button>
 
         <div class="table-responsive">
@@ -80,6 +80,7 @@
                 <th>Part Number</th>
                 <th>Customer</th>
                 <th>Forecast Qty</th>
+                <th>Forecast Day</th>
                 <th>Min Stok</th>
                 <th>Max Stok</th>
                 <th>Actual Date</th>
@@ -95,6 +96,7 @@
                   <td>{{ $forecast->part_number }}</td>
                   <td>{{ $forecast->customer }}</td>
                   <td>{{ $forecast->forecast_qty }}</td>
+                  <td>{{ $forecast->forecast_day }}</td>
                   <td>{{ $forecast->min_stok }}</td>
                   <td>{{ $forecast->max_stok }}</td>
                   <td>{{ $forecast->forecast_date }}</td>
@@ -126,7 +128,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="importModalLabel">Import Forecast from Excel</h5>
+          <h5 class="modal-title" id="importModalLabel">Import Daily Stock from Excel</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -172,7 +174,8 @@
     </div>
   </div>
 
-  <div class="modal fade" id="importForecastModal" tabindex="-1" aria-labelledby="importForecastModalLabel" aria-hidden="true">
+  <div class="modal fade" id="importForecastModal" tabindex="-1" aria-labelledby="importForecastModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -180,7 +183,8 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form id="importForecastForm" action="{{ route('forecast.import') }}" method="POST" enctype="multipart/form-data">
+          <form id="importForecastForm" action="{{ route('forecast.import') }}" method="POST"
+            enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
               <label for="file" class="form-label">Upload Excel File</label>

@@ -12,7 +12,7 @@
     </div>
   @endif
   {{-- Main Content --}}
-  
+
   <div class="container">
     <div class="card p-2 p-md-4 mt-4 shadow-lg">
       <!-- Form Packing -->
@@ -80,58 +80,69 @@
               </div>
             </div>
 
-          <!-- Category -->
-          <div class="mb-3 row">
-            <label for="category" class="col-md-3 col-form-label">Category</label>
-            <div class="col-md-9">
-              <select id="category" name="category" class="form-select">
-                <option value="Finished Good" {{ old('category', $inventory->status_product ?? '') == 'Finished Good' ? 'selected' : '' }}>Finished Good</option>
-                <option value="Wip" {{ old('category', $inventory->status_product ?? '') == 'Wip' ? 'selected' : '' }}>Wip</option>
-                <option value="ChildPart" {{ old('category', $inventory->status_product ?? '') == 'ChildPart' ? 'selected' : '' }}>ChildPart</option>
-                <option value="Package" {{ old('category', $inventory->status_product ?? '') == 'Package' ? 'selected' : '' }}>Package</option>
-                <option value="Raw Material" {{ old('category', $inventory->status_product ?? '') == 'Raw Material' ? 'selected' : '' }}>Raw Material</option>
-              </select>
+            <!-- Category -->
+            <div class="mb-3 row">
+              <label for="category" class="col-md-3 col-form-label">Category</label>
+              <div class="col-md-9">
+                <select id="category" name="category" class="form-select">
+                  <option value="Finished Good"
+                    {{ old('category', $inventory->status_product ?? '') == 'Finished Good' ? 'selected' : '' }}>Finished
+                    Good</option>
+                  <option value="Wip"
+                    {{ old('category', $inventory->status_product ?? '') == 'Wip' ? 'selected' : '' }}>Wip</option>
+                  <option value="ChildPart"
+                    {{ old('category', $inventory->status_product ?? '') == 'ChildPart' ? 'selected' : '' }}>ChildPart
+                  </option>
+                  <option value="Package"
+                    {{ old('category', $inventory->status_product ?? '') == 'Package' ? 'selected' : '' }}>Package
+                  </option>
+                  <option value="Raw Material"
+                    {{ old('category', $inventory->status_product ?? '') == 'Raw Material' ? 'selected' : '' }}>Raw
+                    Material</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <!-- Status (Dropdown) -->
-          <div class="mb-3 row">
-            <label for="status" class="col-md-3 col-form-label text-white">Status</label>
-            <div class="col-md-9">
-              <select id="status" name="status" class="form-select status-container">
-                <!-- Status options will be dynamically inserted here -->
-              </select>
+            <!-- Status (Dropdown) -->
+            <div class="mb-3 row">
+              <label for="status" class="col-md-3 col-form-label text-white">Status</label>
+              <div class="col-md-9">
+                <select id="status" name="status" class="form-select status-container">
+                  <!-- Status options will be dynamically inserted here -->
+                </select>
+              </div>
             </div>
-          </div>
 
-          <script>
-            document.addEventListener('DOMContentLoaded', function() {
-              function updateStatusOptions() {
-                const category = document.getElementById('category').value;
-                const statusContainer = document.getElementById('status');
-                statusContainer.innerHTML = ''; // Clear previous options
+            <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                function updateStatusOptions() {
+                  const category = document.getElementById('category').value;
+                  const statusContainer = document.getElementById('status');
+                  statusContainer.innerHTML = ''; // Clear previous options
 
-                let options = [];
+                  let options = [];
 
-                if (category === 'Finished Good' || category === 'Wip' || category === 'ChildPart' || category === 'Package') {
-                  options = ['OK', 'NG'];
-                } else if (category === 'Raw Material') {
-                  options = ['VIRGIN', 'FUNGSAI', 'NG'];
+                  if (category === 'Finished Good' || category === 'Wip' || category === 'ChildPart' || category ===
+                    'Package') {
+                    options = ['OK', 'NG'];
+                  } else if (category === 'Raw Material') {
+                    options = ['VIRGIN', 'FUNGSAI', 'NG'];
+                  }
+
+                  options.forEach(status => {
+                    const selected = (status === "{{ old('status', $inventory->status_product ?? '') }}") ? 'selected' :
+                      '';
+                    const option = `<option value="${status}" ${selected}>${status}</option>`;
+                    statusContainer.insertAdjacentHTML('beforeend', option);
+                  });
                 }
 
-                options.forEach(status => {
-                  const selected = (status === "{{ old('status', $inventory->status_product ?? '') }}") ? 'selected' : '';
-                  const option = `<option value="${status}" ${selected}>${status}</option>`;
-                  statusContainer.insertAdjacentHTML('beforeend', option);
-                });
-              }
+                document.getElementById('category').addEventListener('change', updateStatusOptions);
 
-              document.getElementById('category').addEventListener('change', updateStatusOptions);
-
-              // Trigger change event to load initial status when the page loads
-              updateStatusOptions();
-            });
-          </script>
+                // Trigger change event to load initial status when the page loads
+                updateStatusOptions();
+              });
+            </script>
 
             <!-- Qty Detail -->
             <div cs="mb-3 p-3 border rounded">
@@ -203,201 +214,43 @@
 
             <div class="d-flex row">
               <!-- Issued Date -->
-              <div class="mb-3 col-md-4">
+              <div class="mb-3 col-md-3">
                 <label for="issued_date" class="col-form-label">Issued Date</label>
                 <input required type="date" id="issued_date" name="issued_date" class="form-control"
                   value="{{ old('issued_date', date('Y-m-d')) }}" readonly>
               </div>
 
               <!-- Prepared By -->
-              <div class="mb-3 col-md-4">
+              <div class="mb-3 col-md-3">
                 <label for="prepared_by_name" class="col-form-label">Prepared By</label>
                 <input hidden type="text" id="prepared_by" name="prepared_by" class="form-control"
                   value="{{ auth()->id() }}">
                 <input readonly type="text" id="prepared_by_name" name="prepared_by_name" class="form-control"
                   placeholder="Enter name" value="{{ Auth::user()->username }}">
               </div>
-              
-              <div class="mb-3 col-md-4">
-                <label for="detail_lokasi_1" class="col-form-label">Detail Lokasi</label>
-                <select id="detail_lokasi_1" name="detail_lokasi" class="form-select">
-                  <optgroup label="Childpart Area">
-                    <option value="rak_a_a1_a25">Area Rak A (A1-A25)</option>
-                    <option value="rak_a_a26_a52">Area Rak A (A26-A52)</option>
-                    <option value="rak_b_b1_b25">Area Rak B (B1-B25)</option>
-                    <option value="rak_b_b26_b54">Area Rak B (B26-B54)</option>
-                    <option value="rak_c_c1_c25">Area Rak C (C1-C25)</option>
-                    <option value="rak_c_c26_c50">Area Rak C (C26-C50)</option>
-                    <option value="rak_d_d1_d25">Area Rak D (D1-D25)</option>
-                    <option value="rak_d_d26_d50">Area Rak D (D26-D50)</option>
-                    <option value="rak_e_e1_e25">Area Rak E (E1-E25)</option>
-                    <option value="rak_e_e26_e50">Area Rak E (E26-E50)</option>
-                    <option value="rak_f_f1_f25">Area Rak F (F1-F25)</option>
-                    <option value="rak_f_f26_f50">Area Rak F (F26-F50)</option>
-                  </optgroup>
-                  <optgroup label="Pakaging Area">
-                    <option value="rak_packing">Area Packanging YPC</option>
-                    <option value="rak_packing">Area Packanging Carton Box WH(2)</option>
-                    <option value="rak_packing">Area Packanging Carton Box WH(3)</option>
-                  </optgroup>
-                  <optgroup label="Finished Good Area">
-                    <option value="rak_finished_good_01">Area Finished Good WH (11.1)</option>
-                    <option value="rak_finished_good_02">Area Finished Good WH (11.2)</option>
-                    <option value="rak_finished_good_03">Area Finished Good WH (11.3)</option>
-                    <option value="rak_finished_good_04">Area Shutter FG, Prep MMKI (12.1)</option>
-                    <option value="rak_finished_good_05">Area Shutter FG, Prep MMKI (12.2)</option>
-                  </optgroup>
-                  <optgroup label="Area Subcont">
-                    <option value="rak_subcont_wip">Area Subcont FG</option>
-                    <option value="rak_subcont_wip">Area Subcont WIP</option>
-                  </optgroup>
-                  <optgroup label="Area Delivery">
-                    <option value="rak_delivery">Area Delivery</option>
-                  </optgroup>
-                  <optgroup label="Material Transit">
-                    <option value="rak_material">Area Material Transit</option>
-                    <option value="rak_material">Area Matrial WorkShop</option>
-                  </optgroup>
-                  <optgroup label="Shutter FG Fin">
-                    <option value="rak_shutter_01">Area Shutter FG Fin Line 1-23 (16.1)</option>
-                    <option value="rak_shutter_02">Area Shutter FG Fin Line 1-23 (16.2)</option>
-                    <option value="rak_shutter_03">Area Shutter FG Fin Line 1-23 (16.3)</option>
-                  </optgroup>
-                  <optgroup label="QC Office Room">
-                    <option value="rak_qc_wip">Area WIP QC Office</option>
-                    <option value="rak_qc_fg">Area FG QC Office</option>
-                  </optgroup>
-                  <optgroup label="Manufacture Office">
-                    <option value="rak_manufacture_FG">Area Office FG</option>
-                    <option value="rak_manufacture_WIP">Area Office WIP</option>
-                  </optgroup>
-                  <optgroup label="WIP Lin Fin">
-                    <option value="rak_wip_fin_01">Area Produksi (Finishing) WIP</option>
-                  </optgroup>
-                  <optgroup label="Childpart Fin">
-                    <option value="rak_childpart_fin_01">Area Childpart Fin Line (1-10)</option>
-                    <option value="rak_childpart_fin_02">Area Childpart Fin Line (11-20)</option>
-                    <option value="rak_childpart_fin_01">Area Childpart Fin Line (21-30)</option>
-                  </optgroup>
-                  <optgroup label="WIP Shutter Molding">
-                    <option value="rak_wip_shutter_01">Area WIP Shutter Molding 1-30 (21.1)</option>
-                    <option value="rak_wip_shutter_02">Area WIP Shutter Molding 1-30 (21.2)</option>
-                    <option value="rak_wip_shutter_03">Area WIP Shutter Molding 32-59 (21.3)</option>
-                    <option value="rak_wip_shutter_04">Area WIP Shutter Molding 32-59 (21.4)</option>
-                  </optgroup>
-                  <optgroup label="WIP Pianica">
-                    <option value="rak_wip_pianica_01">Area WIP Pianca (23.1)</option>
-                    <option value="rak_wip_pianica_02">Area WIP Pianca (23.2)</option>
-                  </optgroup>
-                  <optgroup label="WIP WH 2">
-                    <option value="rak_wip_wh2_01">Area WIP WH 2 (24.1)</option>
-                    <option value="rak_wip_wh2_02">Area WIP WH 2 (24.2)</option>
-                  </optgroup>
-                  <optgroup label="WIP Molding">
-                    <option value="rak_wip_molding">Area WIP Molding</option>
-                  </optgroup>
-                  <optgroup label="Material Molding">
-                    <option value="rak_material_molding_01">Area Material Line Molding Virgin</option>
-                    <option value="rak_material_molding_02">Area Material Line Molding Fungsai</option>
-                    <option value="rak_material_molding_03">Area Material Line Fungsai Mix</option>
-                  </optgroup>
-                  <optgroup label="WIP Rak Daisha">
-                    <option value="rak_wip_daisha_01">Area WIP Rak Daisha (27.1)</option>
-                    <option value="rak_wip_daisha_02">Area WIP Rak Daisha (27.2)</option>
-                  </optgroup>
-                  <optgroup label="Area Service Part">
-                    <option value="rak_service_part">Area SPD</option>
-                  </optgroup>
-                  <optgroup label="Cut Off Delivery">
-                    <option value="rak_Off_Deliver">Area Cut Off Delivery</option>
-                  </optgroup>
-                  <optgroup label="Wip Line Blowmodlding">
-                    <option value="Wip_Line_Blowmolding">Area Wip Line Blowmodlding</option>
-                  </optgroup>
+
+              <!-- Plant -->
+              <div class="col-md-3 mb-3">
+                <label for="plant" class="col-form-label">Plan</label>
+                <select class="form-control" id="plant" name="plant" required>
+                  <option value="Plan 1" {{ old('plant', $inventory->plant ?? '') == 'Plan 1' ? 'selected' : '' }}>Plan
+                    1</option>
+                  <option value="Plan 2" {{ old('plant', $inventory->plant ?? '') == 'Plan 2' ? 'selected' : '' }}>Plan
+                    2</option>
                 </select>
-                      <optgroup label="Material Line Blowmolding">
-                        <option value="material_line_blowmolding">Material Line Blowmolding</option>
-                      </optgroup>
-                      <optgroup label="WIP Shutter Spoiler">
-                        <option value="wip_shutter_spoiler">WIP Shutter Spoiler</option>
-                      </optgroup>
-                      <optgroup label="WIP Sanding Area">
-                        <option value="wip_sanding_area">WIP Sanding Area</option>
-                      </optgroup>
-                      <optgroup label="FG Area NG Spoiler">
-                        <option value="fg_area_ng_spoiler">FG Area NG Spoiler</option>
-                      </optgroup>
-                      <optgroup label="WIP Shutter">
-                        <option value="wip_shutter_1">WIP Shutter 1</option>
-                        <option value="wip_shutter_2">WIP Shutter 2</option>
-                      </optgroup>
-                      <optgroup label="Material Warehouse">
-                        <option value="material_warehouse">Material Warehouse</option>
-                      </optgroup>
-                      <optgroup label="Packaging WH">
-                        <option value="packaging_wh">Packaging WH</option>
-                      </optgroup>
-                      <optgroup label="WIP Ducting WH">
-                        <option value="wip_ducting_wh">WIP Ducting WH</option>
-                      </optgroup>
-                      <optgroup label="Finishing Line">
-                        <option value="finishing_line_1_9">Finishing Line 1-9</option>
-                        <option value="finishing_line_10_18">Finishing Line 10-18</option>
-                      </optgroup>
-                      <optgroup label="Childpart Rack">
-                        <option value="childpart_rack_a">Childpart Rack - A</option>
-                        <option value="childpart_rack_b">Childpart Rack - B</option>
-                        <option value="childpart_rack_c">Childpart Rack - C</option>
-                        <option value="childpart_rack_d">Childpart Rack - D</option>
-                        <option value="childpart_rack_e">Childpart Rack - E</option>
-                        <option value="childpart_rack_f">Childpart Rack - F</option>
-                        <option value="childpart_rack_g">Childpart Rack - G</option>
-                        <option value="childpart_rack_h">Childpart Rack - H</option>
-                        <option value="childpart_rack_i">Childpart Rack - I</option>
-                        <option value="childpart_rack_j">Childpart Rack - J</option>
-                        <option value="childpart_pallet_area">Childpart Pallet Area</option>
-                        <option value="childpart_rack_k">Childpart Rack - K</option>
-                        <option value="childpart_rack_l">Childpart Rack - L</option>
-                        <option value="childpart_rack_m">Childpart Rack - M</option>
-                        <option value="childpart_rack_na">Childpart Rack - NA</option>
-                        <option value="childpart_rack_nb">Childpart Rack - NB</option>
-                      </optgroup>
-                      <optgroup label="Receiving Cpart & Temporary Area">
-                        <option value="receiving_cpart_temporary_area">Receiving Cpart & Temporary Area</option>
-                      </optgroup>
-                      <optgroup label="FG Shutter">
-                        <option value="fg_shutter_a">FG Shutter A</option>
-                        <option value="fg_shutter_b">FG Shutter B</option>
-                      </optgroup>
-                      <optgroup label="WIP Inoac">
-                        <option value="wip_inoac">WIP Inoac</option>
-                      </optgroup>
-                      <optgroup label="FG Area">
-                        <option value="fg_area_prepare_denso">FG Area Prepare Denso</option>
-                        <option value="fg_palet">FG Palet</option>
-                        <option value="fg_export">FG Export +</option>
-                        <option value="fg_prepare_adm">FG Prepare ADM</option>
-                        <option value="fg_prepare_spd">FG Prepare SPD</option>
-                        <option value="fg_dmia_wh">FG DMIA WH+</option>
-                      </optgroup>
-                      <optgroup label="FG Injection Area">
-                        <option value="fg_injection_area">FG Injection Area</option>
-                      </optgroup>
-                      <optgroup label="PE Room">
-                        <option value="pe_room">PE Room</option>
-                      </optgroup>
-                      <optgroup label="Area Crusher & Material Injection">
-                        <option value="area_crusher_material_injection">Area Crusher & Material Injection</option>
-                      </optgroup>
-                      <optgroup label="Delivery Area">
-                        <option value="delivery_area">Delivery Area +</option>
-                      </optgroup>
-                      <optgroup label="Lantai-2">
-                        <option value="lantai_2">Lantai-2</option>
-                      </optgroup>
-                      <optgroup label="DOJO Area">
-                        <option value="dojo_area">DOJO Area</option>
-                      </optgroup>
+              </div>
+
+              {{-- Detail Lokasi --}}
+              <div class="mb-3 col-md-3">
+                <label for="detail_lokasi" class="col-form-label">Detail Lokasi</label>
+                <select id="detail_lokasi" name="detail_lokasi" class="form-select">
+                  @foreach ($detail_lokasi->groupBy('category') as $category => $locations)
+                    <optgroup label="{{ $category }}" data-plan="{{ $locations->first()->plan }}">
+                      @foreach ($locations as $lokasi)
+                        <option value="{{ $lokasi->name }}">{{ $lokasi->label }}</option>
+                      @endforeach
+                    </optgroup>
+                  @endforeach
                 </select>
               </div>
             </div>
@@ -575,11 +428,11 @@
               response.forEach(function(status) {
                 var checked = (status === initialStatus) ? 'checked' : '';
                 var radioInput = `
-  <div class="form-check me-3">
-    <input class="form-check-input" type="radio" name="status" id="${status}" value="${status}" ${checked}>
-    <label class="form-check-label" for="${status}">${status}</label>
-  </div>
-  `;
+                <div class="form-check me-3">
+                  <input class="form-check-input" type="radio" name="status" id="${status}" value="${status}" ${checked}>
+                  <label class="form-check-label" for="${status}">${status}</label>
+                </div>
+                `;
                 statusContainer.append(radioInput);
               });
             } else {
@@ -591,6 +444,24 @@
 
       // Trigger change event to load initial status when the page loads
       $('#category').trigger('change');
+
+      $('#plant').change(function() {
+        var selectedPlan = $(this).val();
+
+        $('#detail_lokasi optgroup').each(function() {
+          if ($(this).attr('data-plan') === selectedPlan) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+        });
+
+        // Reset the selected value if the selected option is hidden
+        $('#detail_lokasi').val('');
+      });
+
+      // Trigger change event on page load if an option is pre-selected
+      $('#plant').trigger('change');
 
       //Trigger Auto Download
       let downloadContainer = document.getElementById("downloadContainer");

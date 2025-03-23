@@ -59,7 +59,7 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
   // Inventory
-    Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+  Route::get('inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
   Route::get('inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
   Route::post('inventory/import', [InventoryController::class, 'import'])->name('inventory.import');
   Route::get('inventory/upload', [InventoryController::class, 'showUploadForm'])->name('inventory.upload');
@@ -76,16 +76,16 @@ Route::middleware('admin.auth')->group(function () {
   Route::get('inventory/export', [InventoryController::class, 'export'])->name('inventory.export');
   Route::put('inventory/{inventory}', [InventoryController::class, 'update'])->name('inventory.update'); // Add this line
 
-  // Forecast
-  Route::get('/forecast', [ForecastController::class, 'index'])->name('forecast.index');
-  Route::get('/forecast/create', [ForecastController::class, 'create'])->name('forecast.create');
-  Route::post('/forecast', [ForecastController::class, 'store'])->name('forecast.store');
-  Route::get('/forecast/{id}/edit', [ForecastController::class, 'edit'])->name('forecast.edit');
-  Route::put('/forecast/{id}', [ForecastController::class, 'update'])->name('forecast.update');
-  Route::delete('/forecast/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
-  Route::post('/forecast/import', [ForecastController::class, 'import'])->name('forecast.import');
-  Route::post('/forecast/import/summary', [ForecastController::class, 'importSummary'])->name('forecast.summary.import');
-  Route::get('/fetch-forecast-data', [ForecastController::class, 'fetchForecastData']);
+  // Forecast {daily_stock}
+  Route::get('/daily_stock', [ForecastController::class, 'index'])->name('forecast.index');
+  Route::get('/daily_stock/create', [ForecastController::class, 'create'])->name('forecast.create');
+  Route::post('/daily_stock', [ForecastController::class, 'store'])->name('forecast.store');
+  Route::get('/daily_stock/{id}/edit', [ForecastController::class, 'edit'])->name('forecast.edit');
+  Route::put('/daily_stock/{id}', [ForecastController::class, 'update'])->name('forecast.update');
+  Route::delete('/daily_stock/{id}', [ForecastController::class, 'destroy'])->name('forecast.destroy');
+  Route::post('/daily_stock/import', [ForecastController::class, 'import'])->name('forecast.import');
+  Route::post('/daily_stock/import/summary', [ForecastController::class, 'importSummary'])->name('forecast.summary.import');
+  Route::get('/fetch-daily-stock-data', [ForecastController::class, 'fetchForecastData']);
 
   // Users
   Route::resource('users', UserController::class);

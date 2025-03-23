@@ -41,6 +41,7 @@ class ForecastController extends Controller
       'part_number' => 'required|string|max:255',
       'customer' => 'required|string|max:255',
       'forecast_qty' => 'required|integer',
+      'forecast_day' => 'required|numeric',
       'min_stok' => 'required|integer',
       'max_stok' => 'required|integer',
       'forecast_date' => 'required|date',
@@ -67,6 +68,7 @@ class ForecastController extends Controller
       'part_number' => 'required|string|max:255',
       'customer' => 'required|string|max:255',
       'forecast_qty' => 'required|integer',
+      'forecast_day' => 'required|numeric',
       'min_stok' => 'required|integer',
       'max_stok' => 'required|integer',
       'forecast_date' => 'required|date',
@@ -116,15 +118,22 @@ class ForecastController extends Controller
 
   public function fetchForecastData(Request $request)
   {
-    $month = $request->input('month');
+    $date = $request->input('date');
     $customer = $request->input('customer');
 
-    $forecasts = Forecast::whereYear('forecast_date', '=', date('Y', strtotime($month)))
-      ->whereMonth('forecast_date', '=', date('m', strtotime($month)))
-      ->where('customer', '=', $customer)
-      ->orderBy('forecast_date', 'desc')
-      ->take(3)
-      ->get(['part_name', 'forecast_qty', 'forecast_date']);
+    $forecasts = Forecast::selectRaw("
+        customer, 
+        forecast_date, 
+        CASE 
+            WHEN forecast_day > 3 THEN '>3' 
+            ELSE forecast_day 
+        END as forecast_day, 
+        SUM(forecast_qty) as total_forecast_qty
+    ")
+      ->where('forecast_date', $date)
+      ->where('customer', $customer)
+      ->groupBy('forecast_day', 'customer', 'forecast_date')
+      ->get();
 
     return response()->json($forecasts);
   }

@@ -104,20 +104,21 @@
           <h5 class="card-title">Input Date & Customer</h5>
           <!-- Add your select elements here -->
           <div class="row mb-3">
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
               <label for="dateForecast">Select Date</label>
-              {{-- <input type="date" id="dateInput" class="form-control"> --}}
               <select id="dateForecast" onchange="()"
                 class="form-control">
                 @foreach ($dates as $date)
                   <option value="{{ $date }}">{{ $date->format('d M Y') }}
                   </option>
                 @endforeach
-                {{-- @for ($i = 0; $i < 12; $i++)
-                  <option value="{{ now()->addMonths($i)->format('Y-m') }}">{{ now()->addMonths($i)->format('F Y') }}
-                  </option>
-                @endfor --}}
               </select>
+            </div> --}}
+            <div class="col-md-6">
+              <label for="dateForecast">Select Date</label>
+              <input type="date" id="dateForecast" class="form-control" name="dateForecast"
+                min="{{ $startDate->format('Y-m-d') }}" max="{{ $endDate->format('Y-m-d') }}"
+                value="{{ now()->format('Y-m-d') }}">
             </div>
             <div class="col-md-6">
               <label for="custForecast">Select Customer</label>
@@ -302,7 +303,7 @@
           console.log("Fetch Forecast");
 
           $.ajax({
-            url: "/fetch-forecast-summary",
+            url: "/fetch-forecast-data",
             type: "GET",
             data: {
               date: date,
@@ -349,15 +350,15 @@
           let date = '';
           // Map data to correct Y-axis label positions
           data.forEach(item => {
-            let index = yAxisLabels.indexOf(item.stock_day);
-            custName = item.customer_name;
-            date = new Date(item.date).toLocaleDateString("id-ID", {
+            let index = yAxisLabels.indexOf(item.forecast_day);
+            custName = item.customer;
+            date = new Date(item.forecast_date).toLocaleDateString("id-ID", {
               day: "numeric",
               month: "short",
               year: "numeric"
             });
             if (index !== -1) {
-              orderedValues[index] = item.stock_value;
+              orderedValues[index] = item.total_forecast_qty;
             }
           });
 

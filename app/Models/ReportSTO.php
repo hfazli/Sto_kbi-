@@ -28,6 +28,7 @@ class ReportSTO extends Model
     // Update Remove Integration to Inventory Model
     'part_name',
     'part_number',
+    'plant',
 
   ];
 
@@ -46,4 +47,3 @@ class ReportSTO extends Model
     return $this->belongsTo(User::class, 'prepared_by');
   }
 }
-
