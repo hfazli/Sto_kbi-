@@ -160,7 +160,9 @@
                   @foreach ($detail_lokasi->groupBy('category') as $category => $locations)
                     <optgroup label="{{ $category }}" data-plan="{{ $locations->first()->plan }}">
                       @foreach ($locations as $lokasi)
-                        <option value="{{ $lokasi->name }}">{{ $lokasi->label }}</option>
+                        <option value="{{ $lokasi->name }}"
+                          {{ old('detail_lokasi', $inventory->detail_lokasi) == $lokasi->name ? 'selected' : '' }}>
+                          {{ $lokasi->label }}</option>
                       @endforeach
                     </optgroup>
                   @endforeach
@@ -184,6 +186,43 @@
 
 
   <script>
+    const categoryMapping = {
+      "Finished Good": [
+        "Shutter FG Fin",
+        "Finished Good Area",
+        "Area Service Part",
+        "Area Warehouse",
+        "Area Delivery",
+        "QC Office Room",
+        "Manufacture Office",
+        "Cut Off Delivery",
+        "Area Subcont"
+      ],
+      "Raw Material": [
+        "Material Transit",
+        "Material Moulding"
+      ],
+      "ChildPart": [
+        "Childpart Area",
+        "Childpart Fin",
+        "Area ChildPartTrolly",
+        "Area ChildPart Fin Line",
+        "Area ChildPart Temporary"
+      ],
+      "Packaging": [
+        "Packaging Area"
+      ],
+      "Wip": [
+        "Area Subcont Wip",
+        "WIP Rak Daisha",
+        "Qc Office Room Wip",
+        "WIP WH 2",
+        "WIP Molding",
+        "WIP Shutter Molding",
+        "WIP Pianica"
+      ]
+    };
+
     document.addEventListener("DOMContentLoaded", function() {
       function calculateTotals() {
         let QtyPerBox2 = parseFloat(document.getElementById("qty_per_box_2").value) || 0;
@@ -209,14 +248,19 @@
       });
     });
 
+    // Filter detail lokasi
     $(document).ready(function() {
       $('#plant').change(function() {
         var selectedPlan = $(this).val();
-
+        var category = $('#category').val();
         $('#detail_lokasi optgroup').each(function() {
+          console.log(!categoryMapping[category].includes($(this).attr('label')));
           if ($(this).attr('data-plan') === selectedPlan) {
             $(this).show();
           } else {
+            $(this).hide();
+          }
+          if (!categoryMapping[category].includes($(this).attr('label'))) {
             $(this).hide();
           }
         });
@@ -224,6 +268,7 @@
         // Reset the selected value if the selected option is hidden
         $('#detail_lokasi').val('');
       });
+
 
       // Trigger change event on page load if an option is pre-selected
       var selectedLokasi = $('#detail_lokasi').val();
@@ -280,62 +325,62 @@
         }
       }
 
-      function updateDetailLokasiOptions() {
-        const category = document.getElementById('category').value;
-        const detailLokasiSelect = document.getElementById('detail_lokasi');
-        const detailLokasiOptions = detailLokasiSelect.querySelectorAll('optgroup');
+      // function updateDetailLokasiOptions() {
+      //   const category = document.getElementById('category').value;
+      //   const detailLokasiSelect = document.getElementById('detail_lokasi');
+      //   const detailLokasiOptions = detailLokasiSelect.querySelectorAll('optgroup');
 
-        detailLokasiOptions.forEach(optgroup => {
-          optgroup.style.display = 'block';
-        });
+      //   detailLokasiOptions.forEach(optgroup => {
+      //     optgroup.style.display = 'block';
+      //   });
 
-        if (category === 'Finished Good') {
-          detailLokasiOptions.forEach(optgroup => {
-            if (optgroup.label !== 'Shutter FG Fin' && optgroup.label !== 'Finished Good Area' && optgroup
-              .label !== 'Area Service Part' && optgroup.label !== 'Area Warehouse' && optgroup.label !==
-              'Area Delivery' && optgroup.label !== 'QC Office Room' && optgroup.label !== 'Manufacture Office' &&
-              optgroup.label !== 'Cut Off Delivery' && optgroup.label !== 'Area Subcont') {
-              optgroup.style.display = 'none';
-            }
-          });
-        } else if (category === 'Raw Material') {
-          detailLokasiOptions.forEach(optgroup => {
-            if (optgroup.label !== 'Material Transit' && optgroup.label !== 'Material Moulding') {
-              optgroup.style.display = 'none';
-            }
-          });
-        } else if (category === 'ChildPart') {
-          detailLokasiOptions.forEach(optgroup => {
-            if (optgroup.label !== 'Childpart Area' && optgroup.label !== 'Childpart Fin' && optgroup.label !==
-              'Area ChildPartTrolly' && optgroup.label !== 'Area ChildPart Fin Line' && optgroup.label !==
-              'Area ChildPart Temporary') {
-              optgroup.style.display = 'none';
-            }
-          });
-        } else if (category === 'Packaging') {
-          detailLokasiOptions.forEach(optgroup => {
-            if (optgroup.label !== 'Packaging Area') {
-              optgroup.style.display = 'none';
-            }
-          });
-        } else if (category === 'Wip') {
-          detailLokasiOptions.forEach(optgroup => {
-            if (optgroup.label !== 'Area Subcont Wip' && optgroup.label !== 'WIP Rak Daisha' && optgroup.label !==
-              'Qc Office Room Wip' && optgroup.label !== 'WIP WH 2' && optgroup.label !== 'WIP Molding' &&
-              optgroup.label !== 'WIP Shutter Molding' && optgroup.label !== 'WIP Pianica') {
-              optgroup.style.display = 'none';
-            }
-          });
-        }
-      }
+      //   if (category === 'Finished Good') {
+      //     detailLokasiOptions.forEach(optgroup => {
+      //       if (optgroup.label !== 'Shutter FG Fin' && optgroup.label !== 'Finished Good Area' && optgroup
+      //         .label !== 'Area Service Part' && optgroup.label !== 'Area Warehouse' && optgroup.label !==
+      //         'Area Delivery' && optgroup.label !== 'QC Office Room' && optgroup.label !== 'Manufacture Office' &&
+      //         optgroup.label !== 'Cut Off Delivery' && optgroup.label !== 'Area Subcont') {
+      //         optgroup.style.display = 'none';
+      //       }
+      //     });
+      //   } else if (category === 'Raw Material') {
+      //     detailLokasiOptions.forEach(optgroup => {
+      //       if (optgroup.label !== 'Material Transit' && optgroup.label !== 'Material Moulding') {
+      //         optgroup.style.display = 'none';
+      //       }
+      //     });
+      //   } else if (category === 'ChildPart') {
+      //     detailLokasiOptions.forEach(optgroup => {
+      //       if (optgroup.label !== 'Childpart Area' && optgroup.label !== 'Childpart Fin' && optgroup.label !==
+      //         'Area ChildPartTrolly' && optgroup.label !== 'Area ChildPart Fin Line' && optgroup.label !==
+      //         'Area ChildPart Temporary') {
+      //         optgroup.style.display = 'none';
+      //       }
+      //     });
+      //   } else if (category === 'Packaging') {
+      //     detailLokasiOptions.forEach(optgroup => {
+      //       if (optgroup.label !== 'Packaging Area') {
+      //         optgroup.style.display = 'none';
+      //       }
+      //     });
+      //   } else if (category === 'Wip') {
+      //     detailLokasiOptions.forEach(optgroup => {
+      //       if (optgroup.label !== 'Area Subcont Wip' && optgroup.label !== 'WIP Rak Daisha' && optgroup.label !==
+      //         'Qc Office Room Wip' && optgroup.label !== 'WIP WH 2' && optgroup.label !== 'WIP Molding' &&
+      //         optgroup.label !== 'WIP Shutter Molding' && optgroup.label !== 'WIP Pianica') {
+      //         optgroup.style.display = 'none';
+      //       }
+      //     });
+      //   }
+      // }
 
       // Trigger change event to load initial status and detail lokasi when the page loads
       updateStatusOptions();
-      updateDetailLokasiOptions();
+      // updateDetailLokasiOptions();
 
       document.getElementById('category').addEventListener('input', function() {
         updateStatusOptions();
-        updateDetailLokasiOptions();
+        // updateDetailLokasiOptions();
       });
     });
   </script>

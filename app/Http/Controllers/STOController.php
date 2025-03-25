@@ -91,6 +91,14 @@ class STOController extends Controller
       'plant' => $validatedData['plant'],
     ]);
 
+    // Update inventory's detail lokasi
+    $inventory = Inventory::find($validatedData['inventory_id']);
+    if ($inventory) {
+      $inventory->plant = $validatedData['plant'];
+      $inventory->detail_lokasi = $validatedData['detail_lokasi'];
+      $inventory->save();
+    }
+
     // Redirect back with success message
     return redirect()->route('sto.index')
       ->with('success', "Report STO with Inventory ID {$reportSTO->inventory_id} created successfully.")
@@ -210,6 +218,14 @@ class STOController extends Controller
 
     // Update the report with new data
     $report->update($request->all());
+
+    // Update inventory's detail lokasi
+    $inventory = Inventory::find($validatedData['inventory_id']);
+    if ($inventory) {
+      $inventory->plant = $validatedData['plant'];
+      $inventory->detail_lokasi = $validatedData['detail_lokasi'];
+      $inventory->save();
+    }
 
     // Redirect back with success message
     return redirect()->route('sto.index')

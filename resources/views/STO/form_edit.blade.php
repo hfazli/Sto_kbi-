@@ -217,6 +217,71 @@
 
 
   <script>
+    const categoryMapping = {
+      "Finished Good": [
+        "Shutter FG Fin",
+        "Finished Good Area",
+        "Area Service Part",
+        "Area Warehouse",
+        "Area Delivery",
+        "QC Office Room",
+        "Manufacture Office",
+        "Cut Off Delivery",
+        "Area Subcont"
+      ],
+      "Raw Material": [
+        "Material Transit",
+        "Material Moulding"
+      ],
+      "ChildPart": [
+        "Childpart Area",
+        "Childpart Fin",
+        "Area ChildPartTrolly",
+        "Area ChildPart Fin Line",
+        "Area ChildPart Temporary"
+      ],
+      "Packaging": [
+        "Packaging Area"
+      ],
+      "Wip": [
+        "Area Subcont Wip",
+        "WIP Rak Daisha",
+        "Qc Office Room Wip",
+        "WIP WH 2",
+        "WIP Molding",
+        "WIP Shutter Molding",
+        "WIP Pianica"
+      ]
+    };
+
+    // Filter detail lokasi
+    $(document).ready(function() {
+      $('#plant').change(function() {
+        var selectedPlan = $(this).val();
+        var category = $('#category').val();
+        $('#detail_lokasi optgroup').each(function() {
+          console.log(!categoryMapping[category].includes($(this).attr('label')));
+          if ($(this).attr('data-plan') === selectedPlan) {
+            $(this).show();
+          } else {
+            $(this).hide();
+          }
+          if (!categoryMapping[category].includes($(this).attr('label'))) {
+            $(this).hide();
+          }
+        });
+
+        // Reset the selected value if the selected option is hidden
+        $('#detail_lokasi').val('');
+      });
+
+
+      // Trigger change event on page load if an option is pre-selected
+      var selectedLokasi = $('#detail_lokasi').val();
+      $('#plant').trigger('change');
+      $('#detail_lokasi').val(selectedLokasi);
+    });
+
     document.addEventListener("DOMContentLoaded", function() {
       function calculateTotals() {
         let QtyPerBox2 = parseFloat(document.getElementById("qty_per_box_2").value) || 0;
