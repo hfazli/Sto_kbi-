@@ -191,35 +191,52 @@
         "Shutter FG Fin",
         "Finished Good Area",
         "Area Service Part",
-        "Area Warehouse",
         "Area Delivery",
         "QC Office Room",
         "Manufacture Office",
         "Cut Off Delivery",
-        "Area Subcont"
+        "Area Subcont FG",
+        "FG Area",
+        "Delivery Area",
+        'FG Area NG Spoiler',
+        'FG Injection Area'
+        'FG Shutter',
+        "Finishing Line"
       ],
       "Raw Material": [
         "Material Transit",
-        "Material Moulding"
+        "Material Moulding",
+        "Area Crusher & Material Injection",
+        'Material Warehouse',
+        "Material Line Blowmolding"
       ],
       "ChildPart": [
         "Childpart Area",
         "Childpart Fin",
-        "Area ChildPartTrolly",
-        "Area ChildPart Fin Line",
-        "Area ChildPart Temporary"
+        "Childpart Rack",
+        "Receiving Cpart & Temporary Area"
       ],
       "Packaging": [
-        "Packaging Area"
+        "Packaging Area",
+        "Lantai-2",
+        'Packaging WH',
+        "DOJO Area"
       ],
       "Wip": [
-        "Area Subcont Wip",
+        "Area Subcont WIP",
         "WIP Rak Daisha",
-        "Qc Office Room Wip",
+        "Qc Office Room",
         "WIP WH 2",
         "WIP Molding",
         "WIP Shutter Molding",
-        "WIP Pianica"
+        "WIP Pianica",
+        "WIP Lin Fin",
+        "WIP Line Blowmolding",
+        "WIP Shutter Spoiler",
+        "WIP Sanding Area",
+        "WIP Shutter",
+        'WIP Inoac',
+        "WIP Ducting WH"
       ]
     };
 
