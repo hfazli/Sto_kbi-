@@ -59,6 +59,7 @@
               <label for="status" class="col-md-3 col-form-label text-white">Status</label>
               <div class="col-md-9">
                 <select name="status" id="status" class="form-select">
+                  <option value="" disabled selected>--Pilih--</option> <!-- Tambahkan opsi ini -->
                   <optgroup label="Status">
                     <option value="OK"
                       {{ old('status', $inventory->status_product ?? '') == 'OK' ? 'selected' : '' }}>OK</option>
@@ -77,12 +78,12 @@
             <div class="mb-3 p-3 border rounded">
               <h6 class="mb-3 text-center"><strong>QUANTITY INPUT</strong></h6>
               <div id="quantityInputs" class="row">
-                <label for="qty_per_box" class="col-form-label text-white">ITEMCOMPLETE</label>
+                <label for="qty_per_box" class="col-form-label text-white">ITEM COMPLETE</label>
                 <div class="mb-3 col-md-3">
                   <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                   <input type="number" id="qty_per_box" name="qty_per_box" class="form-control"
                     placeholder="Enter quantity per box" required
-                    value="{{ old('qty_per_box', $inventory->qty_package ?? '') }}" readonly>
+                    value="{{ old('qty_per_box', $inventory->qty_package ?? '') }}">
                 </div>
                 <div class="mb-3 col-md-3">
                   <label for="qty_box" class="col-form-label">Qty Box</label>
@@ -103,7 +104,7 @@
               <!-- Second Value -->
               <div class="row">
                 <div id="optionalQuantityInputs" class="row" style="display: none;">
-                  <label for="qty_per_box" class="col-form-label text-white">ITEM RECEH</label>
+                  <label for="qty_per_box" class="col-form-label text-white">ITEM UNCOMPLETE</label>
                   <div class="mb-3 col-md-3">
                     <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                     <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control"
@@ -144,11 +145,12 @@
 
               <!-- Plant -->
               <div class="col-md-3 mb-3">
-                <label for="plant" class="col-form-label">Plan</label>
+                <label for="plant" class="col-form-label">Lokasi STO</label>
                 <select class="form-control" id="plant" name="plant" required>
-                  <option value="Plan 1" {{ old('plant', $inventory->plant ?? '') == 'Plan 1' ? 'selected' : '' }}>Plan
+                  <option value="" disabled selected>--Pilih--</option> <!-- Tambahkan opsi ini -->
+                  <option value="Plan 1" {{ old('plant', $inventory->plant ?? '') == 'Plan 1' ? 'selected' : '' }}>KBI
                     1</option>
-                  <option value="Plan 2" {{ old('plant', $inventory->plant ?? '') == 'Plan 2' ? 'selected' : '' }}>Plan
+                  <option value="Plan 2" {{ old('plant', $inventory->plant ?? '') == 'Plan 2' ? 'selected' : '' }}>KBI
                     2</option>
                 </select>
               </div>
@@ -307,10 +309,10 @@
       var optionalQuantityInputs = document.getElementById('optionalQuantityInputs');
       if (optionalQuantityInputs.style.display === 'none') {
         optionalQuantityInputs.style.display = 'flex';
-        optionalInputButton.innerText = 'HIDE INCOMPLETE ITEM (ITEM RECEH)';
+        optionalInputButton.innerText = 'HIDE COMPLETE ITEM';
       } else {
         optionalQuantityInputs.style.display = 'none';
-        optionalInputButton.innerText = 'SHOW INCOMPLETE ITEM (ITEM RECEH)';
+        optionalInputButton.innerText = 'SHOW UNCOMPLETE ITEM';
       }
     }
   </script>
@@ -341,55 +343,6 @@
           });
         }
       }
-
-      // function updateDetailLokasiOptions() {
-      //   const category = document.getElementById('category').value;
-      //   const detailLokasiSelect = document.getElementById('detail_lokasi');
-      //   const detailLokasiOptions = detailLokasiSelect.querySelectorAll('optgroup');
-
-      //   detailLokasiOptions.forEach(optgroup => {
-      //     optgroup.style.display = 'block';
-      //   });
-
-      //   if (category === 'Finished Good') {
-      //     detailLokasiOptions.forEach(optgroup => {
-      //       if (optgroup.label !== 'Shutter FG Fin' && optgroup.label !== 'Finished Good Area' && optgroup
-      //         .label !== 'Area Service Part' && optgroup.label !== 'Area Warehouse' && optgroup.label !==
-      //         'Area Delivery' && optgroup.label !== 'QC Office Room' && optgroup.label !== 'Manufacture Office' &&
-      //         optgroup.label !== 'Cut Off Delivery' && optgroup.label !== 'Area Subcont') {
-      //         optgroup.style.display = 'none';
-      //       }
-      //     });
-      //   } else if (category === 'Raw Material') {
-      //     detailLokasiOptions.forEach(optgroup => {
-      //       if (optgroup.label !== 'Material Transit' && optgroup.label !== 'Material Moulding') {
-      //         optgroup.style.display = 'none';
-      //       }
-      //     });
-      //   } else if (category === 'ChildPart') {
-      //     detailLokasiOptions.forEach(optgroup => {
-      //       if (optgroup.label !== 'Childpart Area' && optgroup.label !== 'Childpart Fin' && optgroup.label !==
-      //         'Area ChildPartTrolly' && optgroup.label !== 'Area ChildPart Fin Line' && optgroup.label !==
-      //         'Area ChildPart Temporary') {
-      //         optgroup.style.display = 'none';
-      //       }
-      //     });
-      //   } else if (category === 'Packaging') {
-      //     detailLokasiOptions.forEach(optgroup => {
-      //       if (optgroup.label !== 'Packaging Area') {
-      //         optgroup.style.display = 'none';
-      //       }
-      //     });
-      //   } else if (category === 'Wip') {
-      //     detailLokasiOptions.forEach(optgroup => {
-      //       if (optgroup.label !== 'Area Subcont Wip' && optgroup.label !== 'WIP Rak Daisha' && optgroup.label !==
-      //         'Qc Office Room Wip' && optgroup.label !== 'WIP WH 2' && optgroup.label !== 'WIP Molding' &&
-      //         optgroup.label !== 'WIP Shutter Molding' && optgroup.label !== 'WIP Pianica') {
-      //         optgroup.style.display = 'none';
-      //       }
-      //     });
-      //   }
-      // }
 
       // Trigger change event to load initial status and detail lokasi when the page loads
       updateStatusOptions();

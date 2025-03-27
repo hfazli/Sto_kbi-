@@ -75,13 +75,6 @@
                 {{ $inventory->customer ?? 'Not Available' }}
               </strong>
             </p>
-            <p class="colom mt-1" style="font-size: 17px; margin-bottom: -1px; color:rgb(255, 255, 255);">
-              <i class="fas fa-building"></i>&nbsp;&nbsp;Plan&nbsp;:&nbsp;
-              <strong
-                style="width: 5px; font-size: 20px; color:rgb(255, 213, 0); padding: 1px; text-transform: uppercase;">
-                {{ $inventory->plant ?? 'Not Available' }}
-              </strong>
-            </p>
           @endif
         </div>
         <div class="d-flex flex-column align-items-end">

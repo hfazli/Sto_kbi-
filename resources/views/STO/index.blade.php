@@ -147,7 +147,7 @@
             <!-- Qty Detail -->
             <div cs="mb-3 p-3 border rounded">
               <h6 class="mb-3 text-center">QUANTITY INPUT</h6>
-              <label for="qty_per_box" class="col-form-label text-white">WAJIB SINI</label>
+              <label for="qty_per_box" class="col-form-label text-white">ITEM COMPLETE</label>
               <div class="row">
                 <label for="qty_per_box" class="col-form-label text-danger"></label>
                 <label for="qty_per_box" class="col-form-label"></label>
@@ -176,7 +176,7 @@
               <!-- Second Value -->
               <div class="row">
                 <div id="optionalQuantityInputs" class="row" style="display: none;">
-                  <label for="qty_per_box" class="col-form-label text-white">ITEM RECEH JIKA ADA (OPTIONAL)</label>
+                  <label for="qty_per_box" class="col-form-label text-white">ITEM UNCOMPLETE</label>
                   <div class="mb-3 col-md-3">
                     <label for="qty_per_box" class="col-form-label">Qty/Box</label>
                     <input type="number" id="qty_per_box_2" name="qty_per_box_2" class="form-control"
@@ -195,7 +195,7 @@
                 </div>
               </div>
               <button type="button" class="btn btn-primary toggle-btn w-100" id="optionalInputButton"
-                onclick="toggleOptionalQuantityInputs()">SHOW INCOMPLETE ITEM (ITEM RECEH)</button>
+                onclick="toggleOptionalQuantityInputs()">SHOW UNCOMPLETE ITEM</button>
 
               <script>
                 function toggleOptionalQuantityInputs() {
@@ -203,10 +203,10 @@
                   var optionalQuantityInputs = document.getElementById('optionalQuantityInputs');
                   if (optionalQuantityInputs.style.display === 'none') {
                     optionalQuantityInputs.style.display = 'flex';
-                    optionalInputButton.innerText = 'HIDE INCOMPLETE ITEM (ITEM RECEH)';
+                    optionalInputButton.innerText = 'HIDE INCOMPLETE ITEM';
                   } else {
                     optionalQuantityInputs.style.display = 'none';
-                    optionalInputButton.innerText = 'SHOW INCOMPLETE ITEM (ITEM RECEH)';
+                    optionalInputButton.innerText = 'SHOW UNCOMPLETE ITEM';
                   }
                 }
               </script>
