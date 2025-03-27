@@ -412,6 +412,60 @@
       document.getElementById('loader').style.display = 'none';
     });
 
+    const categoryMapping = {
+      "Finished Good": [
+        "Shutter FG Fin",
+        "Finished Good Area",
+        "Area Service Part",
+        "Area Delivery",
+        "QC Office Room",
+        "Manufacture Office",
+        "Cut Off Delivery",
+        "Area Subcont FG",
+        "FG Area",
+        "Delivery Area",
+        'FG Area NG Spoiler',
+        'FG Injection Area',
+        'FG Shutter',
+        "Finishing Line"
+      ],
+      "Raw Material": [
+        "Material Transit",
+        "Material Moulding",
+        "Area Crusher & Material Injection",
+        'Material Warehouse',
+        "Material Line Blowmolding"
+      ],
+      "ChildPart": [
+        "Childpart Area",
+        "Childpart Fin",
+        "Childpart Rack",
+        "Receiving Cpart & Temporary Area"
+      ],
+      "Packaging": [
+        "Packaging Area",
+        "Lantai-2",
+        'Packaging WH',
+        "DOJO Area"
+      ],
+      "Wip": [
+        "Area Subcont WIP",
+        "WIP Rak Daisha",
+        "Qc Office Room",
+        "WIP WH 2",
+        "WIP Molding",
+        "WIP Shutter Molding",
+        "WIP Pianica",
+        "WIP Lin Fin",
+        "WIP Line Blowmolding",
+        "WIP Shutter Spoiler",
+        "WIP Sanding Area",
+        "WIP Shutter",
+        'WIP Inoac',
+        "WIP Ducting WH"
+      ]
+    };
+
     $(document).ready(function() {
       document.getElementById('loader').style.display = 'none';
       $('#category').on('change', function() {
@@ -452,6 +506,9 @@
           if ($(this).attr('data-plan') === selectedPlan) {
             $(this).show();
           } else {
+            $(this).hide();
+          }
+          if (!categoryMapping[category].includes($(this).attr('label'))) {
             $(this).hide();
           }
         });

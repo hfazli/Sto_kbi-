@@ -199,7 +199,7 @@
         "FG Area",
         "Delivery Area",
         'FG Area NG Spoiler',
-        'FG Injection Area'
+        'FG Injection Area',
         'FG Shutter',
         "Finishing Line"
       ],
