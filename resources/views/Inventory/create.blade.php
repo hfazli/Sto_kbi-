@@ -109,8 +109,11 @@
               </select>
             </div>
             <div class="col-md-6 mb-3">
+                @dd($detail_lokasi)
               <label for="detail_lokasi" class="form-label">Detail Lokasi</label>
               <select class="form-control" id="detail_lokasi" name="detail_lokasi" required>
+                
+
                 @foreach ($detail_lokasi->groupBy('category') as $category => $locations)
                   <optgroup label="{{ $category }}" data-plan="{{ $locations->first()->plan }}">
                     @foreach ($locations as $lokasi)
